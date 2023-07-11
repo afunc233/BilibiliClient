@@ -3,7 +3,6 @@
         <OutputType>Exe</OutputType>
         <TargetFramework>$(AndroidTargetFramework)</TargetFramework>
         <SupportedOSPlatformVersion>21</SupportedOSPlatformVersion>
-        <Nullable>enable</Nullable>
         <ApplicationId>org.afunc.BilibiliClient</ApplicationId>
         <ApplicationVersion>1</ApplicationVersion>
         <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
