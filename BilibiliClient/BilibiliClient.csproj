@@ -5,7 +5,19 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <AvaloniaResource Include="Assets\**"/>
+        <AvaloniaResource Include="Assets\**" />
+        <None Remove=".gitignore" />
+        <None Remove="Assets\Fonts\msyh.ttf" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="Assets\avalonia-logo.ico" />
+    </ItemGroup>
+    <ItemGroup>
+        <AvaloniaResource Remove="Assets\TrayIcons\*.png" />
+        <None Include="..\.editorconfig" Link=".editorconfig" />
+        <None Update="Assets\TrayIcons\*.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -15,6 +27,8 @@
         <PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)"/>
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)"/>
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0-preview.6.23329.7" />
+        <PackageReference Include="NLog.Extensions.Hosting" Version="5.3.2" />
     </ItemGroup>
 
     <ItemGroup>

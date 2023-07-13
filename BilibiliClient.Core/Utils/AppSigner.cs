@@ -77,7 +77,5 @@ public class AppSigner
         }
 
         return sb.ToString();
-
-        return null;
     }
 }
