@@ -40,9 +40,6 @@ public partial class App : Application
             var process = Process.GetCurrentProcess();
             process.PriorityClass = ProcessPriorityClass.RealTime;
         }
-
-        TaskScheduler.UnobservedTaskException += (s, e) => { e.SetObserved(); };
-
         AvaloniaXamlLoader.Load(this);
     }
 
@@ -122,12 +119,13 @@ public partial class App : Application
                 desktop.ShutdownMode = Avalonia.Controls.ShutdownMode.OnExplicitShutdown;
 
                 var mainWindow = GetAppRequiredServiceInner<MainWindow>();
-
+                mainWindow!.DataContext = GetAppRequiredServiceInner<MainViewModel>();
                 desktop.MainWindow = mainWindow;
                 break;
             case ISingleViewApplicationLifetime singleViewPlatform:
                 // Android / iOS
                 var mainView = GetAppRequiredServiceInner<MainView>();
+                mainView!.DataContext = GetAppRequiredServiceInner<MainViewModel>();
                 singleViewPlatform.MainView = mainView;
                 break;
         }

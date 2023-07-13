@@ -12,7 +12,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace BilibiliClient.Services;
 
-
 internal class WindowManagerService : IWindowManagerService
 {
     private readonly IClassicDesktopStyleApplicationLifetime _classicDesktopStyleApplicationLifetime;
@@ -86,13 +85,14 @@ internal class WindowManagerService : IWindowManagerService
             {
                 window.WindowState = WindowState.Normal;
             }
+
             window.Activate();
         }
         else
         {
             window = _serviceProvider.GetRequiredService(GetPageType(pageKey)!) as Window;
-
-            window?.Show();
+            window!.DataContext = _serviceProvider.GetRequiredService(Type.GetType(pageKey)!);
+            window.Show();
         }
 
         if (window is not { DataContext: INavigationAware navigationAware }) return;

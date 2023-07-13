@@ -28,7 +28,13 @@ class Program
                 logger.Error(e.Exception, $"{nameof(TaskScheduler.UnobservedTaskException)}！");
                 e.SetObserved();
             };
-
+            AppDomain.CurrentDomain.UnhandledException += (_, e) =>
+            {
+                if (e.ExceptionObject is Exception ex)
+                {
+                    logger.Error(ex, $"{nameof(AppDomain.CurrentDomain.UnhandledException)}!");
+                }
+            };
             var builder = BuildAvaloniaApp();
             if (logger.IsTraceEnabled)
             {
@@ -57,7 +63,7 @@ class Program
 #if !ARM64
             .With(new Win32PlatformOptions()
             {
-                RenderingMode = new Win32RenderingMode[] { Win32RenderingMode.AngleEgl }
+                RenderingMode = new[] { Win32RenderingMode.AngleEgl }
             })
 #else
             .With(new Win32PlatformOptions()
@@ -68,9 +74,6 @@ class Program
 #endif
             .With(new FontManagerOptions()
             {
-                // DefaultFamilyName = $"F:\\OpenSourceProject\\pumpkin-windows\\PumpkinDesktop\\Assets\\Fonts/msyh.ttf#Microsoft YaHei",
-                // DefaultFamilyName = $"avares://{nameof(PumpkinDesktop)}/Assets/Fonts/msyh.ttf#Microsoft YaHei",
-                // 
                 DefaultFamilyName =
                     $"avares://{nameof(BilibiliClient)}/Assets/Fonts/LXGWWenKaiLite-Regular.ttf#LXGW WenKai Lite",
             })
