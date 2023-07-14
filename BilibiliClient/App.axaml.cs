@@ -40,6 +40,7 @@ public partial class App : Application
             var process = Process.GetCurrentProcess();
             process.PriorityClass = ProcessPriorityClass.RealTime;
         }
+
         AvaloniaXamlLoader.Load(this);
     }
 
@@ -55,6 +56,7 @@ public partial class App : Application
                 configHost.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true); // 日志配置 热更新
             })
             .ConfigureServices(ConfigureServices)
+            .ConfigureServices(BilibiliClientCoreExtensions.ConfigureServices)
             .ConfigureServices((context, services) =>
             {
                 if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -68,8 +70,6 @@ public partial class App : Application
 
     private void ConfigureServices(HostBuilderContext context, IServiceCollection services)
     {
-        services.UseMessenger();
-
         services.UseHost();
 
         services.UseServices();
