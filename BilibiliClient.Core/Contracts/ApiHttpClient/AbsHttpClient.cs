@@ -1,10 +1,9 @@
 ﻿using System.Net.Http.Headers;
-using BilibiliClient.Core.Contracts.ApiHttpClient;
 using BilibiliClient.Core.Contracts.Services;
 using BilibiliClient.Core.Contracts.Utils;
 using Microsoft.Extensions.Logging;
 
-namespace BilibiliClient.Core.ApiHttpClient;
+namespace BilibiliClient.Core.Contracts.ApiHttpClient;
 
 /// <summary>
 /// HttpClient 封装，泛型的返回数据的主体

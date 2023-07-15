@@ -2,6 +2,7 @@
 using BilibiliClient.Core.ApiHttpClient;
 using BilibiliClient.Core.Contracts.Api;
 using BilibiliClient.Core.Contracts.ApiHttpClient;
+using BilibiliClient.Core.Contracts.Configs;
 using BilibiliClient.Core.Contracts.Services;
 using BilibiliClient.Core.Contracts.Utils;
 using BilibiliClient.Core.Services;
@@ -25,6 +26,16 @@ public static class BilibiliClientCoreExtensions
     private static IServiceCollection UseMessenger(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddSingleton<IMessenger, WeakReferenceMessenger>();
+        return serviceCollection;
+    }
+
+    private static IServiceCollection UsePlatformConfig(this IServiceCollection serviceCollection)
+    {
+        serviceCollection.AddSingleton<IPlatformConfig, WebPlatformConfig>();
+        serviceCollection.AddSingleton<IPlatformConfig, AndroidPlatformConfig>();
+        serviceCollection.AddSingleton<IPlatformConfig, IosPlatformConfig>();
+        serviceCollection.AddSingleton<IPlatformConfig, LoginPlatformConfig>();
+        serviceCollection.AddSingleton<IPlatformConfig, TvPlatformConfig>();
         return serviceCollection;
     }
 
@@ -77,6 +88,7 @@ public static class BilibiliClientCoreExtensions
     {
         services.UseUtils();
         services.UseMessenger();
+        services.UsePlatformConfig();
         services.UseHttp();
         services.UseApi();
         services.UseServices();

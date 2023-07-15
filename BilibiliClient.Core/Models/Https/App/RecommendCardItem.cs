@@ -236,6 +236,35 @@ public class RecommendCardItemAvatar
 
 public class RecommendCardItemButton
 {
+    /// <summary>
+    ///  "text": "+ 关注",
+    /// </summary>
+    [JsonPropertyName("text")]
+    public string? Text { get; set; }
+
+    /// <summary>
+    ///  "param": "39839686",
+    /// </summary>
+    [JsonPropertyName("param")]
+    public string? Param { get; set; }
+
+    /// <summary>
+    ///  "event": "up_follow",
+    /// </summary>
+    [JsonPropertyName("event")]
+    public string? Event { get; set; }
+
+    /// <summary>
+    ///  "type": 2,
+    /// </summary>
+    [JsonPropertyName("type")]
+    public int type { get; set; }
+
+    /// <summary>
+    ///  "event_v2": "up-follow"
+    /// </summary>
+    [JsonPropertyName("event_v2")]
+    public string? event_v2 { get; set; }
 }
 
 /// <summary>

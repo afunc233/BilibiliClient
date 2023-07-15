@@ -1,15 +1,16 @@
 ﻿using BilibiliClient.Core.Contracts.Api;
 using BilibiliClient.Core.Contracts.ApiHttpClient;
+using BilibiliClient.Core.Contracts.Configs;
+using BilibiliClient.Core.Contracts.Models;
 using BilibiliClient.Core.Models.Https.App;
-using BilibiliClient.Core.Utils;
 
 namespace BilibiliClient.Core.Api;
 
-public class AppApi : IAppApi
+public class AppApi : AbsApi, IAppApi
 {
     private readonly IAppHttpClient _appHttpClient;
 
-    public AppApi(IAppHttpClient appHttpClient)
+    public AppApi(IAppHttpClient appHttpClient, IEnumerable<IPlatformConfig> platformConfigs) : base(platformConfigs)
     {
         _appHttpClient = appHttpClient;
     }
@@ -39,9 +40,7 @@ public class AppApi : IAppApi
             new KeyValuePair<string, string>("platform", "ios"),
         };
 
-        var appSigner = new AppSigner(AppSigner.AppSignerKeySec.IOSAppSignerKeySec);
-
-        appSigner.appSign(paramList);
+        await SignParam(paramList, ApiPlatform.Ios);
         var request = await _appHttpClient.BuildRequestMessage(url, HttpMethod.Get, paramList);
 
         return await _appHttpClient.SendAsync<HomeRecommendInfo>(request);

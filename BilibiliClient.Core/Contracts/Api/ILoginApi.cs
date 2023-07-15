@@ -3,7 +3,6 @@
 /// <summary>
 /// 登录用的 API
 /// </summary>
-public interface ILoginApi
+public interface ILoginApi : IApi
 {
-    
 }

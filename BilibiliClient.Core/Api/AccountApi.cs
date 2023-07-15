@@ -1,14 +1,16 @@
 ﻿using BilibiliClient.Core.Contracts.Api;
 using BilibiliClient.Core.Contracts.ApiHttpClient;
+using BilibiliClient.Core.Contracts.Configs;
 using BilibiliClient.Core.Models.Https.Passport;
 
 namespace BilibiliClient.Core.Api;
 
-public class AccountApi : IAccountApi
+public class AccountApi : AbsApi, IAccountApi
 {
     private readonly IPassportHttpClient _passportHttpClient;
 
-    public AccountApi(IPassportHttpClient passportHttpClient)
+    public AccountApi(IPassportHttpClient passportHttpClient, IEnumerable<IPlatformConfig> platformConfigs)
+        : base(platformConfigs)
     {
         _passportHttpClient = passportHttpClient;
     }

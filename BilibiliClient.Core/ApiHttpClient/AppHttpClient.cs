@@ -1,7 +1,6 @@
 ﻿using BilibiliClient.Core.Contracts.ApiHttpClient;
 using BilibiliClient.Core.Contracts.Services;
 using BilibiliClient.Core.Contracts.Utils;
-using BilibiliClient.Core.Models.Https;
 using Microsoft.Extensions.Logging;
 
 namespace BilibiliClient.Core.ApiHttpClient;

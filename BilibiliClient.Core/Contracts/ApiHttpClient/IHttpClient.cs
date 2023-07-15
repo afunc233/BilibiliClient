@@ -4,7 +4,7 @@
 /// http 基准接口
 /// </summary>
 /// <typeparam name="TBaseResponse"></typeparam>
-public interface IHttpClient<TBaseResponse>
+public interface IHttpClient<out TBaseResponse>
 {
     /// <summary>
     /// 构建请求信息
