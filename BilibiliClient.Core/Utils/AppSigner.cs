@@ -24,9 +24,12 @@ public class AppSigner
 
         public static AppSignerKeySec TestAppSignerKeySec =
             new AppSignerKeySec("1d8b6e7d45233436", "560c52ccd288fed045859ed18bffd973");
-        
+
         public static AppSignerKeySec TVAppSignerKeySec =
-            new AppSignerKeySec("1d8b6e7d45233436", "560c52ccd288fed045859ed18bffd973");
+            new AppSignerKeySec("4409e2ce8ffd12b8", "59b43e04ad6965f34319062b478f83dd");
+
+        public static AppSignerKeySec IOSAppSignerKeySec =
+            new AppSignerKeySec("27eb53fc9058f8c3", "c2ed53a74eeefe3cf99fbd01d8c9c375");
     }
     // private const string APP_KEY = "4409e2ce8ffd12b8";
     //
@@ -45,25 +48,27 @@ public class AppSigner
         _appSec = appSignerKeySec.APP_SEC;
     }
 
-    public String appSign(List<(string, string)> paramList)
+    public String appSign(List<KeyValuePair<string, string>> paramList)
     {
         // 为请求参数进行 APP 签名
-        paramList.Add(("appkey", _appKey));
+        paramList.Add(new KeyValuePair<string, string>("appkey", _appKey));
         // 序列化参数
         StringBuilder queryBuilder = new StringBuilder();
-        foreach (var entry in paramList.OrderBy(it => it.Item1))
+        foreach (var entry in paramList.OrderBy(it => it.Key))
         {
             if (queryBuilder.Length > 0)
             {
                 queryBuilder.Append('&');
             }
 
-            queryBuilder.Append(Uri.EscapeDataString(entry.Item1))
+            queryBuilder.Append(Uri.EscapeDataString(entry.Key))
                 .Append('=')
-                .Append(Uri.EscapeDataString(entry.Item2));
+                .Append(Uri.EscapeDataString(entry.Value));
         }
 
-        return generateMD5(queryBuilder.Append(_appSec).ToString());
+        var md5 = generateMD5(queryBuilder.Append(_appSec).ToString());
+        paramList.Add(new KeyValuePair<string, string>("sign", md5));
+        return md5;
     }
 
     private static String generateMD5(String input)

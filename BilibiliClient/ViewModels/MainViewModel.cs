@@ -1,5 +1,6 @@
 ﻿using System.Windows.Input;
 using BilibiliClient.Core.Contracts.Api;
+using BilibiliClient.Core.Models.Https.App;
 using CommunityToolkit.Mvvm.Input;
 
 namespace BilibiliClient.ViewModels;
@@ -14,8 +15,14 @@ public class MainViewModel : ViewModelBase
         if (aa != null)
         {
         }
+
         var bb = await _accountApi.CountryList();
         if (bb != null)
+        {
+        }
+
+        var cc = await _appApi.GetRecommend(new RecommendModel());
+        if (cc != null)
         {
         }
     });
@@ -23,9 +30,11 @@ public class MainViewModel : ViewModelBase
     private ICommand? doSomeThingCmd;
 
     private readonly IAccountApi _accountApi;
+    private readonly IAppApi _appApi;
 
-    public MainViewModel(IAccountApi accountApi)
+    public MainViewModel(IAccountApi accountApi, IAppApi appApi)
     {
         _accountApi = accountApi;
+        _appApi = appApi;
     }
 }

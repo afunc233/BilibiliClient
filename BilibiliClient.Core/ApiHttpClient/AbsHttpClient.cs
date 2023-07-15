@@ -1,27 +1,42 @@
-﻿using BilibiliClient.Core.Contracts.ApiHttpClient;
+﻿using System.Net.Http.Headers;
+using BilibiliClient.Core.Contracts.ApiHttpClient;
 using BilibiliClient.Core.Contracts.Services;
 using BilibiliClient.Core.Contracts.Utils;
 using Microsoft.Extensions.Logging;
 
 namespace BilibiliClient.Core.ApiHttpClient;
 
+/// <summary>
+/// HttpClient 封装，泛型的返回数据的主体
+/// </summary>
+/// <typeparam name="TBaseResponse"></typeparam>
 public abstract class AbsHttpClient<TBaseResponse> : IHttpClient<TBaseResponse>
 {
+    private const string DefaultAcceptString =
+        "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9";
+
     private readonly HttpClient _httpClient;
     protected readonly IJsonUtils _jsonUtils;
 
 
-    protected readonly ILogger<AbsHttpClient<TBaseResponse>> _logger;
+    // ReSharper disable once NotAccessedField.Global
+    // ReSharper disable once InconsistentNaming
+    protected readonly ILogger _logger;
 
+    // ReSharper disable once InconsistentNaming
     protected readonly IApiErrorCodeHandlerService _apiErrorCodeHandlerService;
 
     protected AbsHttpClient(HttpClient httpClient, IJsonUtils jsonUtils,
-        IApiErrorCodeHandlerService apiErrorCodeHandlerService, ILogger<AbsHttpClient<TBaseResponse>> logger)
+        IApiErrorCodeHandlerService apiErrorCodeHandlerService, ILogger logger)
     {
         _httpClient = httpClient;
         _jsonUtils = jsonUtils;
         _apiErrorCodeHandlerService = apiErrorCodeHandlerService;
         _logger = logger;
+
+        _httpClient.DefaultRequestHeaders.CacheControl =
+            new CacheControlHeaderValue { NoCache = false, NoStore = false };
+        _httpClient.DefaultRequestHeaders.Add("accept", DefaultAcceptString);
     }
 
     /// <summary>
@@ -59,7 +74,7 @@ public abstract class AbsHttpClient<TBaseResponse> : IHttpClient<TBaseResponse>
         if (listParas != null && listParas.Any())
         {
             requestUriWithParam =
-                $"{requestUri}?{string.Join("&", listParas.Select(it => $"{it.Key}={it.Value}"))}";
+                $"{requestUri}?{string.Join("&", listParas.Select(it => $"{it.Key}={Uri.EscapeDataString(it.Value)}"))}";
         }
 
         return ValueTask.FromResult(new HttpRequestMessage(httpMethod, requestUriWithParam) { Content = httpContent });

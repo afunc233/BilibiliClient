@@ -6,33 +6,12 @@ using Microsoft.Extensions.Logging;
 
 namespace BilibiliClient.Core.ApiHttpClient;
 
-public class PassportHttpClient : AbsHttpClient<ResponseModel>, IPassportHttpClient
+public class PassportHttpClient : ApiAbsHttpClient, IPassportHttpClient
 {
     public PassportHttpClient(HttpClient httpClient, IJsonUtils jsonUtils,
-        // ReSharper disable once ContextualLoggerProblem
-        IApiErrorCodeHandlerService apiErrorCodeHandlerService, ILogger<AbsHttpClient<ResponseModel>> logger) : base(
+        IApiErrorCodeHandlerService apiErrorCodeHandlerService, ILogger<PassportHttpClient> logger) : base(
         httpClient, jsonUtils, apiErrorCodeHandlerService, logger)
     {
         httpClient.BaseAddress = new Uri(ApiConstants.PassportUrl);
-    }
-
-    protected override long GetErrorCode(ResponseModel apiModel)
-    {
-        return apiModel.Code;
-    }
-
-    protected override bool IsErrorCode(ResponseModel apiModel)
-    {
-        return apiModel.Code != 0;
-    }
-
-    protected override string? GetErrorMessage(ResponseModel apiModel)
-    {
-        return apiModel.Message;
-    }
-
-    protected override object? GetContent(ResponseModel apiModel)
-    {
-        return apiModel.Data;
     }
 }

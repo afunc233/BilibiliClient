@@ -2,7 +2,8 @@
 
 namespace BilibiliClient.Core.Models.Https;
 
-public class ResponseModel
+// ReSharper disable once ClassNeverInstantiated.Global
+public record ApiResponse
 {
     /// <summary>
     /// 

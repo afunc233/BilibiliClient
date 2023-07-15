@@ -2,7 +2,7 @@
 
 namespace BilibiliClient.Core.Contracts.ApiHttpClient;
 
-public interface IPassportHttpClient : IHttpClient<ApiResponse>
+public interface IAppHttpClient : IHttpClient<ApiResponse>
 {
     
 }
