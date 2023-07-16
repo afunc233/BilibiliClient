@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BilibiliClient.Core.Test", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{BE195A11-C6D7-4FF3-8D52-74D493017003}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BilibiliClient..GRPCModels", "BilibiliClient..GRPCModels\BilibiliClient..GRPCModels.csproj", "{917A03C6-0997-4184-88BF-A017D14E4CC2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{4E3CDC91-FFCE-463D-BA01-C6FB14BBDF8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E3CDC91-FFCE-463D-BA01-C6FB14BBDF8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E3CDC91-FFCE-463D-BA01-C6FB14BBDF8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{917A03C6-0997-4184-88BF-A017D14E4CC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{917A03C6-0997-4184-88BF-A017D14E4CC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{917A03C6-0997-4184-88BF-A017D14E4CC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{917A03C6-0997-4184-88BF-A017D14E4CC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,6 +72,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{ED715F0F-7F12-4DE1-853F-49CC4B39B859} = {BE195A11-C6D7-4FF3-8D52-74D493017003}
 		{4E3CDC91-FFCE-463D-BA01-C6FB14BBDF8E} = {BE195A11-C6D7-4FF3-8D52-74D493017003}
+		{917A03C6-0997-4184-88BF-A017D14E4CC2} = {BE195A11-C6D7-4FF3-8D52-74D493017003}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {83CB65B8-011F-4ED7-BCD3-A6CFA935EF7E}

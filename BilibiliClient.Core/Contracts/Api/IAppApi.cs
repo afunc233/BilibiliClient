@@ -9,4 +9,7 @@ public interface IAppApi
 
     // x/v2/feed/index
     ValueTask<HomeRecommendInfo?> GetRecommend(RecommendModel recommendModel);
+
+
+    ValueTask<object?> RegionIndex();
 }

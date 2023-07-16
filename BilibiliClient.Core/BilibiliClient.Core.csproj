@@ -10,12 +10,16 @@
     <ItemGroup>
         <PackageReference Include="CommunityToolkit.HighPerformance" Version="8.2.1" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+        <PackageReference Include="Google.Protobuf" Version="4.0.0-rc2" />
         <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0-preview.6.23329.7" />
         <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="8.0.0-preview.6.23329.11" />
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0-preview.6.23329.7" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Configs\" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\BilibiliClient..GRPCModels\BilibiliClient..GRPCModels.csproj" />
     </ItemGroup>
 
 

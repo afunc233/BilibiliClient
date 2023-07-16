@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace BilibiliClient.Core.ApiHttpClient;
 
-public class PassportHttpClient : ApiAbsHttpClient, IPassportHttpClient
+public class PassportHttpClient : AbsHttpClient, IPassportHttpClient
 {
     public PassportHttpClient(HttpClient httpClient, IJsonUtils jsonUtils,
         IApiErrorCodeHandlerService apiErrorCodeHandlerService, ILogger<PassportHttpClient> logger) : base(

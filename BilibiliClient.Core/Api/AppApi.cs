@@ -17,7 +17,7 @@ public class AppApi : AbsApi, IAppApi
 
     public async ValueTask<object?> SearchSquare()
     {
-        var url = "x/v2/search/square";
+        var url = "/x/v2/search/square";
 
         var request = await _appHttpClient.BuildRequestMessage(url, HttpMethod.Get);
 
@@ -26,7 +26,7 @@ public class AppApi : AbsApi, IAppApi
 
     public async ValueTask<HomeRecommendInfo?> GetRecommend(RecommendModel recommendModel)
     {
-        const string url = "x/v2/feed/index";
+        const string url = "/x/v2/feed/index";
 
         var paramList = new List<KeyValuePair<string, string>>()
         {
@@ -44,5 +44,15 @@ public class AppApi : AbsApi, IAppApi
         var request = await _appHttpClient.BuildRequestMessage(url, HttpMethod.Get, paramList);
 
         return await _appHttpClient.SendAsync<HomeRecommendInfo>(request);
+    }
+
+    public async ValueTask<object?> RegionIndex()
+    {
+        const string url = "/x/v2/region/index";
+
+        var query = await SignParamQueryString();
+
+        var request = await _appHttpClient.BuildRequestMessage(url + $"?{query}", HttpMethod.Get);
+        return await _appHttpClient.SendAsync<object>(request);
     }
 }

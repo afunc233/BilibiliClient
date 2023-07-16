@@ -5,11 +5,11 @@ using BilibiliClient.Core.Models.Https.Passport;
 
 namespace BilibiliClient.Core.Api;
 
-public class AccountApi : AbsApi, IAccountApi
+public class PassportApi : AbsApi, IPassportApi
 {
     private readonly IPassportHttpClient _passportHttpClient;
 
-    public AccountApi(IPassportHttpClient passportHttpClient, IEnumerable<IPlatformConfig> platformConfigs)
+    public PassportApi(IPassportHttpClient passportHttpClient, IEnumerable<IPlatformConfig> platformConfigs)
         : base(platformConfigs)
     {
         _passportHttpClient = passportHttpClient;
@@ -22,7 +22,7 @@ public class AccountApi : AbsApi, IAccountApi
     /// <returns></returns>
     public async ValueTask<LoginCaptcha?> LoginCaptcha(string source = "main_web")
     {
-        const string url = "x/passport-login/captcha";
+        const string url = "/x/passport-login/captcha";
 
         var paramsList = new List<KeyValuePair<string, string>>()
         {
@@ -34,7 +34,7 @@ public class AccountApi : AbsApi, IAccountApi
 
     public async ValueTask<CountryList?> CountryList()
     {
-        const string url = "web/generic/country/list";
+        const string url = "/web/generic/country/list";
         var request = await _passportHttpClient.BuildRequestMessage(url, HttpMethod.Get);
 
         return await _passportHttpClient.SendAsync<CountryList>(request);
@@ -42,7 +42,7 @@ public class AccountApi : AbsApi, IAccountApi
 
     public async ValueTask<object?> SendSms(SendSmsModel sendSmsModel)
     {
-        const string url = "x/passport-login/sms/send";
+        const string url = "/x/passport-login/sms/send";
 
         var paramsList = new List<KeyValuePair<string, string?>>()
         {
@@ -66,7 +66,7 @@ public class AccountApi : AbsApi, IAccountApi
 
     public async ValueTask<object?> LoginSms()
     {
-        const string url = "x/passport-login/login/sms";
+        const string url = "/x/passport-login/login/sms";
 
         var paramsList = new List<KeyValuePair<string, string>>()
         {
@@ -76,5 +76,35 @@ public class AccountApi : AbsApi, IAccountApi
 
         var request = await _passportHttpClient.BuildRequestMessage(url, HttpMethod.Post, null, httpContent);
         return await _passportHttpClient.SendAsync<object>(request);
+    }
+
+
+    public async ValueTask<bool> CheckToken(string accessToken)
+    {
+        if (string.IsNullOrWhiteSpace(accessToken))
+        {
+            return false;
+        }
+
+        await Task.CompletedTask;
+
+        const string url = "/api/oauth2/info";
+        var queryParameters = new List<KeyValuePair<string, string>>()
+        {
+            new KeyValuePair<string, string>("access_token", accessToken)
+        };
+
+        var request = await _passportHttpClient.BuildRequestMessage(url, HttpMethod.Get, queryParameters);
+        var aa = await _passportHttpClient.SendAsync<object>(request);
+
+        return false;
+    }
+
+    public async ValueTask<object?> RefreshToken()
+    {
+        await Task.CompletedTask;
+        const string url = "/api/oauth2/refreshToken";
+
+        return null;
     }
 }

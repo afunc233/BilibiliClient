@@ -14,7 +14,7 @@ public abstract class AbsHttpClient<TBaseResponse> : IHttpClient<TBaseResponse>
     private const string DefaultAcceptString =
         "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9";
 
-    private readonly HttpClient _httpClient;
+    protected readonly HttpClient _httpClient;
     protected readonly IJsonUtils _jsonUtils;
 
 

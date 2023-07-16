@@ -1,0 +1,27 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:grpcModels="using:Bilibili.App.Card.V1"
+             xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
+             xmlns:vm="using:BilibiliClient.ViewModels"
+             x:DataType="vm:PopularPageViewModel"
+             x:Class="BilibiliClient.Views.PopularPageView">
+    <UserControl.DataTemplates>
+        <DataTemplate DataType="{x:Type grpcModels:Card}">
+            <Grid Margin="3,3 " Width="250" Height="150">
+                <Image asyncImageLoader:ImageLoader.Source="{Binding  SmallCoverV5.Base.Cover}"
+                       RenderOptions.BitmapInterpolationMode="HighQuality" HorizontalAlignment="Stretch"
+                       VerticalAlignment="Stretch" />
+            </Grid>
+        </DataTemplate>
+    </UserControl.DataTemplates>
+    <ItemsControl ItemsSource="{Binding PopularCardList}">
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <WrapPanel />
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+    </ItemsControl>
+</UserControl>

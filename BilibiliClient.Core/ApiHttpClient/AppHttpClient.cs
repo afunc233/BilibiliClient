@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace BilibiliClient.Core.ApiHttpClient;
 
-public class AppHttpClient : ApiAbsHttpClient, IAppHttpClient
+public class AppHttpClient : AbsHttpClient, IAppHttpClient
 {
     public AppHttpClient(HttpClient httpClient, IJsonUtils jsonUtils,
         IApiErrorCodeHandlerService apiErrorCodeHandlerService, ILogger<AppHttpClient> logger) : base(httpClient, jsonUtils,

@@ -46,8 +46,13 @@ public static class BilibiliClientCoreExtensions
         serviceCollection.Replace(ServiceDescriptor
             .Singleton<IHttpMessageHandlerBuilderFilter, TraceIdLoggingMessageHandlerFilter>());
 
+        // TODO IAuthenticationProvider
+        serviceCollection.AddSingleton<IAuthenticationProvider, AuthenticationProvider>();
+
         serviceCollection.AddHttpClient<IPassportHttpClient, PassportHttpClient>();
-        serviceCollection.AddTransient<IAppHttpClient, AppHttpClient>();
+        serviceCollection.AddHttpClient<IAppHttpClient, AppHttpClient>();
+
+        serviceCollection.AddSingleton<IGrpcHttpClient, GrpcHttpClient>();
 
         serviceCollection.ConfigureAll<HttpClientFactoryOptions>(options =>
         {
@@ -67,8 +72,9 @@ public static class BilibiliClientCoreExtensions
 
     private static IServiceCollection UseApi(this IServiceCollection serviceCollection)
     {
-        serviceCollection.AddTransient<IAccountApi, AccountApi>();
+        serviceCollection.AddTransient<IPassportApi, PassportApi>();
         serviceCollection.AddTransient<IAppApi, AppApi>();
+        serviceCollection.AddTransient<IGrpcApi, GrpcApi>();
         return serviceCollection;
     }
 

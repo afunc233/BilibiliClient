@@ -18,14 +18,31 @@ public abstract class AbsApi : IApi
         _platformConfigs = platformConfigs;
     }
 
-    public virtual async ValueTask SignParam(List<KeyValuePair<string, string>> paramPairs,
+    protected virtual async ValueTask<string> SignParamQueryString(
+        List<KeyValuePair<string, string>>? paramPairs = null,
+        ApiPlatform apiPlatform = ApiPlatform.Ios)
+    {
+        paramPairs ??= new List<KeyValuePair<string, string>>();
+
+        paramPairs.Add(new KeyValuePair<string, string>("build", "5520400"));
+
+        var platformConfig = await AddParams(paramPairs, apiPlatform);
+        var sign = await Sign(paramPairs, platformConfig);
+        paramPairs.Add(new KeyValuePair<string, string>("sign", sign));
+        var queryList = paramPairs.Select(p => $"{p.Key}={p.Value}").ToList();
+        queryList.Sort();
+        var query = string.Join('&', queryList);
+        return query;
+    }
+
+    protected virtual async ValueTask<IPlatformConfig> AddParams(List<KeyValuePair<string, string>> paramPairs,
         ApiPlatform apiPlatform)
     {
         await Task.CompletedTask;
         var platformConfig = _platformConfigs.FirstOrDefault(it => it.ApiPlatform == apiPlatform);
         if (platformConfig == null)
         {
-            return;
+            return _platformConfigs.First();
         }
 
         paramPairs.Add(new KeyValuePair<string, string>("ts", platformConfig.GetNowMilliSeconds().ToString()));
@@ -34,7 +51,13 @@ public abstract class AbsApi : IApi
             paramPairs.Add(new KeyValuePair<string, string>("platform", platformConfig.Platform));
         if (string.IsNullOrWhiteSpace(platformConfig.MobileApp))
             paramPairs.Add(new KeyValuePair<string, string>("mobi_app", platformConfig.MobileApp));
+        return platformConfig;
+    }
 
+    protected virtual async ValueTask<string> Sign(List<KeyValuePair<string, string>> paramPairs,
+        IPlatformConfig platformConfig)
+    {
+        await Task.CompletedTask;
         // 序列化参数
         StringBuilder queryBuilder = new StringBuilder();
         foreach (var entry in paramPairs.OrderBy(it => it.Key))
@@ -49,8 +72,17 @@ public abstract class AbsApi : IApi
                 .Append(Uri.EscapeDataString(entry.Value));
         }
 
-        var md5 = GenerateMd5(queryBuilder.Append(platformConfig.AppSecret).ToString());
-        paramPairs.Add(new KeyValuePair<string, string>("sign", md5));
+        return GenerateMd5(queryBuilder.Append(platformConfig.AppSecret).ToString());
+    }
+
+    public virtual async ValueTask SignParam(List<KeyValuePair<string, string>> paramPairs,
+        ApiPlatform apiPlatform)
+    {
+        await Task.CompletedTask;
+        var platformConfig = await AddParams(paramPairs, apiPlatform);
+
+        var sign = await Sign(paramPairs, platformConfig);
+        paramPairs.Add(new KeyValuePair<string, string>("sign", sign));
     }
 
     private static String GenerateMd5(String input)

@@ -1,0 +1,89 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Bili.Models.gRPC</RootNamespace>
+    <AssemblyName>Bili.Models.gRPC</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="bilibili\app\interfaces\v1\space.proto" />
+    <None Remove="bilibili\app\playeronline\v1\playeronline.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.21.12" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.51.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.51.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="bilibili\account\fission\v1\fission.proto" />
+    <Protobuf Include="bilibili\ad\v1\ad.proto" />
+    <Protobuf Include="bilibili\api\probe\v1\probe.proto" />
+    <Protobuf Include="bilibili\app\archive\middleware\v1\preload.proto" />
+    <Protobuf Include="bilibili\app\archive\v1\archive.proto" />
+    <Protobuf Include="bilibili\app\card\v1\ad.proto" />
+    <Protobuf Include="bilibili\app\card\v1\card.proto" />
+    <Protobuf Include="bilibili\app\card\v1\common.proto" />
+    <Protobuf Include="bilibili\app\card\v1\double.proto" />
+    <Protobuf Include="bilibili\app\card\v1\single.proto" />
+    <Protobuf Include="bilibili\app\dynamic\v1\dynamic.proto" />
+    <Protobuf Include="bilibili\app\dynamic\v2\dynamic.proto" />
+    <Protobuf Include="bilibili\app\interfaces\v1\history.proto" />
+    <Protobuf Include="bilibili\app\interfaces\v1\search.proto" />
+    <Protobuf Include="bilibili\app\interfaces\v1\space.proto" GrpcServices="Both" />
+    <Protobuf Include="bilibili\app\playeronline\v1\playeronline.proto" />
+    <Protobuf Include="bilibili\app\playurl\v1\playurl.proto" />
+    <Protobuf Include="bilibili\app\resource\privacy\v1\api.proto" />
+    <Protobuf Include="bilibili\app\resource\v1\module.proto" />
+    <Protobuf Include="bilibili\app\show\gateway\v1\service.proto" />
+    <Protobuf Include="bilibili\app\show\popular\v1\popular.proto" />
+    <Protobuf Include="bilibili\app\show\rank\v1\rank.proto" />
+    <Protobuf Include="bilibili\app\show\region\v1\region.proto" />
+    <Protobuf Include="bilibili\app\space\v1\space.proto" />
+    <Protobuf Include="bilibili\app\splash\v1\splash.proto" />
+    <Protobuf Include="bilibili\app\view\v1\view.proto" />
+    <Protobuf Include="bilibili\app\wall\v1\wall.proto" />
+    <Protobuf Include="bilibili\broadcast\message\editor\notify.proto" />
+    <Protobuf Include="bilibili\broadcast\message\esports\notify.proto" />
+    <Protobuf Include="bilibili\broadcast\message\fission\notify.proto" />
+    <Protobuf Include="bilibili\broadcast\message\im\notify.proto" />
+    <Protobuf Include="bilibili\broadcast\message\main\dm.proto" />
+    <Protobuf Include="bilibili\broadcast\message\main\native.proto" />
+    <Protobuf Include="bilibili\broadcast\message\main\resource.proto" />
+    <Protobuf Include="bilibili\broadcast\message\note\sync.proto" />
+    <Protobuf Include="bilibili\broadcast\message\ogv\freya.proto" />
+    <Protobuf Include="bilibili\broadcast\message\ogv\live.proto" />
+    <Protobuf Include="bilibili\broadcast\message\ticket\activitygame.proto" />
+    <Protobuf Include="bilibili\broadcast\message\tv\proj.proto" />
+    <Protobuf Include="bilibili\broadcast\v1\broadcast.proto" />
+    <Protobuf Include="bilibili\broadcast\v1\laser.proto" />
+    <Protobuf Include="bilibili\broadcast\v1\mod.proto" />
+    <Protobuf Include="bilibili\broadcast\v1\push.proto" />
+    <Protobuf Include="bilibili\broadcast\v1\room.proto" />
+    <Protobuf Include="bilibili\broadcast\v1\test.proto" />
+    <Protobuf Include="bilibili\broadcast\v2\laser.proto" />
+    <Protobuf Include="bilibili\cheese\gateway\player\v1\playurl.proto" />
+    <Protobuf Include="bilibili\community\service\dm\v1\dm.proto" />
+    <Protobuf Include="bilibili\im\interfaces\inner-interface\v1\api.proto" />
+    <Protobuf Include="bilibili\im\interfaces\v1\im.proto" />
+    <Protobuf Include="bilibili\im\type\im.proto" />
+    <Protobuf Include="bilibili\main\common\arch\doll\v1\doll.proto" />
+    <Protobuf Include="bilibili\main\community\reply\v1\reply.proto" />
+    <Protobuf Include="bilibili\metadata\device\device.proto" />
+    <Protobuf Include="bilibili\metadata\fawkes\fawkes.proto" />
+    <Protobuf Include="bilibili\metadata\locale\locale.proto" />
+    <Protobuf Include="bilibili\metadata\metadata.proto" />
+    <Protobuf Include="bilibili\metadata\network\network.proto" />
+    <Protobuf Include="bilibili\metadata\restriction\restriction.proto" />
+    <Protobuf Include="bilibili\pgc\gateway\player\v1\playurl.proto" />
+    <Protobuf Include="bilibili\pgc\gateway\player\v2\playurl.proto" />
+    <Protobuf Include="bilibili\pgc\service\premiere\v1\premiere.proto" />
+    <Protobuf Include="bilibili\rpc\status.proto" />
+  </ItemGroup>
+
+</Project>

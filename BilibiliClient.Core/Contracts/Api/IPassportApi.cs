@@ -2,7 +2,7 @@
 
 namespace BilibiliClient.Core.Contracts.Api;
 
-public interface IAccountApi
+public interface IPassportApi
 {
     /// <summary>
     /// https://socialsisteryi.github.io/bilibili-API-collect/docs/login/login_action/
@@ -29,4 +29,14 @@ public interface IAccountApi
     /// </summary>
     /// <returns></returns>
     ValueTask<object?> LoginSms();
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="accessToken"></param>
+    /// <returns></returns>
+    ValueTask<bool> CheckToken(string accessToken);
+
+    ValueTask<object?> RefreshToken();
 }

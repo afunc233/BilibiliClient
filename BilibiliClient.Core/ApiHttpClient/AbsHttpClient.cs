@@ -9,9 +9,9 @@ namespace BilibiliClient.Core.ApiHttpClient;
 /// <summary>
 /// HttpClient 封装， 返回数据的主体 为 ApiResponse
 /// </summary>
-public abstract class ApiAbsHttpClient : AbsHttpClient<ApiResponse>
+public abstract class AbsHttpClient : AbsHttpClient<ApiResponse>
 {
-    protected ApiAbsHttpClient(HttpClient httpClient, IJsonUtils jsonUtils,
+    protected AbsHttpClient(HttpClient httpClient, IJsonUtils jsonUtils,
         IApiErrorCodeHandlerService apiErrorCodeHandlerService, ILogger logger) : base(httpClient, jsonUtils,
         apiErrorCodeHandlerService, logger)
     {

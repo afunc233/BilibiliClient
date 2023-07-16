@@ -65,7 +65,7 @@ public class HttpLogHandler : DelegatingHandler
         }
 
         private static readonly List<string> StrMediaTypeList = new()
-            { "application/json", "application/xml", "text/html" };
+            { "application/json", "application/xml", "text/html", "application/grpc" };
 
         public static async Task RequestPipelineEnd(ILogger logger, HttpResponseMessage response)
         {
