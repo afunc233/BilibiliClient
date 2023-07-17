@@ -7,10 +7,13 @@
              xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
              xmlns:vm="using:BilibiliClient.ViewModels"
              x:DataType="vm:PopularPageViewModel"
+             xmlns:controls="clr-namespace:BilibiliClient.Controls"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:iac="using:BilibiliClient.Interactions"
              x:Class="BilibiliClient.Views.PopularPageView">
     <UserControl.DataTemplates>
         <DataTemplate DataType="{x:Type grpcModels:Card}">
-            <Grid Margin="3,3 " Width="250" Height="150">
+            <Grid Cursor="Hand" Margin="3,3 " Width="250" Height="150">
                 <Image asyncImageLoader:ImageLoader.Source="{Binding  SmallCoverV5.Base.Cover}"
                        RenderOptions.BitmapInterpolationMode="HighQuality" HorizontalAlignment="Stretch"
                        VerticalAlignment="Stretch" />
@@ -20,8 +23,12 @@
     <ItemsControl ItemsSource="{Binding PopularCardList}">
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
-                <WrapPanel />
+                <controls:VirtualizingWrapPanel />
             </ItemsPanelTemplate>
         </ItemsControl.ItemsPanel>
+
+        <i:Interaction.Behaviors>
+            <iac:Scroll2EndTriggerBehavior Distance2End="50" LoadMoreDataCmd="{Binding LoadMoreCmd}" />
+        </i:Interaction.Behaviors>
     </ItemsControl>
 </UserControl>

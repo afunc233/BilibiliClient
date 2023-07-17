@@ -9,6 +9,7 @@
              xmlns:iac="using:BilibiliClient.Interactions"
              xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             xmlns:controls="clr-namespace:BilibiliClient.Controls"
              x:Class="BilibiliClient.Views.RecommendPageView" x:DataType="vm:RecommendPageViewModel">
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -17,7 +18,7 @@
     </Design.DataContext>
     <UserControl.DataTemplates>
         <DataTemplate x:DataType="{x:Type httpModel:RecommendCardItem}">
-            <Grid Margin="3,3 " Width="250" Height="150">
+            <Grid Cursor="Hand" Margin="3,3 " Width="250" Height="150">
                 <Image RenderOptions.BitmapInterpolationMode="HighQuality" HorizontalAlignment="Stretch"
                        VerticalAlignment="Stretch"
                        asyncImageLoader:ImageLoader.Source="{Binding Cover}">
@@ -32,10 +33,9 @@
     <ItemsControl ItemsSource="{Binding RecommendDataList}">
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
-                <WrapPanel />
+                <controls:VirtualizingWrapPanel />
             </ItemsPanelTemplate>
         </ItemsControl.ItemsPanel>
-
         <i:Interaction.Behaviors>
             <iac:Scroll2EndTriggerBehavior Distance2End="50" LoadMoreDataCmd="{Binding LoadMoreCmd}" />
         </i:Interaction.Behaviors>

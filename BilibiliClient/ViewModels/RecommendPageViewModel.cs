@@ -33,10 +33,10 @@ public class RecommendPageViewModel : AbsPageViewModel
         await base.OnNavigatedTo(parameter);
 
 
-        if (!RecommendDataList.Any())
-        {
-            await DoLoadMore();
-        }
+        // if (!RecommendDataList.Any())
+        // {
+        //     await DoLoadMore();
+        // }
 
         var aa = await _appApi.RegionIndex();
         if (aa != null)
