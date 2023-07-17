@@ -5,7 +5,7 @@ public class RecommendModel
     /// <summary>
     /// 这个应该是控制数据的 实现类似翻页的操作
     /// </summary>
-    public string? Idx { get; set; } = "0";
+    public long Idx { get; set; } = 0;
 
     /// <summary>
     /// 不知道为啥传 5 

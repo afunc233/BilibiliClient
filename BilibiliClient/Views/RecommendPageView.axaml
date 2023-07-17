@@ -5,7 +5,8 @@
              xmlns:vm="clr-namespace:BilibiliClient.ViewModels"
              xmlns:httpModel="clr-namespace:BilibiliClient.Core.Models.Https.App;assembly=BilibiliClient.Core"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:iac="using:BilibiliClient.Interactions"
              xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
              x:Class="BilibiliClient.Views.RecommendPageView" x:DataType="vm:RecommendPageViewModel">
@@ -34,5 +35,9 @@
                 <WrapPanel />
             </ItemsPanelTemplate>
         </ItemsControl.ItemsPanel>
+
+        <i:Interaction.Behaviors>
+            <iac:Scroll2EndTriggerBehavior Distance2End="50" LoadMoreDataCmd="{Binding LoadMoreCmd}" />
+        </i:Interaction.Behaviors>
     </ItemsControl>
 </UserControl>
