@@ -18,4 +18,9 @@ public class ViewModelBase : ReactiveObject
         this.RaisePropertyChanged(propertyName);
         return true;
     }
+
+    protected void RaisePropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        ((ReactiveObject)this).RaisePropertyChanged(propertyName);
+    }
 }
