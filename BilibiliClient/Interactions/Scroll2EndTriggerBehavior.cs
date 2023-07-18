@@ -41,11 +41,13 @@ public class Scroll2EndTriggerBehavior : Trigger
         set => SetValue(LoadMoreDataCmdProperty, value);
     }
 
+    private bool _attached = false;
 
     protected override void OnAttachedToVisualTree()
     {
         base.OnAttachedToVisualTree();
         if (AssociatedObject is not ItemsControl control) return;
+        _attached = true;
         control.AddHandler(ScrollViewer.ScrollChangedEvent, ScrollViewerOnScrollChanged);
     }
 
@@ -53,6 +55,7 @@ public class Scroll2EndTriggerBehavior : Trigger
     {
         base.OnDetachedFromVisualTree();
         if (AssociatedObject is not ItemsControl control) return;
+        _attached = false;
 
         control.RemoveHandler(ScrollViewer.ScrollChangedEvent, ScrollViewerOnScrollChanged);
     }
@@ -84,6 +87,11 @@ public class Scroll2EndTriggerBehavior : Trigger
     {
         while (true)
         {
+            if (!_attached)
+            {
+                break;
+            }
+
             if (LoadMoreDataCmd is AsyncRelayCommand asyncRelayCommand)
             {
                 if (asyncRelayCommand.CanExecute(e))
