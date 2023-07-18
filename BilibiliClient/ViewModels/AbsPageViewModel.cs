@@ -7,6 +7,8 @@ public abstract class AbsPageViewModel : ViewModelBase, IPageViewModel
 {
     public abstract NavBarType NavBarType { get; }
 
+    public ViewModelBase? Header { get; protected set; }
+
     public bool IsLoading
     {
         get => _isLoading;

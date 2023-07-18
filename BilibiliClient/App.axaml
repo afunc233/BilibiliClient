@@ -21,6 +21,7 @@
         <ImageBrush x:Key="LoadingImage"
                     Source="resm:Avalonia.Skia.Assets.NoiseAsset_256X256_PNG.png?assembly=Avalonia.Skia" />
         <converters:ValueChangedInputConverter x:Key="ValueChangedInputConverter" />
+        <converters:TestConverter x:Key="TestConverter" />
         
         <!-- 给 ItemsControl 加 ScrollViewer -->
         <ControlTheme x:Key="{x:Type ItemsControl}" TargetType="ItemsControl">

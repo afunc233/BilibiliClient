@@ -3,20 +3,33 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BilibiliClient.Core.Contracts.Api;
 using BilibiliClient.Models;
 using CommunityToolkit.Mvvm.Input;
+using FluentAvalonia.UI.Controls;
 
 namespace BilibiliClient.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
-    private IPageViewModel? _currentPage;
-
     public IPageViewModel? CurrentPage
     {
         get => _currentPage;
-        set => SetProperty(ref _currentPage, value);
+        set
+        {
+            SetProperty(ref _currentPage, value);
+            RaisePropertyChanged(nameof(Header));
+        }
     }
+
+    private IPageViewModel? _currentPage;
+
+    public ViewModelBase Header
+    {
+        get => CurrentPage?.Header ?? _header;
+    }
+
+    private readonly ViewModelBase _header;
 
     private readonly ObservableCollection<NavBar> _navBarList = new ObservableCollection<NavBar>()
     {
@@ -84,15 +97,39 @@ public class MainViewModel : ViewModelBase
     });
 
     public ICommand DoSomeThingCmd =>
-        _doSomeThingCmd ??= new AsyncRelayCommand(async () => { await Task.CompletedTask; });
+        _doSomeThingCmd ??= new AsyncRelayCommand(async () =>
+        {
+            var cd = new ContentDialog
+            {
+                PrimaryButtonText = "PrimaryButtonText",
+                SecondaryButtonText = "SecondaryButtonText",
+                CloseButtonText = "CloseButtonText",
+                Title = "Title",
+                Content = "Content",
+                IsPrimaryButtonEnabled = true,
+                IsSecondaryButtonEnabled = true,
+                DefaultButton = ContentDialogButton.Close,
+                FullSizeDesired = true
+            };
+
+            await cd.ShowAsync();
+
+            var appApi = this.GetAppRequiredService<IAppApi>();
+            await appApi.RegionIndex();
+
+            await appApi.SearchSquare();
+
+            await Task.CompletedTask;
+        });
 
     private ICommand? _doSomeThingCmd;
 
     private readonly IEnumerable<IPageViewModel> _pageViewModels;
 
-    public MainViewModel(IEnumerable<IPageViewModel> pageViewModels)
+    public MainViewModel(IEnumerable<IPageViewModel> pageViewModels, HeaderViewModel headerViewModel)
     {
         _pageViewModels = pageViewModels;
+        _header = headerViewModel;
         _currentNavBar = NavBarList.First();
     }
 }

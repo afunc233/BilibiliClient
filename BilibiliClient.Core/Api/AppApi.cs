@@ -15,11 +15,18 @@ public class AppApi : AbsApi, IAppApi
         _appHttpClient = appHttpClient;
     }
 
-    public async ValueTask<object?> SearchSquare()
+    public async ValueTask<object?> SearchSquare(int from, int limit)
     {
         var url = "/x/v2/search/square";
 
-        var request = await _appHttpClient.BuildRequestMessage(url, HttpMethod.Get);
+        var paramList = new List<KeyValuePair<string, string>>()
+        {
+            new KeyValuePair<string, string>("device", "phone"),
+            new KeyValuePair<string, string>("from", "0"),
+            new KeyValuePair<string, string>("limit", "50"),
+        };
+        var query = await SignParamQueryString(paramList);
+        var request = await _appHttpClient.BuildRequestMessage(url + $"?{query}", HttpMethod.Get);
 
         return await _appHttpClient.SendAsync<object>(request);
     }

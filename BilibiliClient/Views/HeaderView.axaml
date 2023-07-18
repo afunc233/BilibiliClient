@@ -1,0 +1,19 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:BilibiliClient.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             Background="Transparent"
+             x:DataType="viewModels:HeaderViewModel"
+             x:Class="BilibiliClient.Views.HeaderView">
+    <DockPanel Background="Transparent"
+               LastChildFill="True" Height="38">
+        <TextBlock Text="bilibili" Margin="20,0,0,0" VerticalAlignment="Center" FontSize="16" TextAlignment="Center"
+                   DockPanel.Dock="Left" />
+        <Button Content="登录" DockPanel.Dock="Right" Margin="0,0,150,0" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <AutoCompleteBox MinWidth="300" HorizontalAlignment="Stretch" />
+        </StackPanel>
+    </DockPanel>
+</UserControl>

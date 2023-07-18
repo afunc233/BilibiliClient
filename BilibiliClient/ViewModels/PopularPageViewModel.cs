@@ -25,9 +25,10 @@ public class PopularPageViewModel : AbsPageViewModel
     private long _idx = 0;
     private readonly IGrpcApi _grpcApi;
 
-    public PopularPageViewModel(IGrpcApi grpcApi)
+    public PopularPageViewModel(IGrpcApi grpcApi,HeaderViewModel headerViewModel)
     {
         _grpcApi = grpcApi;
+        Header = headerViewModel;
     }
 
     public override async Task OnNavigatedTo(object? parameter = null)

@@ -22,6 +22,14 @@ public interface IPlatformConfig
     string AppSecret { get; }
 
     /// <summary>
+    /// 设备
+    /// </summary>
+    string Device
+    {
+        get { return "phone"; }
+    }
+
+    /// <summary>
     /// 移动端的话，具体是什么端,为空的话 不必参与签名
     /// </summary>
     string MobileApp

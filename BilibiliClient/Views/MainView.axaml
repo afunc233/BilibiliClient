@@ -45,57 +45,61 @@
             </DockPanel>
         </DataTemplate>
     </UserControl.Resources>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <ListBox
-            Name="NavBarListBox"
-            Margin="0"
-            Padding="0"
-            ItemsSource="{Binding NavBarList}"
-            SelectedItem="{Binding CurrentNavBar}">
+    <Grid RowDefinitions="Auto,*">
+        <TransitioningContentControl Grid.Row="0"
+                                     Content="{Binding Header}" />
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <ListBox
+                Name="NavBarListBox"
+                Margin="0"
+                Padding="0"
+                ItemsSource="{Binding NavBarList}"
+                SelectedItem="{Binding CurrentNavBar}">
 
-            <i:Interaction.Behaviors>
-                <iac:ValueChangedTriggerBehavior Binding="{Binding #NavBarListBox.SelectedItem}">
-                    <ia:InvokeCommandAction Command="{Binding NavBarChangedCmd}"
-                                            InputConverter="{StaticResource ValueChangedInputConverter}" />
-                </iac:ValueChangedTriggerBehavior>
-            </i:Interaction.Behaviors>
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <DockPanel />
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.Styles>
-                <!--  Give the ListBoxItems a fixed with of 100 and right-align them  -->
-                <Style Selector="ListBoxItem">
-                    <Setter Property="Width" Value="100" />
-                    <Setter Property="Height" Value="40" />
-                    <Setter Property="HorizontalAlignment" Value="Right" />
-                    <Setter Property="VerticalContentAlignment" Value="Center" />
-                    <Setter Property="VerticalAlignment" Value="Center" />
-                    <Setter Property="DockPanel.Dock" Value="Top" />
-                    <Setter Property="ContentTemplate" Value="{StaticResource DefaultNavBarDataTemplate}" />
-                </Style>
-                <Style Selector="ListBoxItem:nth-last-child()">
-                    <Setter Property="VerticalAlignment" Value="Bottom" />
-                </Style>
-                <Style Selector="ListBoxItem:selected">
-                    <Setter Property="ContentTemplate" Value="{StaticResource SelectedNavBarDataTemplate}" />
-                </Style>
-            </ListBox.Styles>
-        </ListBox>
-        <TransitioningContentControl Grid.Column="1"
-                                     Background="Transparent"
-                                     Content="{Binding CurrentPage}" />
-        <ProgressBar Grid.Column="1" VerticalAlignment="Bottom" Orientation="Horizontal"
-                     IsVisible="{Binding CurrentPage.IsLoading,FallbackValue=False}"
-                     IsIndeterminate="{Binding CurrentPage.IsLoading,FallbackValue=False}">
-        </ProgressBar>
-        <StackPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-            <Button Command="{Binding DoSomeThingCmd}" Content="Do Some Thing" />
-        </StackPanel>
+                <i:Interaction.Behaviors>
+                    <iac:ValueChangedTriggerBehavior Binding="{Binding #NavBarListBox.SelectedItem}">
+                        <ia:InvokeCommandAction Command="{Binding NavBarChangedCmd}"
+                                                InputConverter="{StaticResource ValueChangedInputConverter}" />
+                    </iac:ValueChangedTriggerBehavior>
+                </i:Interaction.Behaviors>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <DockPanel />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.Styles>
+                    <!--  Give the ListBoxItems a fixed with of 100 and right-align them  -->
+                    <Style Selector="ListBoxItem">
+                        <Setter Property="Width" Value="100" />
+                        <Setter Property="Height" Value="40" />
+                        <Setter Property="HorizontalAlignment" Value="Right" />
+                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="DockPanel.Dock" Value="Top" />
+                        <Setter Property="ContentTemplate" Value="{StaticResource DefaultNavBarDataTemplate}" />
+                    </Style>
+                    <Style Selector="ListBoxItem:nth-last-child()">
+                        <Setter Property="VerticalAlignment" Value="Bottom" />
+                    </Style>
+                    <Style Selector="ListBoxItem:selected">
+                        <Setter Property="ContentTemplate" Value="{StaticResource SelectedNavBarDataTemplate}" />
+                    </Style>
+                </ListBox.Styles>
+            </ListBox>
+            <TransitioningContentControl Grid.Column="1"
+                                         Background="Transparent"
+                                         Content="{Binding CurrentPage}" />
+            <ProgressBar Grid.Column="1" VerticalAlignment="Bottom" Orientation="Horizontal"
+                         IsVisible="{Binding CurrentPage.IsLoading,FallbackValue=False}"
+                         IsIndeterminate="{Binding CurrentPage.IsLoading,FallbackValue=False}">
+            </ProgressBar>
+            <StackPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                <Button Command="{Binding DoSomeThingCmd}" Content="Do Some Thing" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

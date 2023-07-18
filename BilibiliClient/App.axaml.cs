@@ -84,10 +84,13 @@ public partial class App : Application
 
         services.AddSingleton<IPageViewModel, SettingPageViewModel>();
 
+        services.AddSingleton<HeaderViewModel>();
+
 
         services.AddTransient<RecommendPageView>();
         services.AddTransient<PopularPageView>();
         services.AddTransient<SettingPageView>();
+        services.AddTransient<HeaderView>();
     }
 
     public override async void OnFrameworkInitializationCompleted()
@@ -157,9 +160,9 @@ public partial class App : Application
 
 public static class AppEx
 {
-    public static T? GetAppRequiredService<T>(this object _) where T : class
+    public static T GetAppRequiredService<T>(this object _) where T : class
     {
-        return (Application.Current as App)?.GetAppRequiredServiceInner<T>();
+        return (Application.Current as App)?.GetAppRequiredServiceInner<T>()!;
     }
 
     public static T? GetAppRequiredService<T>(this object _, Type type) where T : class
