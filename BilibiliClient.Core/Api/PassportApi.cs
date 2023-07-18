@@ -103,7 +103,7 @@ public class PassportApi : AbsApi, IPassportApi
     public async ValueTask<object?> RefreshToken()
     {
         await Task.CompletedTask;
-        const string url = "/api/oauth2/refreshToken";
+        // const string url = "/api/oauth2/refreshToken";
 
         return null;
     }

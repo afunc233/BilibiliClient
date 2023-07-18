@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Specialized;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using Avalonia.Interactivity;
 using Avalonia.Xaml.Interactivity;
 using CommunityToolkit.Mvvm.Input;
 

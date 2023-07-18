@@ -298,7 +298,7 @@ public class VirtualizingWrapPanel : VirtualizingPanel
         return ScrollIntoView(toIndex);
     }
 
-    protected override IEnumerable<Control>? GetRealizedContainers()
+    protected override IEnumerable<Control> GetRealizedContainers()
     {
         return _realizedElements?.Elements.Where(x => x is not null)!;
     }
@@ -327,7 +327,7 @@ public class VirtualizingWrapPanel : VirtualizingPanel
         if (_isInLayout || index < 0 || index >= items.Count || _realizedElements is null)
             return null;
 
-        if (GetRealizedElement(index) is Control element)
+        if (GetRealizedElement(index) is { } element)
         {
             element.BringIntoView();
             return element;
@@ -523,7 +523,7 @@ public class VirtualizingWrapPanel : VirtualizingPanel
         while (c is not null)
         {
             if ((c.Bounds.Width != 0 || c.Bounds.Height != 0) &&
-                c.TransformToVisual(this) is Matrix transform)
+                c.TransformToVisual(this) is { } transform)
             {
                 viewport = new Rect(0, 0, c.Bounds.Width, c.Bounds.Height)
                     .TransformToAABB(transform);

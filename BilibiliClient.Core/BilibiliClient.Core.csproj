@@ -19,7 +19,7 @@
       <Folder Include="Configs\" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\BilibiliClient..GRPCModels\BilibiliClient..GRPCModels.csproj" />
+      <ProjectReference Include="..\BilibiliClient.Models.gRPC\BilibiliClient.Models.gRPC.csproj" />
     </ItemGroup>
 
 

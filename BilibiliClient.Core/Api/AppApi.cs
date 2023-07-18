@@ -30,7 +30,7 @@ public class AppApi : AbsApi, IAppApi
 
         var paramList = new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>("idx", (recommendModel.Idx.ToString() ?? "0")),
+            new KeyValuePair<string, string>("idx", (recommendModel.Idx.ToString())),
             new KeyValuePair<string, string>("flush", (recommendModel.Flush ?? "0")),
             new KeyValuePair<string, string>("device", (recommendModel.Device ?? "0")),
             new KeyValuePair<string, string>("device_name", (recommendModel.DeviceName ?? "0")),

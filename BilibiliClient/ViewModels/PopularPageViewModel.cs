@@ -5,6 +5,7 @@ using System.Windows.Input;
 using Bilibili.App.Card.V1;
 using Bilibili.App.Show.V1;
 using BilibiliClient.Core.Api;
+using BilibiliClient.Core.Contracts.Api;
 using BilibiliClient.Models;
 using CommunityToolkit.Mvvm.Input;
 
@@ -16,10 +17,10 @@ public class PopularPageViewModel : AbsPageViewModel
 
     public ObservableCollection<Card> PopularCardList { get; } = new ObservableCollection<Card>();
 
-    public ICommand LoadMoreCmd => _loadMoreCmd ??= new AsyncRelayCommand(DoLoadMore);
+    public ICommand LoadMoreCmd => _loadMoreCmd ??= new AsyncRelayCommand(DoLoadMore, () => CanLoadMore);
+    private ICommand? _loadMoreCmd;
 
-
-    public ICommand? _loadMoreCmd;
+    private bool CanLoadMore = true;
 
     private long _idx = 0;
     private readonly IGrpcApi _grpcApi;
@@ -60,7 +61,7 @@ public class PopularPageViewModel : AbsPageViewModel
 
         var popularReply = await _grpcApi.Popular(popularReq);
 
-        if (popularReply is { Items: not null })
+        if (popularReply is { Items: not null } && popularReply.Items.Any())
         {
             foreach (var popularReplyItem in popularReply.Items)
             {
@@ -68,6 +69,10 @@ public class PopularPageViewModel : AbsPageViewModel
             }
 
             _idx = popularReply.Items.Last().SmallCoverV5.Base.Idx;
+        }
+        else
+        {
+            CanLoadMore = false;
         }
 
         IsLoading = false;

@@ -417,6 +417,7 @@ internal class RealizedWrappedElements
     /// </summary>
     /// <param name="index">The index in the source collection of new first element.</param>
     /// <param name="recycleElement">A method used to recycle elements.</param>
+    /// <param name="orientation"></param>
     public void RecycleElementsBefore(int index, Action<Control, int> recycleElement, Orientation orientation)
     {
         if (index <= FirstIndex || _elements is null || _elements.Count == 0)
@@ -432,7 +433,7 @@ internal class RealizedWrappedElements
 
             for (var i = 0; i < endIndex; ++i)
             {
-                if (_elements[i] is Control e)
+                if (_elements[i] is { } e)
                 {
                     _elements[i] = null;
                     recycleElement(e, i + FirstIndex);
@@ -467,7 +468,7 @@ internal class RealizedWrappedElements
 
             for (var i = startIndex; i < count; ++i)
             {
-                if (_elements[i] is Control e)
+                if (_elements[i] is { } e)
                 {
                     _elements[i] = null;
                     recycleElement(e, i + FirstIndex);
@@ -491,7 +492,7 @@ internal class RealizedWrappedElements
 
         for (var i = 0; i < _elements.Count; i++)
         {
-            if (_elements[i] is Control e)
+            if (_elements[i] is { } e)
             {
                 _elements[i] = null;
                 recycleElement(e, i + FirstIndex);

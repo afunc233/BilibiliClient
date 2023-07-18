@@ -15,7 +15,7 @@ namespace BilibiliClient.Extensions;
 
 public static class NLogExtensions
 {
-    private static readonly Dictionary<LogEventLevel, NLog.LogLevel> LogLevelDic = new()
+    private static readonly Dictionary<LogEventLevel, LogLevel> LogLevelDic = new()
     {
         { LogEventLevel.Debug, LogLevel.Debug },
         { LogEventLevel.Error, LogLevel.Error },

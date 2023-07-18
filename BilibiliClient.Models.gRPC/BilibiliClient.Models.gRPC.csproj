@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>Bili.Models.gRPC</RootNamespace>
-    <AssemblyName>Bili.Models.gRPC</AssemblyName>
+    <RootNamespace>BilibiliClient.Models.gRPC</RootNamespace>
+    <AssemblyName>BilibiliClient.Models.gRPC</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

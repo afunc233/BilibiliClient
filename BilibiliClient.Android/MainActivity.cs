@@ -12,12 +12,6 @@ public class MainActivity : AvaloniaMainActivity<App>
 {
     protected override AppBuilder CustomizeAppBuilder(AppBuilder builder)
     {
-        var i = builder.Instance;
         return base.CustomizeAppBuilder(builder);
-    }
-
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
     }
 }

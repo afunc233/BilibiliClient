@@ -1,6 +1,6 @@
 ﻿using Bilibili.App.Show.V1;
 
-namespace BilibiliClient.Core.Api;
+namespace BilibiliClient.Core.Contracts.Api;
 
 public interface IGrpcApi
 {

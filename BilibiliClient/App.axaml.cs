@@ -51,7 +51,7 @@ public partial class App : Application
         _host = Host.CreateDefaultBuilder()
             .ConfigureHostConfiguration(configHost =>
             {
-                configHost.SetBasePath(appLocation!);
+                configHost.SetBasePath(appLocation);
                 configHost.AddJsonFile("hostsettings.json", optional: true);
                 configHost.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true); // 日志配置 热更新
             })
@@ -157,12 +157,12 @@ public partial class App : Application
 
 public static class AppEx
 {
-    public static T? GetAppRequiredService<T>(this object obj) where T : class
+    public static T? GetAppRequiredService<T>(this object _) where T : class
     {
         return (Application.Current as App)?.GetAppRequiredServiceInner<T>();
     }
 
-    public static T? GetAppRequiredService<T>(this object obj, Type type) where T : class
+    public static T? GetAppRequiredService<T>(this object _, Type type) where T : class
     {
         return (Application.Current as App)?.GetAppServiceInner<T>(type);
     }

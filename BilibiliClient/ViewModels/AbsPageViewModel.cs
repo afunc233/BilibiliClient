@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using BilibiliClient.Core.Contracts;
 using BilibiliClient.Models;
 
 namespace BilibiliClient.ViewModels;

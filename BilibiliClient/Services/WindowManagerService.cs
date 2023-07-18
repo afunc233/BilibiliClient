@@ -96,7 +96,7 @@ internal class WindowManagerService : IWindowManagerService
         }
 
         if (window is not { DataContext: INavigationAware navigationAware }) return;
-        window.Closed += (s, e) => { navigationAware.OnNavigatedFrom(); };
+        window.Closed += (_, _) => { navigationAware.OnNavigatedFrom(); };
         navigationAware.OnNavigatedTo(parameter);
     }
 

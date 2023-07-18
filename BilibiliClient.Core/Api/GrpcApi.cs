@@ -1,6 +1,6 @@
 ﻿using Bilibili.App.Show.V1;
+using BilibiliClient.Core.Contracts.Api;
 using BilibiliClient.Core.Contracts.ApiHttpClient;
-using Google.Protobuf;
 
 namespace BilibiliClient.Core.Api;
 
