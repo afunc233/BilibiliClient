@@ -85,12 +85,14 @@ public partial class App : Application
         services.AddSingleton<IPageViewModel, SettingPageViewModel>();
 
         services.AddSingleton<HeaderViewModel>();
+        services.AddSingleton<LoginViewModel>();
 
 
         services.AddTransient<RecommendPageView>();
         services.AddTransient<PopularPageView>();
         services.AddTransient<SettingPageView>();
         services.AddTransient<HeaderView>();
+        services.AddTransient<LoginView>();
     }
 
     public override async void OnFrameworkInitializationCompleted()

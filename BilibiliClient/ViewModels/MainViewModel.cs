@@ -99,21 +99,6 @@ public class MainViewModel : ViewModelBase
     public ICommand DoSomeThingCmd =>
         _doSomeThingCmd ??= new AsyncRelayCommand(async () =>
         {
-            var cd = new ContentDialog
-            {
-                PrimaryButtonText = "PrimaryButtonText",
-                SecondaryButtonText = "SecondaryButtonText",
-                CloseButtonText = "CloseButtonText",
-                Title = "Title",
-                Content = "Content",
-                IsPrimaryButtonEnabled = true,
-                IsSecondaryButtonEnabled = true,
-                DefaultButton = ContentDialogButton.Close,
-                FullSizeDesired = true
-            };
-
-            await cd.ShowAsync();
-
             var appApi = this.GetAppRequiredService<IAppApi>();
             await appApi.RegionIndex();
 
