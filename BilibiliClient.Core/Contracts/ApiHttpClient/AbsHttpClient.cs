@@ -79,6 +79,18 @@ public abstract class AbsHttpClient<TBaseResponse> : IHttpClient<TBaseResponse>
         return ValueTask.FromResult(new HttpRequestMessage(httpMethod, requestUriWithParam) { Content = httpContent });
     }
 
+    public async ValueTask AddCookie(HttpRequestMessage httpRequestMessage, string? cookie)
+    {
+        await Task.CompletedTask;
+        var cookieString = cookie;
+        if (string.IsNullOrWhiteSpace(cookie))
+        {
+            
+        }
+
+        httpRequestMessage.Headers.Add("Cookie", cookieString);
+    }
+
     public virtual async ValueTask<T?> SendAsync<T>(HttpRequestMessage requestMessage,
         Func<TBaseResponse, T?>? customTransform = null) where T : notnull
     {

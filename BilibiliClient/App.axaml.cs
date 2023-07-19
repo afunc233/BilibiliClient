@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using BilibiliClient.Core.Configs;
 using BilibiliClient.Core.Extensions;
 using BilibiliClient.Extensions;
 using BilibiliClient.ViewModels;
@@ -54,6 +55,8 @@ public partial class App : Application
                 configHost.SetBasePath(appLocation);
                 configHost.AddJsonFile("hostsettings.json", optional: true);
                 configHost.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true); // 日志配置 热更新
+                configHost.AddJsonFile($"{nameof(UserSecretConfig)}.json", optional: true,
+                    reloadOnChange: true); // 日志配置 热更新
             })
             .ConfigureServices(ConfigureServices)
             .ConfigureServices(BilibiliClientCoreExtensions.ConfigureServices)
@@ -73,6 +76,10 @@ public partial class App : Application
         services.UseHost();
 
         services.UseServices();
+        
+        
+        
+        
 
         services.AddSingleton<MainViewModel>();
 

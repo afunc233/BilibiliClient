@@ -1,5 +1,5 @@
 ﻿using System.Windows.Input;
-using BilibiliClient.Models.Messaging;
+using BilibiliClient.Core.Messages;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 
@@ -12,7 +12,6 @@ public class HeaderViewModel : ViewModelBase
         var isSuccess = await _messenger.Send<StartLoginMessage>();
         if (isSuccess)
         {
-            
         }
     });
 

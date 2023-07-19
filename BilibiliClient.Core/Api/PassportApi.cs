@@ -1,6 +1,8 @@
-﻿using BilibiliClient.Core.Contracts.Api;
+﻿using System.Web;
+using BilibiliClient.Core.Contracts.Api;
 using BilibiliClient.Core.Contracts.ApiHttpClient;
 using BilibiliClient.Core.Contracts.Configs;
+using BilibiliClient.Core.Contracts.Models;
 using BilibiliClient.Core.Models.Https.Passport;
 
 namespace BilibiliClient.Core.Api;
@@ -106,5 +108,83 @@ public class PassportApi : AbsApi, IPassportApi
         // const string url = "/api/oauth2/refreshToken";
 
         return null;
+    }
+
+    public async ValueTask<QRCodeResult?> QRCodeAuthCode(string localId)
+    {
+        await Task.CompletedTask;
+        const string url = "x/passport-tv-login/qrcode/auth_code";
+
+        var queryParameters = new List<KeyValuePair<string, string>>()
+        {
+            new KeyValuePair<string, string>("local_id", localId)
+        };
+
+        await SignParam(queryParameters, ApiPlatform.Tv);
+
+        var request = await _passportHttpClient.BuildRequestMessage(url, HttpMethod.Post, queryParameters);
+
+        return await _passportHttpClient.SendAsync<QRCodeResult>(request);
+    }
+
+    public async ValueTask<QRCodePollResult?> QRCodePoll(string localId, string authCode)
+    {
+        await Task.CompletedTask;
+        const string url = "x/passport-tv-login/qrcode/poll";
+
+        var queryParameters = new List<KeyValuePair<string, string>>()
+        {
+            new KeyValuePair<string, string>("local_id", localId),
+            new KeyValuePair<string, string>("auth_code", authCode),
+        };
+
+        await SignParam(queryParameters, ApiPlatform.Tv);
+
+        var request = await _passportHttpClient.BuildRequestMessage(url, HttpMethod.Post, queryParameters);
+
+        return await _passportHttpClient.SendAsync<QRCodePollResult>(request);
+    }
+
+    public async ValueTask<LoginAppThirdResult?> LoginAppThird()
+    {
+        const string url = "/login/app/third";
+        const string loginAppThirdApi = "http://link.acg.tv/forum.php";
+
+        var queryParameters = new List<KeyValuePair<string, string>>()
+        {
+            new KeyValuePair<string, string>("api", loginAppThirdApi),
+        };
+
+        await SignBeforeAppKey(queryParameters, ApiPlatform.Ios);
+
+        var request = await _passportHttpClient.BuildRequestMessage(url, HttpMethod.Get, queryParameters);
+
+        return await _passportHttpClient.SendAsync<LoginAppThirdResult>(request);
+    }
+
+
+    public async ValueTask<string?> GetAccessKey(string confirmUri)
+    {
+        await Task.CompletedTask;
+
+        var request = await _passportHttpClient.BuildRequestMessage(confirmUri, HttpMethod.Get);
+
+        var response = await _passportHttpClient.Send4ResponseAsync(request);
+        var success = response.Headers.TryGetValues("location", out var locations);
+        if (!success)
+        {
+            return default;
+        }
+
+        var redirectUrl = locations?.FirstOrDefault();
+        if (string.IsNullOrWhiteSpace(redirectUrl))
+        {
+            return default;
+        }
+
+        var uri = new Uri(redirectUrl);
+        var queries = HttpUtility.ParseQueryString(uri.Query);
+        var accessKey = queries.Get("access_key");
+        return accessKey;
     }
 }

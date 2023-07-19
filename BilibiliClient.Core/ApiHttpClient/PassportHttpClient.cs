@@ -13,4 +13,9 @@ public class PassportHttpClient : AbsHttpClient, IPassportHttpClient
     {
         httpClient.BaseAddress = new Uri(ApiConstants.PassportUrl);
     }
+
+    public async ValueTask<HttpResponseMessage> Send4ResponseAsync(HttpRequestMessage request)
+    {
+        return await _httpClient.SendAsync(request);
+    }
 }

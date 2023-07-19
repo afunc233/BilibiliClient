@@ -17,6 +17,15 @@ public interface IHttpClient<out TBaseResponse>
     ValueTask<HttpRequestMessage> BuildRequestMessage(string url, HttpMethod method,
         List<KeyValuePair<string, string>>? paramPairs = null, HttpContent? httpContent = null);
 
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="httpRequestMessage"></param>
+    /// <param name="cookie"></param>
+    /// <returns></returns>
+    ValueTask AddCookie(HttpRequestMessage httpRequestMessage, string? cookie = null);
+
     /// <summary>
     /// 请求
     /// </summary>

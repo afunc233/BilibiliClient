@@ -1,6 +1,8 @@
 ﻿using System;
+using BilibiliClient.Core.Contracts;
 using BilibiliClient.Core.Contracts.Services;
 using BilibiliClient.Services;
+using BilibiliClient.Services.Handler;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BilibiliClient.Extensions;
@@ -22,6 +24,9 @@ public static class BilibiliClientExtensions
     public static IServiceCollection UseServices(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddSingleton<IWindowManagerService, WindowManagerService>();
+
+        serviceCollection.AddSingleton<IStartStopHandler, UserSecretStartStopHandler>();
+
         return serviceCollection;
     }
 }

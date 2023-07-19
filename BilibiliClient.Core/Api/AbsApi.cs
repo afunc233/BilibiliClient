@@ -35,25 +35,47 @@ public abstract class AbsApi : IApi
         return query;
     }
 
+    private IPlatformConfig GetPlatformConfig(ApiPlatform apiPlatform)
+    {
+        var platformConfig = _platformConfigs.FirstOrDefault(it => it.ApiPlatform == apiPlatform) ??
+                             _platformConfigs.First();
+        return platformConfig;
+    }
+
     protected virtual async ValueTask<IPlatformConfig> AddParams(List<KeyValuePair<string, string>> paramPairs,
-        ApiPlatform apiPlatform)
+        ApiPlatform apiPlatform, bool justAppkey = false)
     {
         await Task.CompletedTask;
-        var platformConfig = _platformConfigs.FirstOrDefault(it => it.ApiPlatform == apiPlatform);
-        if (platformConfig == null)
+        var platformConfig = GetPlatformConfig(apiPlatform);
+
+        paramPairs.Add(new KeyValuePair<string, string>("appkey", platformConfig.AppKey));
+        if (!justAppkey)
         {
-            return _platformConfigs.First();
+            paramPairs.Add(new KeyValuePair<string, string>("ts", platformConfig.GetNowMilliSeconds().ToString()));
+            if (!string.IsNullOrWhiteSpace(platformConfig.Platform))
+                paramPairs.Add(new KeyValuePair<string, string>("platform", platformConfig.Platform));
+            if (!string.IsNullOrWhiteSpace(platformConfig.MobileApp))
+                paramPairs.Add(new KeyValuePair<string, string>("mobi_app", platformConfig.MobileApp));
+            if (!string.IsNullOrWhiteSpace(platformConfig.Device))
+                paramPairs.Add(new KeyValuePair<string, string>("device", platformConfig.Device));
         }
 
-        paramPairs.Add(new KeyValuePair<string, string>("ts", platformConfig.GetNowMilliSeconds().ToString()));
-        paramPairs.Add(new KeyValuePair<string, string>("appkey", platformConfig.AppKey));
-        if (!string.IsNullOrWhiteSpace(platformConfig.Platform))
-            paramPairs.Add(new KeyValuePair<string, string>("platform", platformConfig.Platform));
-        if (!string.IsNullOrWhiteSpace(platformConfig.MobileApp))
-            paramPairs.Add(new KeyValuePair<string, string>("mobi_app", platformConfig.MobileApp));
-        if (!string.IsNullOrWhiteSpace(platformConfig.Device))
-            paramPairs.Add(new KeyValuePair<string, string>("device", platformConfig.Device));
         return platformConfig;
+    }
+
+    /// <summary>
+    /// 先加密，然后在加 Appkey
+    /// </summary>
+    /// <param name="queryParameters"></param>
+    /// <param name="apiPlatform"></param>
+    protected virtual async ValueTask SignBeforeAppKey(List<KeyValuePair<string, string>> queryParameters,
+        ApiPlatform apiPlatform)
+    {
+        var sign = await Sign(queryParameters, GetPlatformConfig(apiPlatform));
+
+        queryParameters.Add(new KeyValuePair<string, string>("sign", sign));
+
+        await AddParams(queryParameters, apiPlatform, true);
     }
 
     protected virtual async ValueTask<string> Sign(List<KeyValuePair<string, string>> paramPairs,
@@ -71,7 +93,7 @@ public abstract class AbsApi : IApi
 
             queryBuilder.Append(Uri.EscapeDataString(entry.Key))
                 .Append('=')
-                .Append(Uri.EscapeDataString(entry.Value));
+                .Append(entry.Value);
         }
 
         return GenerateMd5(queryBuilder.Append(platformConfig.AppSecret).ToString());
@@ -86,6 +108,7 @@ public abstract class AbsApi : IApi
         var sign = await Sign(paramPairs, platformConfig);
         paramPairs.Add(new KeyValuePair<string, string>("sign", sign));
     }
+
 
     private static String GenerateMd5(String input)
     {

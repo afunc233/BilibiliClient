@@ -1,5 +1,7 @@
-﻿using BilibiliClient.Core.Api;
+﻿using System.Net;
+using BilibiliClient.Core.Api;
 using BilibiliClient.Core.ApiHttpClient;
+using BilibiliClient.Core.Configs;
 using BilibiliClient.Core.Contracts.Api;
 using BilibiliClient.Core.Contracts.ApiHttpClient;
 using BilibiliClient.Core.Contracts.Configs;
@@ -12,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Http;
+using Microsoft.Extensions.Options;
 
 namespace BilibiliClient.Core.Extensions;
 
@@ -20,6 +23,12 @@ public static class BilibiliClientCoreExtensions
     private static IServiceCollection UseUtils(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddSingleton<IJsonUtils, TextJsonUtils>();
+        return serviceCollection;
+    }
+
+    private static IServiceCollection UseConfig(this IServiceCollection serviceCollection, HostBuilderContext context)
+    {
+        serviceCollection.AddSingleton<UserSecretConfig>();
         return serviceCollection;
     }
 
@@ -54,14 +63,19 @@ public static class BilibiliClientCoreExtensions
 
         serviceCollection.AddSingleton<IGrpcHttpClient, GrpcHttpClient>();
 
+        serviceCollection.AddSingleton<CookieContainer>();
         serviceCollection.ConfigureAll<HttpClientFactoryOptions>(options =>
         {
             options.HttpMessageHandlerBuilderActions.Add(builder =>
             {
                 builder.PrimaryHandler = new HttpClientHandler()
                 {
-                    Proxy = null,
-                    UseProxy = false
+#if !DEBUG
+                  Proxy = null,
+                    UseProxy = false,
+#endif
+                    UseCookies = true,
+                    CookieContainer = builder.Services.GetRequiredService<CookieContainer>()
                 };
                 builder.AdditionalHandlers.Add(builder.Services.GetRequiredService<HttpHeaderHandler>());
             });
@@ -81,18 +95,26 @@ public static class BilibiliClientCoreExtensions
 
     private static IServiceCollection UseServices(this IServiceCollection serviceCollection)
     {
+        serviceCollection.AddSingleton<IJsonFileService, JsonFileService>();
+        serviceCollection.AddSingleton<IUserSecretService, UserSecretService>();
         serviceCollection.AddSingleton<IApiErrorCodeHandlerService, ApiErrorCodeHandlerService>();
+        serviceCollection.AddSingleton<ILoginService, LoginService>();
+
+        serviceCollection.AddSingleton<ICookieService, CookieService>();
+
         return serviceCollection;
     }
 
     private static IServiceCollection UseHost(this IServiceCollection serviceCollection)
     {
+        serviceCollection.AddHostedService<BilibiliClientCoreHostedService>();
         return serviceCollection;
     }
 
     public static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
     {
         services.UseUtils();
+        services.UseConfig(context);
         services.UseMessenger();
         services.UsePlatformConfig();
         services.UseHttp();

@@ -1,7 +1,6 @@
-using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Threading;
-using BilibiliClient.Models.Messaging;
+using BilibiliClient.Core.Messages;
 using BilibiliClient.ViewModels;
 using CommunityToolkit.Mvvm.Messaging;
 using FluentAvalonia.UI.Controls;
@@ -19,13 +18,13 @@ public partial class MainView : UserControl
         {
             if (!messenger.IsRegistered<StartLoginMessage>(this))
             {
-                messenger.Register<StartLoginMessage>(this, Handler);
+                messenger.Register<StartLoginMessage>(this, StartLoginMessageHandler);
             }
         };
         this.DetachedFromVisualTree += (sender, args) => { messenger.UnregisterAll(this); };
     }
 
-    private void Handler(object recipient, StartLoginMessage message)
+    private void StartLoginMessageHandler(object recipient, StartLoginMessage message)
     {
         message.Reply(Dispatcher.UIThread.InvokeAsync(async () =>
         {
@@ -37,12 +36,16 @@ public partial class MainView : UserControl
                 Content = loginViewModel,
                 IsPrimaryButtonEnabled = false,
                 IsSecondaryButtonEnabled = false,
-                DefaultButton = ContentDialogButton.Close,
-                FullSizeDesired = true
+                DefaultButton = ContentDialogButton.None,
+                FullSizeDesired = false
             };
-            loginViewModel.OnClose = b => cd.Hide();
+            loginViewModel.OnClose = b =>
+            {
+                var aa = b ? ContentDialogResult.Primary : ContentDialogResult.None;
+                Dispatcher.UIThread.Invoke(() => cd.Hide(aa));
+            };
             var result = await cd.ShowAsync();
-            return result == ContentDialogResult.None;
+            return result != ContentDialogResult.None;
         }));
     }
 }

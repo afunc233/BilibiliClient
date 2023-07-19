@@ -4,8 +4,20 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:BilibiliClient.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             xmlns:iac="using:BilibiliClient.Interactions"
              x:DataType="viewModels:LoginViewModel"
              x:Class="BilibiliClient.Views.LoginView">
-    <Button Content="Welcome to Avalonia!" Command="{Binding OnCloseCmd}"></Button>
+    <i:Interaction.Behaviors>
+        <ia:EventTriggerBehavior EventName="DetachedFromVisualTree">
+            <ia:InvokeCommandAction Command="{Binding OnUnloadCmd}" />
+        </ia:EventTriggerBehavior>
+        <ia:EventTriggerBehavior EventName="AttachedToVisualTree">
+            <ia:InvokeCommandAction Command="{Binding OnLoadCmd}" />
+        </ia:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
+
+    <Image Source="{Binding QRCodeSource,Converter={StaticResource Source2QRCodeConverter}}" />
 
 </UserControl>

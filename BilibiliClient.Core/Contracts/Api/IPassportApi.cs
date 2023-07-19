@@ -39,4 +39,35 @@ public interface IPassportApi
     ValueTask<bool> CheckToken(string accessToken);
 
     ValueTask<object?> RefreshToken();
+
+
+    /// <summary>
+    /// 获取登录二维码
+    /// </summary>
+    /// <param name="localId"></param>
+    /// <returns></returns>
+    ValueTask<QRCodeResult?> QRCodeAuthCode(string localId);
+
+
+    /// <summary>
+    /// 轮询二维码扫码状态
+    /// </summary>
+    /// <param name="localId"></param>
+    /// <param name="authCode"></param>
+    /// <returns></returns>
+    ValueTask<QRCodePollResult?> QRCodePoll(string localId, string authCode);
+
+    /// <summary>
+    /// cookie转访问令牌.
+    /// </summary>
+    /// <returns></returns>
+    ValueTask<LoginAppThirdResult?> LoginAppThird();
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="confirmUri">LoginAppThird 接口返回的 confirmUri</param>
+    /// <returns></returns>
+    ValueTask<string?> GetAccessKey(string confirmUri);
 }

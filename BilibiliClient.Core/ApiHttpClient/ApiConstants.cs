@@ -2,6 +2,9 @@
 
 public class ApiConstants
 {
+    public const string CookieGetDomain = "https://bilibili.com";
+    public const string CookieSetDomain = "bilibili.com";
+    
     /// <summary>
     /// 
     /// </summary>
