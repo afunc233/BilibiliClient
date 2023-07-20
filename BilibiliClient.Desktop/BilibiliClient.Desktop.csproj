@@ -1,10 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-		<TargetFramework>net8.0</TargetFramework>
-		<!--If you are willing to use Windows/MacOS native APIs you will need to create 3 projects.
+        <TargetFrameworks>$(AppTargetFrameworks);</TargetFrameworks>
+        <!--If you are willing to use Windows/MacOS native APIs you will need to create 3 projects.
         One for Windows with net7.0-windows TFM, one for MacOS with net7.0-macos and one with net7.0 TFM for Linux.-->
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+
+        <!--去除编译后多语言-->
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     </PropertyGroup>
 
     <PropertyGroup>
