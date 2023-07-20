@@ -13,6 +13,11 @@ public enum NavBarType
     Popular,
 
     /// <summary>
+    /// 历史
+    /// </summary>
+    History,
+
+    /// <summary>
     /// 
     /// </summary>
     Setting,

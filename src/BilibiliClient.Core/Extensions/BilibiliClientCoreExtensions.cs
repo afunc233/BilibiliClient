@@ -60,19 +60,24 @@ public static class BilibiliClientCoreExtensions
         serviceCollection.AddSingleton<IGrpcHttpClient, GrpcHttpClient>();
 
         serviceCollection.AddSingleton<CookieContainer>();
+        serviceCollection.AddScoped<HttpClientHandler>();
         serviceCollection.ConfigureAll<HttpClientFactoryOptions>(options =>
         {
             options.HttpMessageHandlerBuilderActions.Add(builder =>
             {
-                builder.PrimaryHandler = new HttpClientHandler()
-                {
+                var primaryHandler = builder.Services.GetRequiredService<HttpClientHandler>();
+                var cookieContainer = builder.Services.GetRequiredService<CookieContainer>();
 #if !DEBUG
-                  Proxy = null,
-                    UseProxy = false,
+                primaryHandler.Proxy = null;
+                primaryHandler.UseProxy = false;
 #endif
-                    UseCookies = true,
-                    CookieContainer = builder.Services.GetRequiredService<CookieContainer>()
-                };
+                if (!OperatingSystem.IsBrowser())
+                {
+                    primaryHandler.UseCookies = true;
+                    primaryHandler.CookieContainer = cookieContainer;
+                }
+
+                builder.PrimaryHandler = primaryHandler;
                 builder.AdditionalHandlers.Add(builder.Services.GetRequiredService<HttpHeaderHandler>());
             });
         });
@@ -95,6 +100,7 @@ public static class BilibiliClientCoreExtensions
         serviceCollection.AddSingleton<IUserSecretService, UserSecretService>();
         serviceCollection.AddSingleton<IApiErrorCodeHandlerService, ApiErrorCodeHandlerService>();
         serviceCollection.AddSingleton<IAccountService, AccountService>();
+        serviceCollection.AddSingleton<IHistoryService, HistoryService>();
 
         serviceCollection.AddSingleton<ICookieService, CookieService>();
 

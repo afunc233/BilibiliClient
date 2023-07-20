@@ -76,10 +76,7 @@ public partial class App : Application
         services.UseHost();
 
         services.UseServices();
-        
-        
-        
-        
+
 
         services.AddSingleton<MainViewModel>();
 
@@ -88,6 +85,7 @@ public partial class App : Application
 
         services.AddSingleton<IPageViewModel, RecommendPageViewModel>();
         services.AddSingleton<IPageViewModel, PopularPageViewModel>();
+        services.AddTransient<IPageViewModel, HistoryPageViewModel>();
 
         services.AddSingleton<IPageViewModel, SettingPageViewModel>();
 
@@ -97,7 +95,9 @@ public partial class App : Application
 
         services.AddTransient<RecommendPageView>();
         services.AddTransient<PopularPageView>();
+        services.AddTransient<HistoryPageView>();
         services.AddTransient<SettingPageView>();
+
         services.AddTransient<HeaderView>();
         services.AddTransient<LoginView>();
     }

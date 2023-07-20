@@ -57,6 +57,17 @@ public class MainViewModel : ViewModelBase
         },
         new NavBar()
         {
+            NavType = NavBarType.History,
+            BarName = "历史",
+            IconUrl =
+                "https://dev-s-image.vcinema.cn/new_navigation_icon/S5eFhs5ei0xBgoEIuUzenySo.jpg?x-oss-process=image/interlace,1/resize,m_fill,w_48,h_48/quality,q_100/sharpen,100/format,png",
+            CheckedIconUrl =
+                "https://dev-s-image.vcinema.cn/new_navigation_icon/pMLVQw1DUC9Rr8lrpCJepWqA.jpg?x-oss-process=image/interlace,1/resize,m_fill,w_48,h_48/quality,q_100/sharpen,100/format,png",
+            Foreground = "#ffffff",
+            CheckedForeground = "#ff0000",
+        },
+        new NavBar()
+        {
             NavType = NavBarType.Setting,
             BarName = "更多",
             IconUrl =
@@ -85,13 +96,18 @@ public class MainViewModel : ViewModelBase
             return;
         }
 
-        if (CurrentPage != null)
+        var currentPage = _pageViewModels.FirstOrDefault(it => it.NavBarType == navBar.NavType);
+        if (currentPage != null)
         {
-            await CurrentPage.OnNavigatedFrom();
-        }
+            if (CurrentPage != null)
+            {
+                await CurrentPage.OnNavigatedFrom();
+            }
 
-        CurrentPage = _pageViewModels.First(it => it.NavBarType == navBar.NavType);
-        await CurrentPage.OnNavigatedTo();
+            // 确保先 OnNavigatedTo 再设置到界面上
+            await currentPage.OnNavigatedTo();
+            CurrentPage = currentPage;
+        }
     });
 
     private ICommand? _navBarChangedCmd;
