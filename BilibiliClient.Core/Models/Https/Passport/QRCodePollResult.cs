@@ -23,7 +23,7 @@ public class TokenInfo
     /// </summary>
 
     [JsonPropertyName("refresh_token")]
-    public string? refresh_token { get; set; }
+    public string? RefreshToken { get; set; }
 
     /// <summary>
     /// "expires_in": 15552000,

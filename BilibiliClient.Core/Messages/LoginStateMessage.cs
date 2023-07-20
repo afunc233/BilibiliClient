@@ -16,6 +16,6 @@ public enum LoginStateEnum
 {
     QRCodeExpire,
     StopQRCodePoll,
-    Success,
+    LoginSuccess,
     Fail,
 }

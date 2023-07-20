@@ -86,7 +86,7 @@ public class PassportApi : AbsApi, IPassportApi
 
     #region 登录相关
 
-    public async ValueTask<TokenInfo?> CheckToken(string accessToken)
+    public async ValueTask<TokenInfo?> CheckToken(string? accessToken)
     {
         if (string.IsNullOrWhiteSpace(accessToken))
         {
@@ -109,9 +109,13 @@ public class PassportApi : AbsApi, IPassportApi
         return await _passportHttpClient.SendAsync<TokenInfo>(request);
     }
 
-    public async ValueTask<TokenInfo?> RefreshToken(string accessToken, string refreshToken)
+    public async ValueTask<TokenInfo?> RefreshToken(string? accessToken, string? refreshToken)
     {
-        await Task.CompletedTask;
+        if (string.IsNullOrWhiteSpace(accessToken) || string.IsNullOrWhiteSpace(refreshToken))
+        {
+            return default;
+        }
+
         var queryParameters = new List<KeyValuePair<string, string>>()
         {
             new KeyValuePair<string, string>("access_token", accessToken),

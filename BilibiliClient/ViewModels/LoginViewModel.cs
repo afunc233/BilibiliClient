@@ -36,14 +36,14 @@ public class LoginViewModel : ViewModelBase
     private string? _qrCodeSource;
 
     private CancellationTokenSource? _qrCodeLoginTaskCompletionSource;
-    private readonly ILoginService _loginService;
+    private readonly IAccountService _accountService;
 
     private readonly IMessenger _messenger;
 
-    public LoginViewModel(IMessenger messenger, ILoginService loginService)
+    public LoginViewModel(IMessenger messenger, IAccountService accountService)
     {
         _messenger = messenger;
-        _loginService = loginService;
+        _accountService = accountService;
         _messenger.Register<LoginStateMessage>(this, LoginStateMessageHandler);
     }
 
@@ -60,7 +60,7 @@ public class LoginViewModel : ViewModelBase
             case LoginStateEnum.QRCodeExpire:
 
                 break;
-            case LoginStateEnum.Success:
+            case LoginStateEnum.LoginSuccess:
                 OnClose?.Invoke(true);
                 break;
         }
@@ -79,7 +79,7 @@ public class LoginViewModel : ViewModelBase
 
         Task.Run(async () =>
         {
-            var loginQRCode = await _loginService.GetLoginQRCode();
+            var loginQRCode = await _accountService.GetLoginQRCode();
             if (!string.IsNullOrWhiteSpace(loginQRCode))
             {
                 QRCodeSource = loginQRCode;
@@ -90,7 +90,7 @@ public class LoginViewModel : ViewModelBase
                         break;
                     }
 
-                    await _loginService.CheckHasLogin();
+                    await _accountService.CheckLoginState();
                     await Task.Delay(3000);
                 }
             }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using BilibiliClient.Core.Configs;
 using BilibiliClient.Core.Contracts.Api;
+using BilibiliClient.Core.Contracts.Services;
 using BilibiliClient.Models;
 using CommunityToolkit.Mvvm.Input;
 
@@ -31,7 +32,7 @@ public class MainViewModel : ViewModelBase
 
     private readonly ViewModelBase _header;
 
-    private readonly ObservableCollection<NavBar> _navBarList = new ObservableCollection<NavBar>()
+    public ObservableCollection<NavBar> NavBarList { get; } = new ObservableCollection<NavBar>()
     {
         new NavBar()
         {
@@ -68,9 +69,6 @@ public class MainViewModel : ViewModelBase
         },
     };
 
-    public ObservableCollection<NavBar> NavBarList => _navBarList;
-
-    private NavBar _currentNavBar;
 
     public NavBar CurrentNavBar
     {
@@ -78,7 +76,8 @@ public class MainViewModel : ViewModelBase
         set => SetProperty(ref _currentNavBar, value);
     }
 
-    private ICommand? _navBarChangedCmd;
+    private NavBar _currentNavBar;
+
 
     public ICommand NavBarChangedCmd => _navBarChangedCmd ??= new AsyncRelayCommand<NavBar>(async (navBar) =>
     {
@@ -96,6 +95,8 @@ public class MainViewModel : ViewModelBase
         await CurrentPage.OnNavigatedTo();
     });
 
+    private ICommand? _navBarChangedCmd;
+
     public ICommand DoSomeThingCmd =>
         _doSomeThingCmd ??= new AsyncRelayCommand(async () =>
         {
@@ -104,20 +105,19 @@ public class MainViewModel : ViewModelBase
             //
             // await appApi.SearchSquare();
 
-            var passApi = this.GetAppRequiredService<IPassportApi>();
-            var userSecretConfig = this.GetAppRequiredService<UserSecretConfig>();
+            var accountService = this.GetAppRequiredService<IAccountService>();
 
-            var aa = await passApi.CheckToken(userSecretConfig.AccessToken);
-            
-            if (aa != null)
+            var aa = await accountService.IsLocalTokenValid(true);
+
+            if (aa)
             {
             }
 
-            var bb = await passApi.RefreshToken(userSecretConfig.AccessToken, userSecretConfig.RefreshToken);
-
-            if (bb != null)
-            {
-            }
+            // var bb = await accountService.RefreshToken();
+            //
+            // if (bb)
+            // {
+            // }
 
             await Task.CompletedTask;
         });

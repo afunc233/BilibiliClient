@@ -8,7 +8,7 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace BilibiliClient.Core.Services;
 
-public class LoginService : ILoginService
+public class AccountService : IAccountService
 {
     private string? _loginId;
     private string? _authCode;
@@ -19,7 +19,7 @@ public class LoginService : ILoginService
 
     private readonly IMessenger _messenger;
 
-    public LoginService(IMessenger messenger, IPassportApi passportApi, ICookieService cookieService,
+    public AccountService(IMessenger messenger, IPassportApi passportApi, ICookieService cookieService,
         UserSecretConfig userSecretConfig)
     {
         _messenger = messenger;
@@ -43,7 +43,7 @@ public class LoginService : ILoginService
     }
 
 
-    public async Task CheckHasLogin()
+    public async Task CheckLoginState()
     {
         if (string.IsNullOrWhiteSpace(_loginId))
         {
@@ -58,33 +58,13 @@ public class LoginService : ILoginService
         await Task.CompletedTask;
 
         var qrCodePollResult = await _passportApi.QRCodePoll(_loginId, _authCode);
-        if (qrCodePollResult?.CookieInfo is null || qrCodePollResult?.TokenInfo is null)
+        if (qrCodePollResult?.CookieInfo is null || qrCodePollResult.TokenInfo is null)
         {
             return;
         }
 
         _messenger.Send(new LoginStateMessage(LoginStateEnum.StopQRCodePoll));
         await SaveCookie(qrCodePollResult.CookieInfo);
-
-        // TODO 换 key 操作 会导致 RefreshToken 接口走不通，所以不知道为什么要换 Key
-        // var loginAppThirdResult = await _passportApi.LoginAppThird();
-        //
-        // if (string.IsNullOrWhiteSpace(loginAppThirdResult?.ConfirmUri))
-        // {
-        //     _messenger.Send(new LoginStateMessage(LoginStateEnum.Fail));
-        //     return;
-        // }
-        //
-        // var accessKey = await _passportApi.GetAccessKey(loginAppThirdResult.ConfirmUri);
-        //
-        // if (string.IsNullOrWhiteSpace(accessKey))
-        // {
-        //     _messenger.Send(new LoginStateMessage(LoginStateEnum.Fail));
-        //     return;
-        // }
-        //
-        // qrCodePollResult.AccessToken = accessKey;
-        // _userSecretConfig.AccessToken = accessKey;
 
         _userSecretConfig.AccessToken = qrCodePollResult.AccessToken;
         _userSecretConfig.UserId = qrCodePollResult.Mid.ToString();
@@ -95,7 +75,61 @@ public class LoginService : ILoginService
         _userSecretConfig.DomainList = qrCodePollResult.CookieInfo.DomainList;
         _userSecretConfig.CookieList = qrCodePollResult.CookieInfo.CookieList;
 
-        _messenger.Send(new LoginStateMessage(LoginStateEnum.Success));
+        _messenger.Send(new SaveUserSecretMessage());
+        _messenger.Send(new LoginStateMessage(LoginStateEnum.LoginSuccess));
+    }
+
+    public async Task<bool> IsLocalTokenValid(bool forceVerify = false)
+    {
+        if (string.IsNullOrWhiteSpace(_userSecretConfig.AccessToken))
+        {
+            return false;
+        }
+
+        if (_userSecretConfig.LastSaveAuthTime <= 0 || _userSecretConfig.ExpiresIn <= 0)
+        {
+            return false;
+        }
+
+        var lastAuthorizeTime = DateTimeOffset.FromUnixTimeSeconds(_userSecretConfig.LastSaveAuthTime);
+
+        var offsetTime = DateTimeOffset.Now - lastAuthorizeTime;
+
+        if (offsetTime.TotalSeconds > _userSecretConfig.ExpiresIn)
+        {
+            return false;
+        }
+
+        if (forceVerify)
+        {
+            var tokenInfo = await _passportApi.CheckToken(_userSecretConfig.AccessToken);
+            if (tokenInfo == null)
+            {
+                return false;
+            }
+            _userSecretConfig.ExpiresIn = tokenInfo.expires_in;
+        }
+
+        return true;
+    }
+
+    public async Task<bool> RefreshToken()
+    {
+        await Task.CompletedTask;
+
+        var tokenInfo = await _passportApi.RefreshToken(_userSecretConfig.AccessToken, _userSecretConfig.RefreshToken);
+
+        if (tokenInfo == null)
+        {
+            return false;
+        }
+
+        _userSecretConfig.AccessToken = tokenInfo.AccessToken;
+        _userSecretConfig.RefreshToken = tokenInfo.RefreshToken;
+        _userSecretConfig.LastSaveAuthTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+
+        _messenger.Send(new SaveUserSecretMessage());
+        return true;
     }
 
     private async ValueTask SaveCookie(CookieInfo? cookieInfo)

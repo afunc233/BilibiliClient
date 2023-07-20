@@ -97,7 +97,7 @@ public static class BilibiliClientCoreExtensions
         serviceCollection.AddSingleton<IJsonFileService, JsonFileService>();
         serviceCollection.AddSingleton<IUserSecretService, UserSecretService>();
         serviceCollection.AddSingleton<IApiErrorCodeHandlerService, ApiErrorCodeHandlerService>();
-        serviceCollection.AddSingleton<ILoginService, LoginService>();
+        serviceCollection.AddSingleton<IAccountService, AccountService>();
 
         serviceCollection.AddSingleton<ICookieService, CookieService>();
 

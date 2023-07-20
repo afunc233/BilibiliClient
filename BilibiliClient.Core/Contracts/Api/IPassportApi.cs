@@ -36,7 +36,7 @@ public interface IPassportApi
     /// </summary>
     /// <param name="accessToken"></param>
     /// <returns></returns>
-    ValueTask<TokenInfo?> CheckToken(string accessToken);
+    ValueTask<TokenInfo?> CheckToken(string? accessToken);
 
     /// <summary>
     /// 目前这个接口不可用  refresh_token not match
@@ -44,7 +44,7 @@ public interface IPassportApi
     /// <param name="accessToken"></param>
     /// <param name="refreshToken"></param>
     /// <returns></returns>
-    ValueTask<TokenInfo?> RefreshToken(string accessToken, string refreshToken);
+    ValueTask<TokenInfo?> RefreshToken(string? accessToken, string? refreshToken);
 
 
     /// <summary>
