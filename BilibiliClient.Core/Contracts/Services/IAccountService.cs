@@ -25,4 +25,6 @@ public interface IAccountService
     /// </summary>
     /// <returns></returns>
     Task<bool> RefreshToken();
+
+    Task<object?> GetMyInfo();
 }

@@ -62,4 +62,21 @@ public class AppApi : AbsApi, IAppApi
         var request = await _appHttpClient.BuildRequestMessage(url + $"?{query}", HttpMethod.Get);
         return await _appHttpClient.SendAsync<object>(request);
     }
+
+    public async ValueTask<object?> GetMyInfo(string accessToken)
+    {
+        await Task.CompletedTask;
+
+        const string url = "/x/v2/account/myinfo";
+
+        var paramList = new List<KeyValuePair<string, string>>()
+        {
+            new KeyValuePair<string, string>("access_key", accessToken),
+        };
+
+        var query = await SignParamQueryString(paramList);
+
+        var request = await _appHttpClient.BuildRequestMessage(url + $"?{query}", HttpMethod.Get);
+        return await _appHttpClient.SendAsync<object>(request);
+    }
 }

@@ -31,6 +31,7 @@ public class UserSecretService : IUserSecretService
         {
             _userSecretConfig.UserId = localValue.UserId;
             _userSecretConfig.AccessToken = localValue.AccessToken;
+            _userSecretConfig.AccessKey = localValue.AccessKey;
             _userSecretConfig.RefreshToken = localValue.RefreshToken;
             _userSecretConfig.ExpiresIn = localValue.ExpiresIn;
             _userSecretConfig.LastSaveAuthTime = localValue.LastSaveAuthTime;
@@ -58,6 +59,7 @@ public class UserSecretService : IUserSecretService
 
                     cookieCollection.Add(cookie);
                 }
+
                 return cookieCollection;
             }));
         }

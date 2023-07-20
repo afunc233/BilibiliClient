@@ -1,4 +1,5 @@
 ﻿using BilibiliClient.Core.Models.Https.App;
+using Google.Protobuf.WellKnownTypes;
 
 namespace BilibiliClient.Core.Contracts.Api;
 
@@ -17,4 +18,12 @@ public interface IAppApi
 
 
     ValueTask<object?> RegionIndex();
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="accessToken"></param>
+    /// <returns></returns>
+    ValueTask<object?> GetMyInfo(string accessToken);
 }

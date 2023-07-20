@@ -64,14 +64,14 @@ public interface IPassportApi
     ValueTask<QRCodePollResult?> QRCodePoll(string localId, string authCode);
 
     /// <summary>
-    /// cookie转访问令牌.    TODO 换 key 操作 会导致 RefreshToken 接口走不通，所以不知道为什么要换 Key
+    /// cookie转访问令牌.    这里是用 token 获取 key  但 key 不是 token
     /// </summary>
     /// <returns></returns>
     ValueTask<LoginAppThirdResult?> LoginAppThird();
 
 
     /// <summary>
-    ///  TODO 换 key 操作 会导致 RefreshToken 接口走不通，所以不知道为什么要换 Key
+    ///  这里是用 token 获取 key  但 key 不是 token
     /// </summary>
     /// <param name="confirmUri">LoginAppThird 接口返回的 confirmUri</param>
     /// <returns></returns>

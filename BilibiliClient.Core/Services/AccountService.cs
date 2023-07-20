@@ -13,17 +13,19 @@ public class AccountService : IAccountService
     private string? _loginId;
     private string? _authCode;
     private readonly IPassportApi _passportApi;
+    private readonly IAppApi _appApi;
 
     private readonly ICookieService _cookieService;
     private readonly UserSecretConfig _userSecretConfig;
 
     private readonly IMessenger _messenger;
 
-    public AccountService(IMessenger messenger, IPassportApi passportApi, ICookieService cookieService,
+    public AccountService(IMessenger messenger, IPassportApi passportApi, IAppApi appApi, ICookieService cookieService,
         UserSecretConfig userSecretConfig)
     {
         _messenger = messenger;
         _passportApi = passportApi;
+        _appApi = appApi;
         _cookieService = cookieService;
         _userSecretConfig = userSecretConfig;
     }
@@ -42,6 +44,24 @@ public class AccountService : IAccountService
         return qrCodeAuthCode.Url;
     }
 
+    private async Task<string?> GetAccessKey()
+    {
+        var loginAppThirdResult = await _passportApi.LoginAppThird();
+
+        if (string.IsNullOrWhiteSpace(loginAppThirdResult?.ConfirmUri))
+        {
+            return default;
+        }
+
+        var accessKey = await _passportApi.GetAccessKey(loginAppThirdResult.ConfirmUri);
+
+        if (string.IsNullOrWhiteSpace(accessKey))
+        {
+            return default;
+        }
+
+        return accessKey;
+    }
 
     public async Task CheckLoginState()
     {
@@ -66,6 +86,14 @@ public class AccountService : IAccountService
         _messenger.Send(new LoginStateMessage(LoginStateEnum.StopQRCodePoll));
         await SaveCookie(qrCodePollResult.CookieInfo);
 
+        var accessKey = await GetAccessKey();
+        if (string.IsNullOrWhiteSpace(accessKey))
+        {
+            _messenger.Send(new LoginStateMessage(LoginStateEnum.Fail));
+            return;
+        }
+
+        _userSecretConfig.AccessKey = accessKey;
         _userSecretConfig.AccessToken = qrCodePollResult.AccessToken;
         _userSecretConfig.UserId = qrCodePollResult.Mid.ToString();
         _userSecretConfig.RefreshToken = qrCodePollResult.refresh_token;
@@ -107,6 +135,7 @@ public class AccountService : IAccountService
             {
                 return false;
             }
+
             _userSecretConfig.ExpiresIn = tokenInfo.expires_in;
         }
 
@@ -124,12 +153,36 @@ public class AccountService : IAccountService
             return false;
         }
 
+        var accessKey = await GetAccessKey();
+        if (string.IsNullOrWhiteSpace(accessKey))
+        {
+            return false;
+        }
+
+        _userSecretConfig.AccessKey = accessKey;
         _userSecretConfig.AccessToken = tokenInfo.AccessToken;
         _userSecretConfig.RefreshToken = tokenInfo.RefreshToken;
         _userSecretConfig.LastSaveAuthTime = DateTimeOffset.Now.ToUnixTimeSeconds();
 
         _messenger.Send(new SaveUserSecretMessage());
         return true;
+    }
+
+    public async Task<object?> GetMyInfo()
+    {
+        await Task.CompletedTask;
+
+        if (!await IsLocalTokenValid())
+        {
+            return default;
+        }
+
+        if (string.IsNullOrWhiteSpace(_userSecretConfig.AccessKey))
+        {
+            return default;
+        }
+
+        return await _appApi.GetMyInfo(_userSecretConfig.AccessKey!);
     }
 
     private async ValueTask SaveCookie(CookieInfo? cookieInfo)

@@ -106,18 +106,22 @@ public class MainViewModel : ViewModelBase
             // await appApi.SearchSquare();
 
             var accountService = this.GetAppRequiredService<IAccountService>();
-
-            var aa = await accountService.IsLocalTokenValid(true);
-
-            if (aa)
-            {
-            }
+            //
+            // var aa = await accountService.IsLocalTokenValid(true);
+            //
+            // if (aa)
+            // {
+            // }
 
             // var bb = await accountService.RefreshToken();
             //
             // if (bb)
             // {
             // }
+
+            var aa = await accountService.RefreshToken();
+
+            var bb = await accountService.GetMyInfo();
 
             await Task.CompletedTask;
         });

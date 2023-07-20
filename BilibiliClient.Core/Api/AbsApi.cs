@@ -56,8 +56,8 @@ public abstract class AbsApi : IApi
                 paramPairs.Add(new KeyValuePair<string, string>("platform", platformConfig.Platform));
             if (!string.IsNullOrWhiteSpace(platformConfig.MobileApp))
                 paramPairs.Add(new KeyValuePair<string, string>("mobi_app", platformConfig.MobileApp));
-            if (!string.IsNullOrWhiteSpace(platformConfig.Device))
-                paramPairs.Add(new KeyValuePair<string, string>("device", platformConfig.Device));
+            // if (!string.IsNullOrWhiteSpace(platformConfig.Device))
+            //     paramPairs.Add(new KeyValuePair<string, string>("device", platformConfig.Device));
         }
 
         return platformConfig;
