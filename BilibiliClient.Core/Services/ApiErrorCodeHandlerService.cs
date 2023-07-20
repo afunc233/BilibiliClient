@@ -4,7 +4,7 @@ namespace BilibiliClient.Core.Services;
 
 public class ApiErrorCodeHandlerService : IApiErrorCodeHandlerService
 {
-    private IEnumerable<IApiErrorHandler> _apiErrorHandlers;
+    private readonly IEnumerable<IApiErrorHandler> _apiErrorHandlers;
 
     public ApiErrorCodeHandlerService(IEnumerable<IApiErrorHandler> apiErrorHandlers)
     {

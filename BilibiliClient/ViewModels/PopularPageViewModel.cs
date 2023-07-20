@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Bilibili.App.Card.V1;
 using Bilibili.App.Show.V1;
-using BilibiliClient.Core.Api;
 using BilibiliClient.Core.Contracts.Api;
 using BilibiliClient.Models;
 using CommunityToolkit.Mvvm.Input;

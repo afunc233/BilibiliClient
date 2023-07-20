@@ -18,6 +18,6 @@
         </ia:EventTriggerBehavior>
     </i:Interaction.Behaviors>
 
-    <Image Source="{Binding QRCodeSource,Converter={StaticResource Source2QRCodeConverter}}" />
+    <Image Source="{Binding QRCodeSource,Converter={StaticResource Source2QRCodeConverter}}" Width="300" Height="300" />
 
 </UserControl>

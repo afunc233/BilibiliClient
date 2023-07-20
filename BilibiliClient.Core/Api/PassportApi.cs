@@ -17,6 +17,8 @@ public class PassportApi : AbsApi, IPassportApi
         _passportHttpClient = passportHttpClient;
     }
 
+    #region 好像目前用处不大
+
     /// <summary>
     /// 后续看看怎么使用  https://github.com/kuresaru/geetest-validator  
     /// </summary>
@@ -80,34 +82,50 @@ public class PassportApi : AbsApi, IPassportApi
         return await _passportHttpClient.SendAsync<object>(request);
     }
 
+    #endregion
 
-    public async ValueTask<bool> CheckToken(string accessToken)
+    #region 登录相关
+
+    public async ValueTask<TokenInfo?> CheckToken(string accessToken)
     {
         if (string.IsNullOrWhiteSpace(accessToken))
         {
-            return false;
+            return default;
         }
 
         await Task.CompletedTask;
 
         const string url = "/api/oauth2/info";
+
         var queryParameters = new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>("access_token", accessToken)
+            new KeyValuePair<string, string>("access_token", accessToken),
+            new KeyValuePair<string, string>("access_key", accessToken),
         };
 
-        var request = await _passportHttpClient.BuildRequestMessage(url, HttpMethod.Get, queryParameters);
-        var aa = await _passportHttpClient.SendAsync<object>(request);
+        var query = await SignParamQueryString(queryParameters, ApiPlatform.Android);
 
-        return false;
+        var request = await _passportHttpClient.BuildRequestMessage($"{url}?{query}", HttpMethod.Get);
+        return await _passportHttpClient.SendAsync<TokenInfo>(request);
     }
 
-    public async ValueTask<object?> RefreshToken()
+    public async ValueTask<TokenInfo?> RefreshToken(string accessToken, string refreshToken)
     {
         await Task.CompletedTask;
-        // const string url = "/api/oauth2/refreshToken";
+        var queryParameters = new List<KeyValuePair<string, string>>()
+        {
+            new KeyValuePair<string, string>("access_token", accessToken),
+            new KeyValuePair<string, string>("access_key", accessToken),
+            new KeyValuePair<string, string>("refresh_token", refreshToken),
+        };
 
-        return null;
+        const string url = "/api/oauth2/refreshToken";
+
+        await SignParam(queryParameters, ApiPlatform.Android);
+        using var formUrlEncodedContent = new FormUrlEncodedContent(queryParameters);
+        var request =
+            await _passportHttpClient.BuildRequestMessage(url, HttpMethod.Post, httpContent: formUrlEncodedContent);
+        return await _passportHttpClient.SendAsync<TokenInfo>(request);
     }
 
     public async ValueTask<QRCodeResult?> QRCodeAuthCode(string localId)
@@ -120,9 +138,12 @@ public class PassportApi : AbsApi, IPassportApi
             new KeyValuePair<string, string>("local_id", localId)
         };
 
-        await SignParam(queryParameters, ApiPlatform.Tv);
+        await SignParam(queryParameters, ApiPlatform.Android);
 
-        var request = await _passportHttpClient.BuildRequestMessage(url, HttpMethod.Post, queryParameters);
+        using var formUrlEncodedContent = new FormUrlEncodedContent(queryParameters);
+
+        var request =
+            await _passportHttpClient.BuildRequestMessage(url, HttpMethod.Post, httpContent: formUrlEncodedContent);
 
         return await _passportHttpClient.SendAsync<QRCodeResult>(request);
     }
@@ -162,7 +183,6 @@ public class PassportApi : AbsApi, IPassportApi
         return await _passportHttpClient.SendAsync<LoginAppThirdResult>(request);
     }
 
-
     public async ValueTask<string?> GetAccessKey(string confirmUri)
     {
         await Task.CompletedTask;
@@ -187,4 +207,6 @@ public class PassportApi : AbsApi, IPassportApi
         var accessKey = queries.Get("access_key");
         return accessKey;
     }
+
+    #endregion
 }

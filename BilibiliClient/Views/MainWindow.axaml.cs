@@ -1,7 +1,6 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Avalonia.Controls.Chrome;
 using Avalonia.Media;
 using FluentAvalonia.UI.Windowing;
 

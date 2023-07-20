@@ -1,6 +1,4 @@
 ﻿using System.Net;
-using System.Web;
-using BilibiliClient.Core.ApiHttpClient;
 using BilibiliClient.Core.Configs;
 using BilibiliClient.Core.Contracts.Api;
 using BilibiliClient.Core.Contracts.Services;
@@ -32,7 +30,7 @@ public class LoginService : ILoginService
 
     public async Task<string?> GetLoginQRCode()
     {
-        _loginId = Guid.NewGuid().ToString();
+        _loginId = Guid.NewGuid().ToString("N");
 
         var qrCodeAuthCode = await _passportApi.QRCodeAuthCode(_loginId);
         if (qrCodeAuthCode == null)
@@ -68,25 +66,27 @@ public class LoginService : ILoginService
         _messenger.Send(new LoginStateMessage(LoginStateEnum.StopQRCodePoll));
         await SaveCookie(qrCodePollResult.CookieInfo);
 
-        var loginAppThirdResult = await _passportApi.LoginAppThird();
+        // TODO 换 key 操作 会导致 RefreshToken 接口走不通，所以不知道为什么要换 Key
+        // var loginAppThirdResult = await _passportApi.LoginAppThird();
+        //
+        // if (string.IsNullOrWhiteSpace(loginAppThirdResult?.ConfirmUri))
+        // {
+        //     _messenger.Send(new LoginStateMessage(LoginStateEnum.Fail));
+        //     return;
+        // }
+        //
+        // var accessKey = await _passportApi.GetAccessKey(loginAppThirdResult.ConfirmUri);
+        //
+        // if (string.IsNullOrWhiteSpace(accessKey))
+        // {
+        //     _messenger.Send(new LoginStateMessage(LoginStateEnum.Fail));
+        //     return;
+        // }
+        //
+        // qrCodePollResult.AccessToken = accessKey;
+        // _userSecretConfig.AccessToken = accessKey;
 
-        if (string.IsNullOrWhiteSpace(loginAppThirdResult?.ConfirmUri))
-        {
-            _messenger.Send(new LoginStateMessage(LoginStateEnum.Fail));
-            return;
-        }
-
-        var accessKey = await _passportApi.GetAccessKey(loginAppThirdResult.ConfirmUri);
-
-        if (string.IsNullOrWhiteSpace(accessKey))
-        {
-            _messenger.Send(new LoginStateMessage(LoginStateEnum.Fail));
-            return;
-        }
-
-        qrCodePollResult.AccessToken = accessKey;
-
-        _userSecretConfig.AccessToken = accessKey;
+        _userSecretConfig.AccessToken = qrCodePollResult.AccessToken;
         _userSecretConfig.UserId = qrCodePollResult.Mid.ToString();
         _userSecretConfig.RefreshToken = qrCodePollResult.refresh_token;
         _userSecretConfig.ExpiresIn = qrCodePollResult.expires_in;

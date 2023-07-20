@@ -36,9 +36,15 @@ public interface IPassportApi
     /// </summary>
     /// <param name="accessToken"></param>
     /// <returns></returns>
-    ValueTask<bool> CheckToken(string accessToken);
+    ValueTask<TokenInfo?> CheckToken(string accessToken);
 
-    ValueTask<object?> RefreshToken();
+    /// <summary>
+    /// 目前这个接口不可用  refresh_token not match
+    /// </summary>
+    /// <param name="accessToken"></param>
+    /// <param name="refreshToken"></param>
+    /// <returns></returns>
+    ValueTask<TokenInfo?> RefreshToken(string accessToken, string refreshToken);
 
 
     /// <summary>
@@ -58,14 +64,14 @@ public interface IPassportApi
     ValueTask<QRCodePollResult?> QRCodePoll(string localId, string authCode);
 
     /// <summary>
-    /// cookie转访问令牌.
+    /// cookie转访问令牌.    TODO 换 key 操作 会导致 RefreshToken 接口走不通，所以不知道为什么要换 Key
     /// </summary>
     /// <returns></returns>
     ValueTask<LoginAppThirdResult?> LoginAppThird();
 
 
     /// <summary>
-    /// 
+    ///  TODO 换 key 操作 会导致 RefreshToken 接口走不通，所以不知道为什么要换 Key
     /// </summary>
     /// <param name="confirmUri">LoginAppThird 接口返回的 confirmUri</param>
     /// <returns></returns>

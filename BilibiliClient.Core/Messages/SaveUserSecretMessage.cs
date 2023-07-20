@@ -1,5 +1,4 @@
 ﻿using BilibiliClient.Core.Configs;
-using CommunityToolkit.Mvvm.Messaging.Messages;
 
 namespace BilibiliClient.Core.Messages;
 

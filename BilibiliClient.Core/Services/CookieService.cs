@@ -16,13 +16,9 @@ public class CookieService : ICookieService
     {
         await Task.CompletedTask;
 
-        foreach (var domain in domainList)
+        foreach (var cookieCollection in domainList.Select(getCookieCollectionFunc.Invoke))
         {
-            var cookieCollection = getCookieCollectionFunc?.Invoke(domain);
-            if (cookieCollection != null)
-            {
-                _cookieContainer.Add(cookieCollection);
-            }
+            _cookieContainer.Add(cookieCollection);
         }
     }
 }

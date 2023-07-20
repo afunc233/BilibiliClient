@@ -1,10 +1,7 @@
 ﻿using System.Net;
-using System.Reflection.Metadata;
 using BilibiliClient.Core.Configs;
 using BilibiliClient.Core.Contracts.Services;
-using BilibiliClient.Core.Messages;
 using BilibiliClient.Core.Utils;
-using CommunityToolkit.Mvvm.Messaging;
 
 namespace BilibiliClient.Core.Services;
 

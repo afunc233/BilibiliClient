@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using BilibiliClient.Core.Contracts.Api;
 using BilibiliClient.Core.Contracts.Services;
 using BilibiliClient.Core.Messages;
 using CommunityToolkit.Mvvm.Input;

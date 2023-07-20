@@ -26,8 +26,8 @@ public abstract class AbsApi : IApi
 
         paramPairs.Add(new KeyValuePair<string, string>("build", "5520400"));
 
-        var platformConfig = await AddParams(paramPairs, apiPlatform);
-        var sign = await Sign(paramPairs, platformConfig);
+        var platformConfig = await AddPlatformParams(paramPairs, apiPlatform);
+        var sign = await GenSign(paramPairs, platformConfig);
         paramPairs.Add(new KeyValuePair<string, string>("sign", sign));
         var queryList = paramPairs.Select(p => $"{p.Key}={p.Value}").ToList();
         queryList.Sort();
@@ -42,7 +42,7 @@ public abstract class AbsApi : IApi
         return platformConfig;
     }
 
-    protected virtual async ValueTask<IPlatformConfig> AddParams(List<KeyValuePair<string, string>> paramPairs,
+    protected virtual async ValueTask<IPlatformConfig> AddPlatformParams(List<KeyValuePair<string, string>> paramPairs,
         ApiPlatform apiPlatform, bool justAppkey = false)
     {
         await Task.CompletedTask;
@@ -71,14 +71,14 @@ public abstract class AbsApi : IApi
     protected virtual async ValueTask SignBeforeAppKey(List<KeyValuePair<string, string>> queryParameters,
         ApiPlatform apiPlatform)
     {
-        var sign = await Sign(queryParameters, GetPlatformConfig(apiPlatform));
+        var sign = await GenSign(queryParameters, GetPlatformConfig(apiPlatform));
 
         queryParameters.Add(new KeyValuePair<string, string>("sign", sign));
 
-        await AddParams(queryParameters, apiPlatform, true);
+        await AddPlatformParams(queryParameters, apiPlatform, true);
     }
 
-    protected virtual async ValueTask<string> Sign(List<KeyValuePair<string, string>> paramPairs,
+    protected virtual async ValueTask<string> GenSign(List<KeyValuePair<string, string>> paramPairs,
         IPlatformConfig platformConfig)
     {
         await Task.CompletedTask;
@@ -103,9 +103,10 @@ public abstract class AbsApi : IApi
         ApiPlatform apiPlatform)
     {
         await Task.CompletedTask;
-        var platformConfig = await AddParams(paramPairs, apiPlatform);
+        paramPairs.Add(new KeyValuePair<string, string>("build", "5520400"));
+        var platformConfig = await AddPlatformParams(paramPairs, apiPlatform);
 
-        var sign = await Sign(paramPairs, platformConfig);
+        var sign = await GenSign(paramPairs, platformConfig);
         paramPairs.Add(new KeyValuePair<string, string>("sign", sign));
     }
 

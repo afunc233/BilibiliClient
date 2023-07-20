@@ -3,10 +3,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BilibiliClient.Core.Configs;
 using BilibiliClient.Core.Contracts.Api;
 using BilibiliClient.Models;
 using CommunityToolkit.Mvvm.Input;
-using FluentAvalonia.UI.Controls;
 
 namespace BilibiliClient.ViewModels;
 
@@ -100,9 +100,24 @@ public class MainViewModel : ViewModelBase
         _doSomeThingCmd ??= new AsyncRelayCommand(async () =>
         {
             var appApi = this.GetAppRequiredService<IAppApi>();
-            await appApi.RegionIndex();
+            // await appApi.RegionIndex();
+            //
+            // await appApi.SearchSquare();
 
-            await appApi.SearchSquare();
+            var passApi = this.GetAppRequiredService<IPassportApi>();
+            var userSecretConfig = this.GetAppRequiredService<UserSecretConfig>();
+
+            var aa = await passApi.CheckToken(userSecretConfig.AccessToken);
+            
+            if (aa != null)
+            {
+            }
+
+            var bb = await passApi.RefreshToken(userSecretConfig.AccessToken, userSecretConfig.RefreshToken);
+
+            if (bb != null)
+            {
+            }
 
             await Task.CompletedTask;
         });
