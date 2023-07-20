@@ -21,5 +21,5 @@ public interface IGrpcHttpClient : IHttpClient<ApiResponse>
     /// <param name="parser"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    ValueTask<T> SendAsync<T>(HttpRequestMessage requestMessage, MessageParser<T> parser) where T : IMessage<T>;
+    ValueTask<T?> SendAsync<T>(HttpRequestMessage requestMessage, MessageParser<T> parser) where T : IMessage<T>;
 }

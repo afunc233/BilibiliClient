@@ -18,6 +18,11 @@ public enum NavBarType
     History,
 
     /// <summary>
+    /// 动态
+    /// </summary>
+    Dynamic,
+
+    /// <summary>
     /// 
     /// </summary>
     Setting,

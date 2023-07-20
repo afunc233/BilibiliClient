@@ -1,0 +1,37 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="viewModels:DynamicPageViewModel"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:iac="using:BilibiliClient.Interactions"
+             xmlns:controls="clr-namespace:BilibiliClient.Controls"
+             xmlns:viewModels="clr-namespace:BilibiliClient.ViewModels"
+             xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
+             xmlns:grpcModels="clr-namespace:Bilibili.App.Dynamic.V2;assembly=BilibiliClient.Models.gRPC"
+             x:Class="BilibiliClient.Views.DynamicPageView">
+    <UserControl.DataTemplates>
+        <DataTemplate DataType="{x:Type grpcModels:DynamicItem}">
+            <Grid Cursor="Hand" Margin="3,3 " Width="250" Height="150">
+                <Image asyncImageLoader:ImageLoader.Source="{Binding  Extend.OrigImgUrl}"
+                       RenderOptions.BitmapInterpolationMode="HighQuality" HorizontalAlignment="Stretch"
+                       VerticalAlignment="Stretch" />
+            </Grid>
+        </DataTemplate>
+    </UserControl.DataTemplates>
+    <Grid RowDefinitions="Auto,*">
+        <CheckBox Content="Video" IsChecked="{Binding IsVideo}"></CheckBox>
+        <ItemsControl Grid.Row="1" ItemsSource="{Binding DynamicDataList}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <controls:VirtualizingWrapPanel />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <i:Interaction.Behaviors>
+                <iac:Scroll2EndTriggerBehavior Distance2End="50" LoadMoreDataCmd="{Binding LoadMoreCmd}" />
+            </i:Interaction.Behaviors>
+        </ItemsControl>
+    </Grid>
+</UserControl>

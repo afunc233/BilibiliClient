@@ -1,4 +1,5 @@
-﻿using Bilibili.App.Interfaces.V1;
+﻿using Bilibili.App.Dynamic.V2;
+using Bilibili.App.Interfaces.V1;
 using Bilibili.App.Show.V1;
 using BilibiliClient.Core.Configs;
 using BilibiliClient.Core.Contracts.Api;
@@ -56,4 +57,48 @@ public class GrpcApi : IGrpcApi
 
         return await _grpcHttpClient.SendAsync(request, CursorV2Reply.Parser);
     }
+
+    #region 动态
+
+    // bilibili.app.dynamic.v2.Dynamic/DynVideo
+
+    public async ValueTask<DynVideoReply?> GetDynamicVideo(string? offset, string? baseline)
+    {
+        offset ??= string.Empty;
+        baseline ??= string.Empty;
+        const string url = "bilibili.app.dynamic.v2.Dynamic/DynVideo";
+        var type = string.IsNullOrWhiteSpace(offset) ? Refresh.New : Refresh.History;
+        var req = new DynVideoReq
+        {
+            RefreshType = type,
+            LocalTime = 8,
+            Offset = offset,
+            UpdateBaseline = baseline,
+        };
+
+        var request = await _grpcHttpClient.BuildRequestMessage(url, req, _userSecretConfig.AccessToken);
+        return await _grpcHttpClient.SendAsync(request, DynVideoReply.Parser);
+    }
+
+    public async ValueTask<DynAllReply?> GetDynamicAll(string? offset, string? baseline)
+    {
+        offset ??= string.Empty;
+        baseline ??= string.Empty;
+        const string url = "bilibili.app.dynamic.v2.Dynamic/DynAll";
+
+        var type = string.IsNullOrWhiteSpace(offset) ? Refresh.New : Refresh.History;
+        var req = new DynAllReq
+        {
+            RefreshType = type,
+            LocalTime = 8,
+            Offset = offset,
+            UpdateBaseline = baseline,
+        };
+
+        var request = await _grpcHttpClient.BuildRequestMessage(url, req, _userSecretConfig.AccessToken);
+
+        return await _grpcHttpClient.SendAsync(request, DynAllReply.Parser);
+    }
+
+    #endregion
 }

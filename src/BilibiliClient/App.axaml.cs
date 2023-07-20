@@ -86,16 +86,18 @@ public partial class App : Application
         services.AddSingleton<IPageViewModel, RecommendPageViewModel>();
         services.AddSingleton<IPageViewModel, PopularPageViewModel>();
         services.AddTransient<IPageViewModel, HistoryPageViewModel>();
+        services.AddTransient<IPageViewModel, DynamicPageViewModel>();
 
         services.AddSingleton<IPageViewModel, SettingPageViewModel>();
 
         services.AddSingleton<HeaderViewModel>();
         services.AddSingleton<LoginViewModel>();
 
-
         services.AddTransient<RecommendPageView>();
         services.AddTransient<PopularPageView>();
         services.AddTransient<HistoryPageView>();
+        services.AddTransient<DynamicPageView>();
+        
         services.AddTransient<SettingPageView>();
 
         services.AddTransient<HeaderView>();

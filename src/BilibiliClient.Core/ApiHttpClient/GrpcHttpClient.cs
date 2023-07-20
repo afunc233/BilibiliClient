@@ -70,12 +70,20 @@ public class GrpcHttpClient : AbsHttpClient, IGrpcHttpClient
         return requestMessage;
     }
 
-    public async ValueTask<T> SendAsync<T>(HttpRequestMessage requestMessage, MessageParser<T> parser)
+    public async ValueTask<T?> SendAsync<T>(HttpRequestMessage requestMessage, MessageParser<T> parser)
         where T : IMessage<T>
     {
-        var response = await _httpClient.SendAsync(requestMessage);
+        try
+        {
+            var response = await _httpClient.SendAsync(requestMessage);
 
-        var bytes = await response.Content.ReadAsByteArrayAsync();
-        return parser.ParseFrom(bytes.Skip(5).ToArray());
+            var bytes = await response.Content.ReadAsByteArrayAsync();
+            return parser.ParseFrom(bytes.Skip(5).ToArray());
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return default;
+        }
     }
 }

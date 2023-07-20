@@ -101,6 +101,7 @@ public static class BilibiliClientCoreExtensions
         serviceCollection.AddSingleton<IApiErrorCodeHandlerService, ApiErrorCodeHandlerService>();
         serviceCollection.AddSingleton<IAccountService, AccountService>();
         serviceCollection.AddSingleton<IHistoryService, HistoryService>();
+        serviceCollection.AddSingleton<IDynamicService, DynamicService>();
 
         serviceCollection.AddSingleton<ICookieService, CookieService>();
 

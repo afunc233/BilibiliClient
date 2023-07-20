@@ -68,6 +68,17 @@ public class MainViewModel : ViewModelBase
         },
         new NavBar()
         {
+            NavType = NavBarType.Dynamic,
+            BarName = "动态",
+            IconUrl =
+                "https://dev-s-image.vcinema.cn/new_navigation_icon/S5eFhs5ei0xBgoEIuUzenySo.jpg?x-oss-process=image/interlace,1/resize,m_fill,w_48,h_48/quality,q_100/sharpen,100/format,png",
+            CheckedIconUrl =
+                "https://dev-s-image.vcinema.cn/new_navigation_icon/pMLVQw1DUC9Rr8lrpCJepWqA.jpg?x-oss-process=image/interlace,1/resize,m_fill,w_48,h_48/quality,q_100/sharpen,100/format,png",
+            Foreground = "#ffffff",
+            CheckedForeground = "#ff0000",
+        },
+        new NavBar()
+        {
             NavType = NavBarType.Setting,
             BarName = "更多",
             IconUrl =
