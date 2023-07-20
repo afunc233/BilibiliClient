@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Bilibili.App.Interfaces.V1;
 using BilibiliClient.Core.Configs;
 using BilibiliClient.Core.Contracts.Api;
 using BilibiliClient.Core.Contracts.Services;
@@ -119,9 +120,17 @@ public class MainViewModel : ViewModelBase
             // {
             // }
 
-            var aa = await accountService.RefreshToken();
+            // var aa = await accountService.RefreshToken();
+            //
+            // var bb = await accountService.GetMyInfo();
 
-            var bb = await accountService.GetMyInfo();
+            var grpcApi = this.GetAppRequiredService<IGrpcApi>();
+
+            var cursor = new Bilibili.App.Interfaces.V1.Cursor()
+            {
+                Max = 0
+            };
+            var aa = await grpcApi.GetMyHistory(cursor);
 
             await Task.CompletedTask;
         });

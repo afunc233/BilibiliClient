@@ -54,9 +54,6 @@ public static class BilibiliClientCoreExtensions
         serviceCollection.Replace(ServiceDescriptor
             .Singleton<IHttpMessageHandlerBuilderFilter, TraceIdLoggingMessageHandlerFilter>());
 
-        // TODO IAuthenticationProvider
-        serviceCollection.AddSingleton<IAuthenticationProvider, AuthenticationProvider>();
-
         serviceCollection.AddHttpClient<IPassportHttpClient, PassportHttpClient>();
         serviceCollection.AddHttpClient<IAppHttpClient, AppHttpClient>();
 

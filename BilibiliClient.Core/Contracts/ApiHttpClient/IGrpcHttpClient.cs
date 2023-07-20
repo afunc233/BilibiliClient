@@ -10,9 +10,9 @@ public interface IGrpcHttpClient : IHttpClient<ApiResponse>
     /// </summary>
     /// <param name="requestUri"></param>
     /// <param name="message"></param>
-    /// <param name="needToken"></param>
+    /// <param name="token"></param>
     /// <returns></returns>
-    ValueTask<HttpRequestMessage> BuildRequestMessage(string requestUri, IMessage message, bool needToken = false);
+    ValueTask<HttpRequestMessage> BuildRequestMessage(string requestUri, IMessage message, string? token = null);
 
     /// <summary>
     /// 解析发送并解析 GRPC 的数据
