@@ -43,5 +43,6 @@ public class HistoryService : IHistoryService
     {
         _historyCursor.Max = 0;
         _historyCursor.MaxTp = 0;
+        _hasMore = true;
     }
 }

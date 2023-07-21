@@ -9,7 +9,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace BilibiliClient.ViewModels;
 
-public class HistoryPageViewModel : AbsPageViewModel
+public partial class HistoryPageViewModel : AbsPageViewModel
 {
     public override NavBarType NavBarType => NavBarType.History;
 
@@ -28,6 +28,7 @@ public class HistoryPageViewModel : AbsPageViewModel
         _historyService = historyService;
     }
 
+    [RelayCommand]
     private async Task LoadMoreData()
     {
         IsLoading = true;

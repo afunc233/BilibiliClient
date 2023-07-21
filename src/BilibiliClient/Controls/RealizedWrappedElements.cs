@@ -562,12 +562,16 @@ internal static class CollectionUtils
 
         IEnumerator IEnumerable.GetEnumerator()
         {
+#pragma warning disable CS8603 // 可能返回 null 引用。
             return null;
+#pragma warning restore CS8603 // 可能返回 null 引用。
         }
 
         public IEnumerator<T> GetEnumerator()
         {
+#pragma warning disable CS8603 // 可能返回 null 引用。
             return null;
+#pragma warning restore CS8603 // 可能返回 null 引用。
         }
 
         public void CopyTo(T[] array, int arrayIndex)

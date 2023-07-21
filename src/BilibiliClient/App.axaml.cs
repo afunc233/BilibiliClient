@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using BilibiliClient.Core.Configs;
 using BilibiliClient.Core.Extensions;
 using BilibiliClient.Extensions;
 using BilibiliClient.ViewModels;
@@ -18,10 +17,10 @@ using NLog.Extensions.Hosting;
 
 namespace BilibiliClient;
 
-public partial class App : Application
+public class App : Application
 {
     // ReSharper disable once InconsistentNaming
-    private static readonly NLog.Logger _logger;
+    private static readonly NLog.Logger? _logger;
 
     private IHost? _host;
 
@@ -55,12 +54,10 @@ public partial class App : Application
                 configHost.SetBasePath(appLocation);
                 configHost.AddJsonFile("hostsettings.json", optional: true);
                 configHost.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true); // 日志配置 热更新
-                configHost.AddJsonFile($"{nameof(UserSecretConfig)}.json", optional: true,
-                    reloadOnChange: true); // 日志配置 热更新
             })
             .ConfigureServices(ConfigureServices)
             .ConfigureServices(BilibiliClientCoreExtensions.ConfigureServices)
-            .ConfigureServices((context, services) =>
+            .ConfigureServices((_, services) =>
             {
                 if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
                 {
@@ -97,7 +94,7 @@ public partial class App : Application
         services.AddTransient<PopularPageView>();
         services.AddTransient<HistoryPageView>();
         services.AddTransient<DynamicPageView>();
-        
+
         services.AddTransient<SettingPageView>();
 
         services.AddTransient<HeaderView>();
@@ -121,7 +118,7 @@ public partial class App : Application
 
                 #region ShutdownRequested
 
-                desktop.ShutdownRequested += async (s, e) =>
+                desktop.ShutdownRequested += async (_, _) =>
                 {
                     try
                     {

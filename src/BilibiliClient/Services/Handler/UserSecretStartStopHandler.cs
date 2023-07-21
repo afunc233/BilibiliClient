@@ -27,7 +27,7 @@ public class UserSecretStartStopHandler : IStartStopHandler
         {
             await _userSecretService.SaveUserSecret(message.Value);
         }
-        catch (Exception e)
+        catch (Exception)
         {
             // Console.WriteLine(e);
         }
