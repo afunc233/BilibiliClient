@@ -17,26 +17,65 @@
          to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:RecommendPageViewModel />
     </Design.DataContext>
+    <UserControl.Styles>
+        <Style Selector="Image.icon">
+            <Setter Property="Width" Value="18" />
+            <Setter Property="Height" Value="18" />
+            <Setter Property="Margin" Value="4 0" />
+        </Style>
+    </UserControl.Styles>
+
     <UserControl.DataTemplates>
         <DataTemplate x:DataType="{x:Type httpModel:RecommendCardItem}">
-            <Grid Cursor="Hand" Margin="3,3 " Width="250" Height="150">
-                <Image RenderOptions.BitmapInterpolationMode="HighQuality" HorizontalAlignment="Stretch"
-                       VerticalAlignment="Stretch"
-                       asyncImageLoader:ImageLoader.Source="{Binding Cover}">
-                </Image>
-                <TextBlock VerticalAlignment="Bottom" Text="{Binding Title}" />
-                <ToolTip.Tip>
-                    <TextBlock Text="{Binding desc}" />
-                </ToolTip.Tip>
-                <i:Interaction.Behaviors>
-                    <ia:EventTriggerBehavior EventName="PointerPressed">
-                        <ia:InvokeCommandAction x:CompileBindings="False"
-                                                Command="{Binding $parent[UserControl].DataContext.PlayVideoCmd}"
-                                                CommandParameter="{Binding}">
-                        </ia:InvokeCommandAction>
-                    </ia:EventTriggerBehavior>
-                </i:Interaction.Behaviors>
+            <Grid Margin="10">
+                <Border Width="300" Height="250" Cursor="Hand" CornerRadius="5" BorderThickness="1"
+                        BorderBrush="LightGray" ToolTip.Tip="{Binding desc}" Background="Transparent">
+                    <StackPanel Orientation="Vertical">
+                        <Grid>
+                            <Image RenderOptions.BitmapInterpolationMode="HighQuality"
+                                   VerticalAlignment="Stretch"
+                                   asyncImageLoader:ImageLoader.Source="{Binding Cover}">
+                            </Image>
+                            <Grid VerticalAlignment="Bottom">
+                                <StackPanel Orientation="Horizontal" Margin="4 0">
+                                    <Image RenderOptions.BitmapInterpolationMode="HighQuality"
+                                           Source="{SvgImage /Assets/Images/playcount-icon.svg}" Classes="icon" />
+                                    <TextBlock Text="{Binding cover_left_text_2}" Foreground="White"></TextBlock>
+                                    <Image RenderOptions.BitmapInterpolationMode="HighQuality"
+                                           Source="{SvgImage /Assets/Images/danmaku-icon.svg}" Classes="icon" />
+                                    <TextBlock Text="{Binding cover_left_text_3}" Foreground="White"></TextBlock>
+                                </StackPanel>
+                                <Border Background="#29000000" />
+                            </Grid>
+                        </Grid>
+                        <TextBlock MaxLines="2" TextTrimming="WordEllipsis" TextAlignment="Left" Text="{Binding Title}"
+                                   HorizontalAlignment="Left"
+                                   Padding="0" Margin="4 4" />
+
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
+                            <Image RenderOptions.BitmapInterpolationMode="HighQuality"
+                                   Source="{SvgImage /Assets/Images/up-icon.svg}" Classes="icon"
+                                   VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding Args.up_name}" VerticalAlignment="Center"></TextBlock>
+                        </StackPanel>
+
+                    </StackPanel>
+                    <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior EventName="PointerPressed">
+                            <ia:InvokeCommandAction x:CompileBindings="False"
+                                                    Command="{Binding $parent[UserControl].DataContext.PlayVideoCmd}"
+                                                    CommandParameter="{Binding}">
+                            </ia:InvokeCommandAction>
+                        </ia:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                </Border>
             </Grid>
+
+
+            <!-- <ToolTip.Tip> -->
+            <!--     <TextBlock Text="{Binding desc}" /> -->
+            <!-- </ToolTip.Tip> -->
+
         </DataTemplate>
     </UserControl.DataTemplates>
     <ItemsControl ItemsSource="{Binding RecommendDataList}">
