@@ -21,22 +21,13 @@ public class PopularPageViewModel : AbsPageViewModel
 
     private bool CanLoadMore = true;
 
-    private long _idx = 0;
+    private long _idx;
     private readonly IGrpcApi _grpcApi;
 
     public PopularPageViewModel(IGrpcApi grpcApi,HeaderViewModel headerViewModel)
     {
         _grpcApi = grpcApi;
         Header = headerViewModel;
-    }
-
-    public override async Task OnNavigatedTo(object? parameter = null)
-    {
-        await base.OnNavigatedTo(parameter);
-        // if (!PopularCardList.Any())
-        // {
-        //     await DoLoadMore();
-        // }
     }
 
 
@@ -67,7 +58,6 @@ public class PopularPageViewModel : AbsPageViewModel
             {
                 PopularCardList.Add(popularReplyItem);
             }
-
             _idx = popularReply.Items.Last().SmallCoverV5.Base.Idx;
         }
         else

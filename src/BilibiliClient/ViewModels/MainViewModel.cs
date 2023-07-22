@@ -127,37 +127,27 @@ public class MainViewModel : ViewModelBase
         _doSomeThingCmd ??= new AsyncRelayCommand(async () =>
         {
             var appApi = this.GetAppRequiredService<IAppApi>();
-            // await appApi.RegionIndex();
-            //
-            // await appApi.SearchSquare();
 
             var accountService = this.GetAppRequiredService<IAccountService>();
-            //
-            // var aa = await accountService.IsLocalTokenValid(true);
-            //
-            // if (aa)
-            // {
-            // }
-
-            // var bb = await accountService.RefreshToken();
-            //
-            // if (bb)
-            // {
-            // }
-
-            // var aa = await accountService.RefreshToken();
-            //
-            // var bb = await accountService.GetMyInfo();
 
             var grpcApi = this.GetAppRequiredService<IGrpcApi>();
-
-            var cursor = new Bilibili.App.Interfaces.V1.Cursor()
+            var apiApi = this.GetAppRequiredService<IApiApi>();
+            if (CurrentPage is RecommendPageViewModel recommendPageViewModel)
             {
-                Max = 0
-            };
-            var aa = await grpcApi.GetMyHistory(cursor);
-
-            await Task.CompletedTask;
+                var data = recommendPageViewModel.RecommendDataList.FirstOrDefault();
+                if (data != null)
+                {
+                    var view = await grpcApi.GetVideoDetailByBVId(data.Bvid);
+                    if (view != null)
+                    {
+                        var aa = await apiApi.GetVideoPlayUrl(view.Arc.Aid.ToString(),
+                            view.Pages.FirstOrDefault()?.Page?.Cid.ToString() ?? "");
+                        if (aa != null)
+                        {
+                        }
+                    }
+                }
+            }
         });
 
     private ICommand? _doSomeThingCmd;

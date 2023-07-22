@@ -56,6 +56,7 @@ public static class BilibiliClientCoreExtensions
 
         serviceCollection.AddHttpClient<IPassportHttpClient, PassportHttpClient>();
         serviceCollection.AddHttpClient<IAppHttpClient, AppHttpClient>();
+        serviceCollection.AddHttpClient<IApiHttpClient, BilibiliClient.Core.ApiHttpClient.ApiHttpClient>();
 
         serviceCollection.AddSingleton<IGrpcHttpClient, GrpcHttpClient>();
 
@@ -89,6 +90,7 @@ public static class BilibiliClientCoreExtensions
     {
         serviceCollection.AddTransient<IPassportApi, PassportApi>();
         serviceCollection.AddTransient<IAppApi, AppApi>();
+        serviceCollection.AddTransient<IApiApi, ApiApi>();
         serviceCollection.AddTransient<IGrpcApi, GrpcApi>();
         return serviceCollection;
     }

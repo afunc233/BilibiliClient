@@ -28,4 +28,13 @@ public record ApiResponse
     /// </summary>
     [JsonPropertyName("data")]
     public object? Data { get; set; }
+
+    /// <summary>
+    /// TODO 不喜欢这种写法，虽然确实比较骚
+    /// </summary>
+    [JsonPropertyName("result")]
+    public object? Result
+    {
+        set => Data = value;
+    }
 }

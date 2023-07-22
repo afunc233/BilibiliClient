@@ -1,6 +1,7 @@
 ﻿using Bilibili.App.Dynamic.V2;
 using Bilibili.App.Interfaces.V1;
 using Bilibili.App.Show.V1;
+using Bilibili.App.View.V1;
 using BilibiliClient.Core.Configs;
 using BilibiliClient.Core.Contracts.Api;
 using BilibiliClient.Core.Contracts.ApiHttpClient;
@@ -98,6 +99,50 @@ public class GrpcApi : IGrpcApi
         var request = await _grpcHttpClient.BuildRequestMessage(url, req, _userSecretConfig.AccessToken);
 
         return await _grpcHttpClient.SendAsync(request, DynAllReply.Parser);
+    }
+
+    #endregion
+
+
+    #region 播放相关
+
+    private async ValueTask<ViewReply?> GetVideoDetail(ViewReq viewReq)
+    {
+        const string url = "bilibili.app.view.v1.View/View";
+
+        var request = await _grpcHttpClient.BuildRequestMessage(url, viewReq);
+
+        return await _grpcHttpClient.SendAsync(request, ViewReply.Parser);
+    }
+
+    public async ValueTask<ViewReply?> GetVideoDetailByBVId(string? bvId)
+    {
+        if (string.IsNullOrWhiteSpace(bvId))
+        {
+            return default;
+        }
+
+        var viewRequest = new ViewReq
+        {
+            Bvid = bvId
+        };
+
+        return await GetVideoDetail(viewRequest);
+    }
+
+    public async ValueTask<ViewReply?> GetVideoDetailByAVId(string? avId)
+    {
+        if (string.IsNullOrWhiteSpace(avId))
+        {
+            return default;
+        }
+
+        var viewRequest = new ViewReq
+        {
+            Bvid = avId
+        };
+
+        return await GetVideoDetail(viewRequest);
     }
 
     #endregion

@@ -1,6 +1,7 @@
 ﻿using Bilibili.App.Dynamic.V2;
 using Bilibili.App.Interfaces.V1;
 using Bilibili.App.Show.V1;
+using Bilibili.App.View.V1;
 
 namespace BilibiliClient.Core.Contracts.Api;
 
@@ -27,6 +28,16 @@ public interface IGrpcApi
     /// </summary>
     /// <returns></returns>
     ValueTask<DynAllReply?> GetDynamicAll(string? offset, string? baseline);
+
+    #endregion
+
+
+    #region 播放相关
+
+    ValueTask<ViewReply?> GetVideoDetailByBVId(string? bvId);
+    ValueTask<ViewReply?> GetVideoDetailByAVId(string? avId);
+
+
 
     #endregion
 }
