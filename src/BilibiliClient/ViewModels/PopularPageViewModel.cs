@@ -16,20 +16,19 @@ public class PopularPageViewModel : AbsPageViewModel
 
     public ObservableCollection<Card> PopularCardList { get; } = new ObservableCollection<Card>();
 
-    public ICommand LoadMoreCmd => _loadMoreCmd ??= new AsyncRelayCommand(DoLoadMore, () => CanLoadMore);
+    public ICommand LoadMoreCmd => _loadMoreCmd ??= new AsyncRelayCommand(DoLoadMore, () => _canLoadMore);
     private ICommand? _loadMoreCmd;
 
-    private bool CanLoadMore = true;
 
+    private bool _canLoadMore = true;
     private long _idx;
     private readonly IGrpcApi _grpcApi;
 
-    public PopularPageViewModel(IGrpcApi grpcApi,HeaderViewModel headerViewModel)
+    public PopularPageViewModel(IGrpcApi grpcApi, HeaderViewModel headerViewModel)
     {
         _grpcApi = grpcApi;
         Header = headerViewModel;
     }
-
 
     private async Task DoLoadMore()
     {
@@ -58,13 +57,16 @@ public class PopularPageViewModel : AbsPageViewModel
             {
                 PopularCardList.Add(popularReplyItem);
             }
+
             _idx = popularReply.Items.Last().SmallCoverV5.Base.Idx;
         }
         else
         {
-            CanLoadMore = false;
+            _canLoadMore = false;
         }
 
         IsLoading = false;
     }
+    
+    
 }

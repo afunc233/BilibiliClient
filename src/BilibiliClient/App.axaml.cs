@@ -46,6 +46,7 @@ public class App : Application
 
     public override void RegisterServices()
     {
+        LibVLCSharp.Shared.Core.Initialize();
         base.RegisterServices();
         var appLocation = Directory.GetCurrentDirectory();
         _host = Host.CreateDefaultBuilder()
@@ -73,32 +74,8 @@ public class App : Application
         services.UseHost();
 
         services.UseServices();
-
-
-        services.AddSingleton<MainViewModel>();
-
-        services.AddTransient<MainWindow>();
-        services.AddTransient<MainView>();
-
-        services.AddSingleton<IPageViewModel, RecommendPageViewModel>();
-        services.AddSingleton<IPageViewModel, PopularPageViewModel>();
-        services.AddTransient<IPageViewModel, HistoryPageViewModel>();
-        services.AddTransient<IPageViewModel, DynamicPageViewModel>();
-
-        services.AddSingleton<IPageViewModel, SettingPageViewModel>();
-
-        services.AddSingleton<HeaderViewModel>();
-        services.AddSingleton<LoginViewModel>();
-
-        services.AddTransient<RecommendPageView>();
-        services.AddTransient<PopularPageView>();
-        services.AddTransient<HistoryPageView>();
-        services.AddTransient<DynamicPageView>();
-
-        services.AddTransient<SettingPageView>();
-
-        services.AddTransient<HeaderView>();
-        services.AddTransient<LoginView>();
+        services.UseViewModel();
+        services.UseView();
     }
 
     public override async void OnFrameworkInitializationCompleted()

@@ -3,6 +3,7 @@ using BilibiliClient.Core.Contracts.Api;
 using BilibiliClient.Core.Contracts.ApiHttpClient;
 using BilibiliClient.Core.Contracts.Configs;
 using BilibiliClient.Core.Contracts.Models;
+using BilibiliClient.Core.Models.Https.Api;
 
 namespace BilibiliClient.Core.Api;
 
@@ -19,7 +20,7 @@ public class ApiApi : AbsApi, IApiApi
         _userSecretConfig = userSecretConfig;
     }
 
-    public async ValueTask<object?> GetVideoPlayUrl(string  avId, string cId)
+    public async ValueTask<VideoPlayUrlResult?> GetVideoPlayUrl(string avId, string cId)
     {
         const string url = "/x/player/playurl";
 
@@ -42,6 +43,6 @@ public class ApiApi : AbsApi, IApiApi
 
         var request = await _apiHttpClient.BuildRequestMessage(url, HttpMethod.Get, queryParameters);
 
-        return await _apiHttpClient.SendAsync<object>(request);
+        return await _apiHttpClient.SendAsync<VideoPlayUrlResult>(request);
     }
 }

@@ -6,6 +6,7 @@
              xmlns:httpModel="clr-namespace:BilibiliClient.Core.Models.Https.App;assembly=BilibiliClient.Core"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              xmlns:iac="using:BilibiliClient.Interactions"
              xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
@@ -27,6 +28,14 @@
                 <ToolTip.Tip>
                     <TextBlock Text="{Binding desc}" />
                 </ToolTip.Tip>
+                <i:Interaction.Behaviors>
+                    <ia:EventTriggerBehavior EventName="PointerPressed">
+                        <ia:InvokeCommandAction x:CompileBindings="False"
+                                                Command="{Binding $parent[UserControl].DataContext.PlayVideoCmd}"
+                                                CommandParameter="{Binding}">
+                        </ia:InvokeCommandAction>
+                    </ia:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
             </Grid>
         </DataTemplate>
     </UserControl.DataTemplates>

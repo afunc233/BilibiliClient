@@ -20,6 +20,11 @@ public partial class MainView : UserControl
             {
                 messenger.Register<StartLoginMessage>(this, StartLoginMessageHandler);
             }
+
+            if (!messenger.IsRegistered<StartLoginMessage>(this))
+            {
+                messenger.Register<StartLoginMessage>(this, StartLoginMessageHandler);
+            }
         };
         this.DetachedFromVisualTree += (sender, args) => { messenger.UnregisterAll(this); };
     }
