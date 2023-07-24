@@ -56,8 +56,6 @@ public class App : Application
                 configHost.AddJsonFile("hostsettings.json", optional: true);
                 configHost.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true); // 日志配置 热更新
             })
-            .ConfigureServices(ConfigureServices)
-            .ConfigureServices(BilibiliClientCoreExtensions.ConfigureServices)
             .ConfigureServices((_, services) =>
             {
                 if (ApplicationLifetime is { } desktop)
@@ -65,6 +63,8 @@ public class App : Application
                     services.AddSingleton(desktop);
                 }
             })
+            .ConfigureServices(ConfigureServices)
+            .ConfigureServices(BilibiliClientCoreExtensions.ConfigureServices)
             .UseNLog()
             .Build();
     }

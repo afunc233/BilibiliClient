@@ -1,12 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Windows.Input;
 using BilibiliClient.Core.Contracts.Api;
 using BilibiliClient.Core.Contracts.Services;
 using BilibiliClient.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DynamicData.Binding;
+using ReactiveUI;
 
 namespace BilibiliClient.ViewModels;
 
@@ -81,8 +87,7 @@ public partial class MainViewModel : ViewModelBase
         },
     };
 
-    [ObservableProperty]
-    private NavBar _currentNavBar;
+    [ObservableProperty] private NavBar _currentNavBar;
 
 
     public ICommand NavBarChangedCmd => _navBarChangedCmd ??= new AsyncRelayCommand<NavBar>(async (navBar) =>
@@ -144,5 +149,10 @@ public partial class MainViewModel : ViewModelBase
         _pageViewModels = pageViewModels;
         _header = headerViewModel;
         _currentNavBar = NavBarList.First();
+
+        this.WhenValueChanged(it => it.CurrentPage).Subscribe(it => { Console.WriteLine($"{it?.NavBarType}"); });
+        this.WhenAnyValue(it => it.CurrentPage).Subscribe(it => { Console.WriteLine($"{it?.NavBarType}"); });
+
+
     }
 }

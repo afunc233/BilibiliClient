@@ -5,6 +5,9 @@ using ReactiveUI;
 
 namespace BilibiliClient.ViewModels;
 
+/// <summary>
+/// ReactiveObject ？
+/// </summary>
 public abstract class ViewModelBase : ObservableObject
 {
     // protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string? propertyName = null)

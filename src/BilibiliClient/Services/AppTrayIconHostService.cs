@@ -11,6 +11,7 @@ using BilibiliClient.Core.Contracts.Services;
 using BilibiliClient.ViewModels;
 using DynamicData;
 using Microsoft.Extensions.Hosting;
+using IApplicationLifetime = Avalonia.Controls.ApplicationLifetimes.IApplicationLifetime;
 
 namespace BilibiliClient.Services;
 
@@ -24,13 +25,13 @@ public class AppTrayIconHostService : IHostedService
     private readonly string _iconFolderPath = Path.Combine(AppContext.BaseDirectory, "Assets", "TrayIcons");
     private bool _isStop;
     private readonly IWindowManagerService _windowManagerService;
-    private readonly IClassicDesktopStyleApplicationLifetime _classicDesktopStyleApplicationLifetime;
+    private readonly IApplicationLifetime _applicationLifetime;
 
     public AppTrayIconHostService(IWindowManagerService windowManagerService,
-        IClassicDesktopStyleApplicationLifetime classicDesktopStyleApplicationLifetime)
+        IApplicationLifetime applicationLifetime)
     {
         _windowManagerService = windowManagerService;
-        _classicDesktopStyleApplicationLifetime = classicDesktopStyleApplicationLifetime;
+        _applicationLifetime = applicationLifetime;
 
         InitTrayIcon();
 
@@ -123,7 +124,10 @@ public class AppTrayIconHostService : IHostedService
         mainMenuItem.Click += (_, _) => { _windowManagerService.OpenInNewWindow(typeof(MainViewModel).FullName!); };
         menu.Add(mainMenuItem);
         var exitMenuItem = new NativeMenuItem("退出应用");
-        exitMenuItem.Click += (_, _) => { _classicDesktopStyleApplicationLifetime.TryShutdown(); };
+        exitMenuItem.Click += (_, _) =>
+        {
+            (_applicationLifetime as IClassicDesktopStyleApplicationLifetime)?.TryShutdown();
+        };
         menu.Add(exitMenuItem);
 
         _notifyIcon.Clicked += (_, _) => { _windowManagerService.OpenInNewWindow(typeof(MainViewModel).FullName!); };

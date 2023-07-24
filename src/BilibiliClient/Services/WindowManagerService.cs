@@ -14,17 +14,17 @@ namespace BilibiliClient.Services;
 
 internal class WindowManagerService : IWindowManagerService
 {
-    private readonly IClassicDesktopStyleApplicationLifetime _classicDesktopStyleApplicationLifetime;
+    private readonly IApplicationLifetime _applicationLifetime;
 
     private readonly IServiceProvider _serviceProvider;
 
     private readonly Dictionary<string, Type?> _pages = new Dictionary<string, Type?>();
 
     public WindowManagerService(IServiceProvider serviceProvider,
-        IClassicDesktopStyleApplicationLifetime classicDesktopStyleApplicationLifetime)
+        IApplicationLifetime applicationLifetime)
     {
         _serviceProvider = serviceProvider;
-        _classicDesktopStyleApplicationLifetime = classicDesktopStyleApplicationLifetime;
+        _applicationLifetime = applicationLifetime;
         Configure<MainViewModel, MainWindow>();
         Configure<PlayerViewModel, VlcPlayerWindow>();
     }
@@ -113,7 +113,8 @@ internal class WindowManagerService : IWindowManagerService
 
     private Window? GetWindow(string? pageKey)
     {
-        return _classicDesktopStyleApplicationLifetime.Windows.FirstOrDefault(it =>
+        var applicationLifetime = _applicationLifetime as IClassicDesktopStyleApplicationLifetime;
+        return applicationLifetime?.Windows.FirstOrDefault(it =>
         {
             if (it.DataContext != null)
             {
