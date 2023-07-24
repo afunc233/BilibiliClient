@@ -95,6 +95,18 @@ public static class BilibiliClientCoreExtensions
         return serviceCollection;
     }
 
+    private class LazilyResolved<T> : Lazy<T> where T : notnull
+    {
+        public LazilyResolved(IServiceProvider serviceProvider) : base(serviceProvider.GetRequiredService<T>)
+        {
+        }
+    }
+
+    private static IServiceCollection UseLazyResolution(this IServiceCollection serviceCollection)
+    {
+        serviceCollection.AddTransient(typeof(Lazy<>), typeof(LazilyResolved<>));
+        return serviceCollection;
+    }
 
     private static IServiceCollection UseServices(this IServiceCollection serviceCollection)
     {
@@ -124,6 +136,7 @@ public static class BilibiliClientCoreExtensions
         services.UsePlatformConfig();
         services.UseHttp();
         services.UseApi();
+        services.UseLazyResolution();
         services.UseServices();
         services.UseHost();
     }

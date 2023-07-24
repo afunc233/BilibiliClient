@@ -10,18 +10,10 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace BilibiliClient.ViewModels;
 
-public class RecommendPageViewModel : AbsPageViewModel
+public partial class RecommendPageViewModel : AbsPageViewModel
 {
     public override NavBarType NavBarType => NavBarType.Recommend;
     public ObservableCollection<RecommendCardItem> RecommendDataList { get; } = new();
-
-    public ICommand LoadMoreCmd => _loadMoreCmd ??=
-        new AsyncRelayCommand(async () => await DoLoadMore());
-
-    private ICommand? _loadMoreCmd;
-
-    public ICommand PlayVideoCmd => _playVideoCmd ??= new AsyncRelayCommand<RecommendCardItem>(DoPlayVideo);
-    private ICommand? _playVideoCmd;
 
     private long _idx = 0;
     private readonly IAppApi _appApi;
@@ -30,8 +22,8 @@ public class RecommendPageViewModel : AbsPageViewModel
     {
         _appApi = appApi;
     }
-
-    private async Task DoLoadMore()
+    
+    protected override async Task LoadMore()
     {
         IsLoading = true;
         await Task.CompletedTask;
@@ -53,14 +45,15 @@ public class RecommendPageViewModel : AbsPageViewModel
     }
 
 
-    private async Task DoPlayVideo(RecommendCardItem? recommendCardItem)
+    [RelayCommand]
+    private async Task PlayVideo(RecommendCardItem? recommendCardItem)
     {
         await Task.CompletedTask;
 
-        var vlcplayerView = new VlcPlayerWindow();
+        var vlcPlayerView = new VlcPlayerWindow();
         var playerViewModel = this.GetAppRequiredService<PlayerViewModel>();
-        vlcplayerView.DataContext = playerViewModel;
-        vlcplayerView.Show();
+        vlcPlayerView.DataContext = playerViewModel;
+        vlcPlayerView.Show();
         await playerViewModel.OnNavigatedTo(recommendCardItem);
     }
 }

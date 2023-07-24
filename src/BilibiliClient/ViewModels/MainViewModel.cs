@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
 using System.Windows.Input;
 using BilibiliClient.Core.Contracts.Api;
 using BilibiliClient.Core.Contracts.Services;
@@ -152,7 +149,5 @@ public partial class MainViewModel : ViewModelBase
 
         this.WhenValueChanged(it => it.CurrentPage).Subscribe(it => { Console.WriteLine($"{it?.NavBarType}"); });
         this.WhenAnyValue(it => it.CurrentPage).Subscribe(it => { Console.WriteLine($"{it?.NavBarType}"); });
-
-
     }
 }

@@ -10,7 +10,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace BilibiliClient.ViewModels;
 
-public class DynamicPageViewModel : AbsPageViewModel
+public partial class DynamicPageViewModel : AbsPageViewModel
 {
     public override NavBarType NavBarType => NavBarType.Dynamic;
 
@@ -40,10 +40,6 @@ public class DynamicPageViewModel : AbsPageViewModel
     private DynamicDataType _currentDataType = DynamicDataType.Video;
     public ObservableCollection<object> DynamicDataList { get; } = new ObservableCollection<object>();
 
-    public ICommand LoadMoreCmd =>
-        _loadMoreCmd ??= new AsyncRelayCommand(LoadMoreData, () => _dynamicService.HasMore);
-
-    private ICommand? _loadMoreCmd;
     private readonly IDynamicService _dynamicService;
 
     public DynamicPageViewModel(IDynamicService dynamicService)
@@ -58,8 +54,9 @@ public class DynamicPageViewModel : AbsPageViewModel
         DynamicDataList.Clear();
     }
 
-    private async Task LoadMoreData()
+    protected override async Task LoadMore()
     {
+        
         var dataList = await _dynamicService.LoadNextPage(CurrentDataType);
         dataList.ForEach(DynamicDataList.Add);
     }

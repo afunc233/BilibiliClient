@@ -1,26 +1,21 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Bilibili.App.Card.V1;
 using Bilibili.App.Show.V1;
 using BilibiliClient.Core.Contracts.Api;
 using BilibiliClient.Models;
-using CommunityToolkit.Mvvm.Input;
 
 namespace BilibiliClient.ViewModels;
 
-public class PopularPageViewModel : AbsPageViewModel
+public partial class PopularPageViewModel : AbsPageViewModel
 {
     public override NavBarType NavBarType => NavBarType.Popular;
 
     public ObservableCollection<Card> PopularCardList { get; } = new ObservableCollection<Card>();
 
-    public ICommand LoadMoreCmd => _loadMoreCmd ??= new AsyncRelayCommand(DoLoadMore, () => _canLoadMore);
-    private ICommand? _loadMoreCmd;
-
-
-    private bool _canLoadMore = true;
+    
+    
     private long _idx;
     private readonly IGrpcApi _grpcApi;
 
@@ -30,7 +25,7 @@ public class PopularPageViewModel : AbsPageViewModel
         Header = headerViewModel;
     }
 
-    private async Task DoLoadMore()
+    protected override async Task LoadMore()
     {
         IsLoading = true;
         var isLogin = false;
@@ -62,11 +57,9 @@ public class PopularPageViewModel : AbsPageViewModel
         }
         else
         {
-            _canLoadMore = false;
+            CanLoadMore = false;
         }
 
         IsLoading = false;
     }
-    
-    
 }

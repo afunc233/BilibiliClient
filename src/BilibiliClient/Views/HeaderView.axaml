@@ -11,7 +11,7 @@
                LastChildFill="True" Height="38">
         <TextBlock Text="bilibili" Margin="20,0,0,0" VerticalAlignment="Center" FontSize="16" TextAlignment="Center"
                    DockPanel.Dock="Left" />
-        <Button Content="登录" Command="{Binding LoginCmd}" DockPanel.Dock="Right" Margin="0,0,150,0" />
+        <Button Content="登录" Command="{Binding LoginCommand}" DockPanel.Dock="Right" Margin="0,0,150,0" />
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
             <AutoCompleteBox MinWidth="300" HorizontalAlignment="Stretch" />
         </StackPanel>

@@ -28,7 +28,7 @@
         </ItemsControl.ItemsPanel>
 
         <i:Interaction.Behaviors>
-            <iac:Scroll2EndTriggerBehavior Distance2End="50" LoadMoreDataCmd="{Binding LoadMoreCmd}" />
+            <iac:Scroll2EndTriggerBehavior Distance2End="50" LoadMoreDataCmd="{Binding LoadMoreCommand}" />
         </i:Interaction.Behaviors>
     </ItemsControl>
 </UserControl>
