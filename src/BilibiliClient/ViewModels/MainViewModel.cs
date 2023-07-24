@@ -5,22 +5,14 @@ using System.Windows.Input;
 using BilibiliClient.Core.Contracts.Api;
 using BilibiliClient.Core.Contracts.Services;
 using BilibiliClient.Models;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 namespace BilibiliClient.ViewModels;
 
-public class MainViewModel : ViewModelBase
+public partial class MainViewModel : ViewModelBase
 {
-    public IPageViewModel? CurrentPage
-    {
-        get => _currentPage;
-        set
-        {
-            SetProperty(ref _currentPage, value);
-            RaisePropertyChanged(nameof(Header));
-        }
-    }
-
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(Header))]
     private IPageViewModel? _currentPage;
 
     public ViewModelBase Header
@@ -89,13 +81,7 @@ public class MainViewModel : ViewModelBase
         },
     };
 
-
-    public NavBar CurrentNavBar
-    {
-        get => _currentNavBar;
-        set => SetProperty(ref _currentNavBar, value);
-    }
-
+    [ObservableProperty]
     private NavBar _currentNavBar;
 
 

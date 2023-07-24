@@ -65,16 +65,18 @@ public class AppTrayIconHostService : IHostedService
                     }
 
                     // 添加托盘图标,
-                    await Dispatcher.UIThread.InvokeAsync(() =>
+                    var file = currentFile;
+                    Dispatcher.UIThread.Invoke(() =>
                     {
-                        if (!cacheDic.TryGetValue(currentFile, out var windowIcon))
+                        if (!cacheDic.TryGetValue(file, out var windowIcon))
                         {
-                            windowIcon = new WindowIcon(currentFile);
-                            cacheDic.TryAdd(currentFile, windowIcon);
+                            windowIcon = new WindowIcon(file);
+                            cacheDic.TryAdd(file, windowIcon);
                         }
 
                         _notifyIcon.Icon = windowIcon;
                     }, DispatcherPriority.Background, cancellationToken);
+
                     currentFile = string.Equals(currentFile, files.LastOrDefault())
                         ? files.FirstOrDefault()
                         : files.Skip(files.IndexOf(currentFile) + 1).FirstOrDefault();

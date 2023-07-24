@@ -8,7 +8,7 @@ public class VideoPlayUrlDashVideo
     /// 
     /// </summary>
     [JsonPropertyName("baseUrl")]
-    public string BaseUrl { get; set; }
+    public string? BaseUrl { get; set; }
 }
 
 public class VideoPlayUrlDashAudio
@@ -17,7 +17,7 @@ public class VideoPlayUrlDashAudio
     /// 
     /// </summary>
     [JsonPropertyName("baseUrl")]
-    public string BaseUrl { get; set; }
+    public string? BaseUrl { get; set; }
 }
 
 public class VideoPlayUrlDash

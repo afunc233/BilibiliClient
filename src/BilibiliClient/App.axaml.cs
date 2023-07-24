@@ -60,7 +60,7 @@ public class App : Application
             .ConfigureServices(BilibiliClientCoreExtensions.ConfigureServices)
             .ConfigureServices((_, services) =>
             {
-                if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                if (ApplicationLifetime is { } desktop)
                 {
                     services.AddSingleton(desktop);
                 }
@@ -115,9 +115,6 @@ public class App : Application
 
                 desktop.ShutdownMode = Avalonia.Controls.ShutdownMode.OnExplicitShutdown;
 
-                var mainWindow = GetAppRequiredServiceInner<MainWindow>();
-                mainWindow!.DataContext = GetAppRequiredServiceInner<MainViewModel>();
-                desktop.MainWindow = mainWindow;
                 break;
             case ISingleViewApplicationLifetime singleViewPlatform:
                 // Android / iOS

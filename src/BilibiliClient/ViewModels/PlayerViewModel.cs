@@ -4,18 +4,16 @@ using BilibiliClient.Core.Contracts;
 using BilibiliClient.Core.Contracts.Api;
 using BilibiliClient.Core.Models.Https.Api;
 using BilibiliClient.Core.Models.Https.App;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BilibiliClient.ViewModels;
 
-public class PlayerViewModel : ViewModelBase, INavigationAware
+public partial class PlayerViewModel : ViewModelBase, INavigationAware
 {
-    public VideoPlayUrlResult? VideoPlayUrl
-    {
-        get => _videoPlayUrl;
-        set => SetProperty(ref _videoPlayUrl, value);
-    }
-
-    private VideoPlayUrlResult? _videoPlayUrl;
+    /// <summary>
+    /// 
+    /// </summary>
+    [ObservableProperty] private VideoPlayUrlResult? _videoPlayUrl;
 
     private readonly IGrpcApi _grpcApi;
     private readonly IApiApi _apiApi;

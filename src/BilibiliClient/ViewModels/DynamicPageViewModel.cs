@@ -20,7 +20,7 @@ public class DynamicPageViewModel : AbsPageViewModel
         set
         {
             CurrentDataType = value ? DynamicDataType.Video : DynamicDataType.All;
-            RaisePropertyChanged();
+            OnPropertyChanged();
         }
     }
 

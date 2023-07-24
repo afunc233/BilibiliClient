@@ -19,10 +19,10 @@ public class VlcVideoView : NativeControlHost
     /// <summary>
     /// Defines the <see cref="P:LibVLCSharp.Avalonia.VideoView.MediaPlayer" /> property.
     /// </summary>
-    public static readonly DirectProperty<VlcVideoView, MediaPlayer?> MediaPlayerProperty =
+    public static readonly DirectProperty<VlcVideoView, MediaPlayer> MediaPlayerProperty =
         AvaloniaProperty.RegisterDirect<VlcVideoView, MediaPlayer>(nameof(MediaPlayer),
             (Func<VlcVideoView, MediaPlayer>)(o => o.MediaPlayer),
-            (Action<VlcVideoView, MediaPlayer>)((o, v) => o.MediaPlayer = v), (MediaPlayer)null, BindingMode.TwoWay,
+            (Action<VlcVideoView, MediaPlayer>)((o, v) => o.MediaPlayer = v), null, BindingMode.TwoWay,
             false);
 
     /// <summary>Gets or sets the MediaPlayer that will be displayed.</summary>
@@ -90,8 +90,9 @@ public class VlcVideoView : NativeControlHost
     {
         this.Detach();
         base.DestroyNativeControlCore(control);
-        if (this._platformHandle == null)
+        IPlatformHandle? platformHandle = this._platformHandle;
+        if (platformHandle == null)
             return;
-        this._platformHandle = (IPlatformHandle)null;
+        this._platformHandle = null;
     }
 }

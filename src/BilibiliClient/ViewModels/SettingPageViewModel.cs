@@ -91,8 +91,8 @@ public class SettingPageViewModel : AbsPageViewModel
                         _customAccentColor = (Color)curColor;
                         _listBoxColor = _customAccentColor;
 
-                        RaisePropertyChanged(nameof(CustomAccentColor));
-                        RaisePropertyChanged(nameof(ListBoxColor));
+                        OnPropertyChanged(nameof(CustomAccentColor));
+                        OnPropertyChanged(nameof(ListBoxColor));
                     }
                     else
                     {
@@ -105,8 +105,8 @@ public class SettingPageViewModel : AbsPageViewModel
                     // Restore system color
                     _customAccentColor = default;
                     _listBoxColor = default;
-                    RaisePropertyChanged(nameof(CustomAccentColor));
-                    RaisePropertyChanged(nameof(ListBoxColor));
+                    OnPropertyChanged(nameof(CustomAccentColor));
+                    OnPropertyChanged(nameof(ListBoxColor));
                     UpdateAppAccentColor(null);
                 }
             }
@@ -128,7 +128,7 @@ public class SettingPageViewModel : AbsPageViewModel
             if (value != null)
             {
                 _customAccentColor = value.Value;
-                RaisePropertyChanged(nameof(CustomAccentColor));
+                OnPropertyChanged(nameof(CustomAccentColor));
 
                 UpdateAppAccentColor(value.Value);
             }
@@ -147,7 +147,7 @@ public class SettingPageViewModel : AbsPageViewModel
             if (SetProperty(ref _customAccentColor, value))
             {
                 _listBoxColor = value;
-                RaisePropertyChanged(nameof(ListBoxColor));
+                OnPropertyChanged(nameof(ListBoxColor));
                 UpdateAppAccentColor(value);
             }
         }

@@ -26,6 +26,7 @@ internal class WindowManagerService : IWindowManagerService
         _serviceProvider = serviceProvider;
         _classicDesktopStyleApplicationLifetime = classicDesktopStyleApplicationLifetime;
         Configure<MainViewModel, MainWindow>();
+        Configure<PlayerViewModel, VlcPlayerWindow>();
     }
 
     private void Configure<TVm, TV>()
@@ -51,10 +52,15 @@ internal class WindowManagerService : IWindowManagerService
         }
     }
 
-    public Type? GetPageType(string key)
+    public Type? GetPageType(string? key)
     {
         lock (_pages)
         {
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                return default;
+            }
+
             if (!_pages.TryGetValue(key, out var pageType))
             {
                 throw new ArgumentException(
@@ -65,19 +71,24 @@ internal class WindowManagerService : IWindowManagerService
         }
     }
 
-    void IWindowManagerService.CloseWindow(string key)
+    void IWindowManagerService.CloseWindow(string? key)
     {
         var window = GetWindow(key);
         window?.Close();
     }
 
-    bool? IWindowManagerService.OpenInDialog(string pageKey, object? parameter)
+    bool? IWindowManagerService.OpenInDialog(string? pageKey, object? parameter)
     {
         return false;
     }
 
-    void IWindowManagerService.OpenInNewWindow(string pageKey, object? parameter)
+    void IWindowManagerService.OpenInNewWindow(string? pageKey, object? parameter)
     {
+        if (string.IsNullOrWhiteSpace(pageKey))
+        {
+            return;
+        }
+
         var window = GetWindow(pageKey);
         if (window != null)
         {
@@ -100,7 +111,7 @@ internal class WindowManagerService : IWindowManagerService
         navigationAware.OnNavigatedTo(parameter);
     }
 
-    private Window? GetWindow(string pageKey)
+    private Window? GetWindow(string? pageKey)
     {
         return _classicDesktopStyleApplicationLifetime.Windows.FirstOrDefault(it =>
         {
@@ -116,7 +127,7 @@ internal class WindowManagerService : IWindowManagerService
         });
     }
 
-    void IWindowManagerService.OpenInShallWindow(string key, object? parameter)
+    void IWindowManagerService.OpenInShallWindow(string? key, object? parameter)
     {
     }
 }
