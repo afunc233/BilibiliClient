@@ -5,7 +5,7 @@ namespace BilibiliClient.ViewModels;
 
 public class NavBar : ViewModelBase
 {
-    private NavBarType _navType;
+    private readonly NavBarType _navType;
 
     /// <summary>
     /// 类型
@@ -13,7 +13,7 @@ public class NavBar : ViewModelBase
     public NavBarType NavType
     {
         get => _navType;
-        set => SetProperty(ref _navType, value);
+        init => SetProperty(ref _navType, value);
     }
 
     private string _barName = "";

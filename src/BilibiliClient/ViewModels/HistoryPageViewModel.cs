@@ -28,7 +28,7 @@ public partial class HistoryPageViewModel : AbsPageViewModel
         {
             list.ForEach(HistoryDataList.Add);
         }
-
+        CanLoadMore = _historyService.HasMore;
         IsLoading = false;
     }
 

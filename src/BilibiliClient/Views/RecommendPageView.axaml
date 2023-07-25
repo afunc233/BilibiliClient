@@ -9,7 +9,6 @@
              xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              xmlns:iac="using:BilibiliClient.Interactions"
              xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
-             xmlns:system="clr-namespace:System;assembly=System.Runtime"
              xmlns:controls="clr-namespace:BilibiliClient.Controls"
              x:Class="BilibiliClient.Views.RecommendPageView" x:DataType="vm:RecommendPageViewModel">
     <Design.DataContext>

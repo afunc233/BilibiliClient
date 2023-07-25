@@ -15,11 +15,11 @@ namespace BilibiliClient.Utils;
 internal static class QRCoderUtil
 {
     // ReSharper disable once InconsistentNaming
-    private static readonly QRCoder.QRCodeGenerator _qrCodeGenerator;
+    private static readonly QRCodeGenerator _qrCodeGenerator;
 
     static QRCoderUtil()
     {
-        _qrCodeGenerator = new QRCoder.QRCodeGenerator();
+        _qrCodeGenerator = new QRCodeGenerator();
     }
 
 

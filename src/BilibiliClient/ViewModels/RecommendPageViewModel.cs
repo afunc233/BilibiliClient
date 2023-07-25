@@ -14,7 +14,7 @@ public partial class RecommendPageViewModel : AbsPageViewModel
     public override NavBarType NavBarType => NavBarType.Recommend;
     public ObservableCollection<RecommendCardItem> RecommendDataList { get; } = new();
 
-    private long _idx = 0;
+    private long _idx;
     private readonly IAppApi _appApi;
 
     public RecommendPageViewModel(IAppApi appApi)

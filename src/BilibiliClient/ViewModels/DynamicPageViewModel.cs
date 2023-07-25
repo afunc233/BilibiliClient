@@ -6,7 +6,7 @@ using BilibiliClient.Models;
 
 namespace BilibiliClient.ViewModels;
 
-public partial class DynamicPageViewModel : AbsPageViewModel
+public class DynamicPageViewModel : AbsPageViewModel
 {
     public override NavBarType NavBarType => NavBarType.Dynamic;
 

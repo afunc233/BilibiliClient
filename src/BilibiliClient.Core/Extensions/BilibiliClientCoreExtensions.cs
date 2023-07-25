@@ -25,7 +25,7 @@ public static class BilibiliClientCoreExtensions
         return serviceCollection;
     }
 
-    private static IServiceCollection UseConfig(this IServiceCollection serviceCollection, HostBuilderContext context)
+    private static IServiceCollection UseConfig(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddSingleton<UserSecretConfig>();
         return serviceCollection;
@@ -122,22 +122,21 @@ public static class BilibiliClientCoreExtensions
         return serviceCollection;
     }
 
-    private static IServiceCollection UseHost(this IServiceCollection serviceCollection)
+    private static void UseHost(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddHostedService<BilibiliClientCoreHostedService>();
-        return serviceCollection;
     }
 
     public static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
     {
-        services.UseUtils();
-        services.UseConfig(context);
-        services.UseMessenger();
-        services.UsePlatformConfig();
-        services.UseHttp();
-        services.UseApi();
-        services.UseLazyResolution();
-        services.UseServices();
-        services.UseHost();
+        services.UseUtils()
+            .UseConfig()
+            .UseMessenger()
+            .UsePlatformConfig()
+            .UseHttp()
+            .UseApi()
+            .UseLazyResolution()
+            .UseServices()
+            .UseHost();
     }
 }
