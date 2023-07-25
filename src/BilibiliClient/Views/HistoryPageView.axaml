@@ -9,7 +9,7 @@
              xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
              xmlns:iac="using:BilibiliClient.Interactions"
              xmlns:controls="clr-namespace:BilibiliClient.Controls"
-             xmlns:grpcModels="clr-namespace:Bilibili.App.Interfaces.V1;assembly=BilibiliClient.Models.gRPC"
+             xmlns:grpcModels="clr-namespace:Bilibili.App.Interfaces.V1;assembly=BilibiliClient.Core.Models.gRPC"
              x:Class="BilibiliClient.Views.HistoryPageView">
     <UserControl.DataTemplates>
         <DataTemplate DataType="{x:Type grpcModels:CursorItem}">

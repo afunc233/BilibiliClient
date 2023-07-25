@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>$(AppTargetFrameworks);</TargetFrameworks>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>BilibiliClient.Core.Models</RootNamespace>
+        <PackageId>BilibiliClient.Core.Models</PackageId>
+    </PropertyGroup>
+
+
+</Project>

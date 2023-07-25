@@ -16,7 +16,8 @@
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0-preview.6.23329.7" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\BilibiliClient.Models.gRPC\BilibiliClient.Models.gRPC.csproj" />
+      <ProjectReference Include="..\BilibiliClient.Core.Models.gRPC\BilibiliClient.Core.Models.gRPC.csproj" />
+      <ProjectReference Include="..\BilibiliClient.Core.Models\BilibiliClient.Core.Models.csproj" />
     </ItemGroup>
 
 

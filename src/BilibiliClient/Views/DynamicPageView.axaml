@@ -9,7 +9,7 @@
              xmlns:controls="clr-namespace:BilibiliClient.Controls"
              xmlns:viewModels="clr-namespace:BilibiliClient.ViewModels"
              xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
-             xmlns:grpcModels="clr-namespace:Bilibili.App.Dynamic.V2;assembly=BilibiliClient.Models.gRPC"
+             xmlns:grpcModels="clr-namespace:Bilibili.App.Dynamic.V2;assembly=BilibiliClient.Core.Models.gRPC"
              x:Class="BilibiliClient.Views.DynamicPageView">
     <UserControl.DataTemplates>
         <DataTemplate DataType="{x:Type grpcModels:DynamicItem}">

@@ -20,8 +20,12 @@ public class VlcVideoView : NativeControlHost
     /// </summary>
     public static readonly DirectProperty<VlcVideoView, MediaPlayer> MediaPlayerProperty =
         AvaloniaProperty.RegisterDirect<VlcVideoView, MediaPlayer>(nameof(MediaPlayer),
-            (Func<VlcVideoView, MediaPlayer>)(o => o.MediaPlayer),
-            (Action<VlcVideoView, MediaPlayer>)((o, v) => o.MediaPlayer = v), (MediaPlayer?)null, BindingMode.TwoWay);
+#pragma warning disable CS8603 // 可能返回 null 引用。
+            o => o.MediaPlayer,
+#pragma warning restore CS8603 // 可能返回 null 引用。
+#pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
+            (Action<VlcVideoView, MediaPlayer>)((o, v) => o.MediaPlayer = v), null, BindingMode.TwoWay);
+#pragma warning restore CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
 
     /// <summary>Gets or sets the MediaPlayer that will be displayed.</summary>
     public MediaPlayer? MediaPlayer
