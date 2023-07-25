@@ -9,13 +9,14 @@ public  abstract partial class AbsPageViewModel : ViewModelBase, IPageViewModel
 {
     public abstract NavBarType NavBarType { get; }
 
-    public ViewModelBase? Header { get; protected set; }
+    public ViewModelBase? Header { get; protected init; }
     
     [ObservableProperty]
-    private bool _isLoading = false;
+    private bool _isLoading;
 
     [ObservableProperty]
     private bool _canLoadMore = true;
+    
     public virtual async Task OnNavigatedTo(object? parameter = null)
     {
         IsLoading = false;

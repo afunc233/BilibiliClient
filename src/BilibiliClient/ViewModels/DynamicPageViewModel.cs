@@ -1,12 +1,8 @@
 ﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using BilibiliClient.Core.Contracts.Models;
 using BilibiliClient.Core.Contracts.Services;
 using BilibiliClient.Models;
-using CommunityToolkit.Mvvm.Input;
 
 namespace BilibiliClient.ViewModels;
 

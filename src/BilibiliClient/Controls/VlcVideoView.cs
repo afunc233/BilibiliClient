@@ -4,7 +4,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Platform;
-using LibVLCSharp;
 using LibVLCSharp.Shared;
 
 namespace BilibiliClient.Controls;
@@ -22,8 +21,7 @@ public class VlcVideoView : NativeControlHost
     public static readonly DirectProperty<VlcVideoView, MediaPlayer> MediaPlayerProperty =
         AvaloniaProperty.RegisterDirect<VlcVideoView, MediaPlayer>(nameof(MediaPlayer),
             (Func<VlcVideoView, MediaPlayer>)(o => o.MediaPlayer),
-            (Action<VlcVideoView, MediaPlayer>)((o, v) => o.MediaPlayer = v), null, BindingMode.TwoWay,
-            false);
+            (Action<VlcVideoView, MediaPlayer>)((o, v) => o.MediaPlayer = v), (MediaPlayer?)null, BindingMode.TwoWay);
 
     /// <summary>Gets or sets the MediaPlayer that will be displayed.</summary>
     public MediaPlayer? MediaPlayer
@@ -31,7 +29,7 @@ public class VlcVideoView : NativeControlHost
         get => this._mediaPlayer;
         set
         {
-            if (this._mediaPlayer == value)
+            if (this._mediaPlayer?.Equals(value) ?? false)
                 return;
             this.Detach();
             this._mediaPlayer = value;

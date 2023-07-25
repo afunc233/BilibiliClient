@@ -4,10 +4,7 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.LogicalTree;
-using Avalonia.Markup.Xaml;
 using BilibiliClient.ViewModels;
-using LibVLCSharp;
 using LibVLCSharp.Shared;
 
 namespace BilibiliClient.Views;

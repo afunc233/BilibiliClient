@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using CommunityToolkit.Mvvm.ComponentModel;
-using ReactiveUI;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BilibiliClient.ViewModels;
 
