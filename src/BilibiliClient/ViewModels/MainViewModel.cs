@@ -91,35 +91,6 @@ public partial class MainViewModel : ViewModelBase
         _currentNavBar = NavBarList.First();
     }
 
-
-    [RelayCommand]
-    private async Task DoSomeThing()
-    {
-        // var appApi = this.GetAppRequiredService<IAppApi>();
-        
-        // var accountService = this.GetAppRequiredService<IAccountService>();
-
-        var grpcApi = this.GetAppRequiredService<IGrpcApi>();
-        var apiApi = this.GetAppRequiredService<IApiApi>();
-        if (CurrentPage is RecommendPageViewModel recommendPageViewModel)
-        {
-            var data = recommendPageViewModel.RecommendDataList.FirstOrDefault();
-            if (data != null)
-            {
-                var view = await grpcApi.GetVideoDetailByBVId(data.Bvid);
-                if (view != null)
-                {
-                    var aa = await apiApi.GetVideoPlayUrl(view.Arc.Aid.ToString(),
-                        view.Pages.FirstOrDefault()?.Page?.Cid.ToString() ?? "");
-                    if (aa != null)
-                    {
-                    }
-                }
-            }
-        }
-    }
-
-
     [RelayCommand]
     private async Task NavBarChanged(NavBar? navBar)
     {
@@ -139,6 +110,34 @@ public partial class MainViewModel : ViewModelBase
             // 确保先 OnNavigatedTo 再设置到界面上
             await currentPage.OnNavigatedTo();
             CurrentPage = currentPage;
+        }
+    }
+
+
+    [RelayCommand]
+    private async Task DoSomeThing()
+    {
+        // var appApi = this.GetAppRequiredService<IAppApi>();
+
+        // var accountService = this.GetAppRequiredService<IAccountService>();
+
+        var grpcApi = this.GetAppRequiredService<IGrpcApi>();
+        var apiApi = this.GetAppRequiredService<IApiApi>();
+        if (CurrentPage is RecommendPageViewModel recommendPageViewModel)
+        {
+            var data = recommendPageViewModel.RecommendDataList.FirstOrDefault();
+            if (data != null)
+            {
+                var view = await grpcApi.GetVideoDetailByBVId(data.Bvid);
+                if (view != null)
+                {
+                    var aa = await apiApi.GetVideoPlayUrl(view.Arc.Aid.ToString(),
+                        view.Pages.FirstOrDefault()?.Page?.Cid.ToString() ?? "");
+                    if (aa != null)
+                    {
+                    }
+                }
+            }
         }
     }
 }

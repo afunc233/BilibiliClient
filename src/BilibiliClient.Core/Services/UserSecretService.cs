@@ -2,6 +2,7 @@
 using BilibiliClient.Core.Configs;
 using BilibiliClient.Core.Contracts.Services;
 using BilibiliClient.Core.Utils;
+using BilibiliClient.Models.gRPC;
 
 namespace BilibiliClient.Core.Services;
 
@@ -37,6 +38,7 @@ public class UserSecretService : IUserSecretService
             _userSecretConfig.LastSaveAuthTime = localValue.LastSaveAuthTime;
             _userSecretConfig.DomainList = localValue.DomainList;
             _userSecretConfig.CookieList = localValue.CookieList;
+            _userSecretConfig.Buvid = localValue.Buvid ??= GetBuvid();
         }
 
         if (_userSecretConfig is { DomainList: not null } and { CookieList: not null })
@@ -70,5 +72,13 @@ public class UserSecretService : IUserSecretService
         await Task.CompletedTask;
         userSecretConfig ??= _userSecretConfig;
         _jsonFileService.Save(".", nameof(UserSecretConfig), userSecretConfig, s => DESUtil.Encrypt(s));
+    }
+
+
+    private static string GetBuvid()
+    {
+        var macAddress = Guid.NewGuid().ToString();
+        var buvidObj = new Buvid(macAddress);
+        return buvidObj.Generate();
     }
 }

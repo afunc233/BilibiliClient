@@ -111,7 +111,7 @@ public abstract class AbsApi : IApi
     }
 
 
-    private static String GenerateMd5(String input)
+    private static string GenerateMd5(string input)
     {
         byte[] digest = MD5.HashData(Encoding.UTF8.GetBytes(input));
         StringBuilder sb = new StringBuilder();

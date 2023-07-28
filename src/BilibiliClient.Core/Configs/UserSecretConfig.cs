@@ -7,6 +7,8 @@ namespace BilibiliClient.Core.Configs;
 /// </summary>
 public class UserSecretConfig
 {
+    public string? Buvid { get; set; }
+
     public string? AccessKey { get; set; }
 
     public string? AccessToken { get; set; }

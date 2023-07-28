@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Headers;
+using BilibiliClient.Core.Configs;
 using BilibiliClient.Core.Contracts.ApiHttpClient;
 using BilibiliClient.Core.Contracts.Services;
 using BilibiliClient.Core.Contracts.Utils;
@@ -10,11 +11,15 @@ namespace BilibiliClient.Core.ApiHttpClient;
 
 public class GrpcHttpClient : AbsHttpClient, IGrpcHttpClient
 {
+    private readonly UserSecretConfig _userSecretConfig;
+
     public GrpcHttpClient(HttpClient httpClient, IJsonUtils jsonUtils,
-        IApiErrorCodeHandlerService apiErrorCodeHandlerService, ILogger<GrpcHttpClient> logger) : base(httpClient,
+        IApiErrorCodeHandlerService apiErrorCodeHandlerService, UserSecretConfig userSecretConfig,
+        ILogger<GrpcHttpClient> logger) : base(httpClient,
         jsonUtils,
         apiErrorCodeHandlerService, logger)
     {
+        _userSecretConfig = userSecretConfig;
         httpClient.BaseAddress = new Uri(ApiConstants.GrpcUrl);
     }
 
@@ -51,6 +56,7 @@ public class GrpcHttpClient : AbsHttpClient, IGrpcHttpClient
         requestMessage.Headers.Add("env", "prod");
         requestMessage.Headers.Add("Transfer-Encoding", "chunked");
         requestMessage.Headers.Add("TE", "trailers");
+        requestMessage.Headers.Add("buvid", _userSecretConfig.Buvid);
 
         var messageBytes = grpcMessage.ToByteArray();
 
