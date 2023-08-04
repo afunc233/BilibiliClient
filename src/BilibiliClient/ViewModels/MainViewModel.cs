@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using BilibiliClient.Core.Contracts.Api;
+using BilibiliClient.Core.Api.Contracts.Api;
 using BilibiliClient.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -117,27 +117,6 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private async Task DoSomeThing()
     {
-        // var appApi = this.GetAppRequiredService<IAppApi>();
-
-        // var accountService = this.GetAppRequiredService<IAccountService>();
-
-        var grpcApi = this.GetAppRequiredService<IGrpcApi>();
-        var apiApi = this.GetAppRequiredService<IApiApi>();
-        if (CurrentPage is RecommendPageViewModel recommendPageViewModel)
-        {
-            var data = recommendPageViewModel.RecommendDataList.FirstOrDefault();
-            if (data != null)
-            {
-                var view = await grpcApi.GetVideoDetailByBVId(data.Bvid);
-                if (view != null)
-                {
-                    var aa = await apiApi.GetVideoPlayUrl(view.Arc.Aid.ToString(),
-                        view.Pages.FirstOrDefault()?.Page?.Cid.ToString() ?? "");
-                    if (aa != null)
-                    {
-                    }
-                }
-            }
-        }
+        await Task.CompletedTask;
     }
 }

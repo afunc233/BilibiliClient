@@ -1,6 +1,7 @@
 ﻿using System.Net;
-using BilibiliClient.Core.Configs;
-using BilibiliClient.Core.Contracts.Api;
+using BilibiliClient.Core.Api.Configs;
+using BilibiliClient.Core.Api.Contracts.Api;
+using BilibiliClient.Core.Api.Models;
 using BilibiliClient.Core.Contracts.Services;
 using BilibiliClient.Core.Messages;
 using BilibiliClient.Core.Models.Https.Passport;
@@ -8,7 +9,7 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace BilibiliClient.Core.Services;
 
-public class AccountService : IAccountService
+internal class AccountService : IAccountService
 {
     private string? _loginId;
     private string? _authCode;

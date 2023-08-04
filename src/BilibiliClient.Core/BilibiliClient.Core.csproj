@@ -8,16 +8,15 @@
 
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="CommunityToolkit.HighPerformance" Version="8.2.1" />
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
-        <PackageReference Include="Google.Protobuf" Version="4.0.0-rc2" />
-        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0-preview.6.23329.7" />
-        <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="8.0.0-preview.6.23329.11" />
-        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0-preview.6.23329.7" />
+        <PackageReference Include="CommunityToolkit.HighPerformance" Version="$(CommunityToolkitVersion)" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="$(CommunityToolkitVersion)" />
+
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="$(MicrosoftExtensionsVersion)" />
+        <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="$(MicrosoftExtensionsVersion)" />
+        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(MicrosoftExtensionsVersion)" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\BilibiliClient.Core.Models.gRPC\BilibiliClient.Core.Models.gRPC.csproj" />
-      <ProjectReference Include="..\BilibiliClient.Core.Models\BilibiliClient.Core.Models.csproj" />
+      <ProjectReference Include="..\BilibiliClient.Core.Api\BilibiliClient.Core.Api.csproj" />
     </ItemGroup>
 
 

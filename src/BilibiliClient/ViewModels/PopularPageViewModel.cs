@@ -1,9 +1,7 @@
 ﻿using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 using Bilibili.App.Card.V1;
-using Bilibili.App.Show.V1;
-using BilibiliClient.Core.Contracts.Api;
+using BilibiliClient.Core.Contracts.Services;
 using BilibiliClient.Models;
 
 namespace BilibiliClient.ViewModels;
@@ -12,54 +10,30 @@ public partial class PopularPageViewModel : AbsPageViewModel
 {
     public override NavBarType NavBarType => NavBarType.Popular;
 
-    public ObservableCollection<Card> PopularCardList { get; } = new ObservableCollection<Card>();
+    public ObservableCollection<Card> PopularCardList { get; } = new();
 
-    
-    
-    private long _idx;
-    private readonly IGrpcApi _grpcApi;
 
-    public PopularPageViewModel(IGrpcApi grpcApi, HeaderViewModel headerViewModel)
+    private readonly IPopularService _popularService;
+
+    public PopularPageViewModel(IPopularService popularService, HeaderViewModel headerViewModel)
     {
-        _grpcApi = grpcApi;
+        _popularService = popularService;
         Header = headerViewModel;
     }
 
     protected override async Task LoadMore()
     {
         IsLoading = true;
-        var isLogin = false;
-        var popularReq = new PopularResultReq()
-        {
-            Idx = _idx,
-            LoginEvent = isLogin ? 2 : 1,
-            Qn = 112,
-            Fnval = 464,
-            Fourk = 1,
-            Spmid = "creation.hot-tab.0.0",
-            PlayerArgs = new Bilibili.App.Archive.Middleware.V1.PlayerArgs
-            {
-                Qn = 112,
-                Fnval = 464,
-            },
-        };
 
-        var popularReply = await _grpcApi.Popular(popularReq);
-
-        if (popularReply is { Items: not null } && popularReply.Items.Any())
+        var popularCards = _popularService.Popular();
+        var hasData = false;
+        await foreach (Card popularCard in popularCards)
         {
-            foreach (var popularReplyItem in popularReply.Items)
-            {
-                PopularCardList.Add(popularReplyItem);
-            }
-
-            _idx = popularReply.Items.Last().SmallCoverV5.Base.Idx;
-        }
-        else
-        {
-            CanLoadMore = false;
+            hasData = true;
+            PopularCardList.Add(popularCard);
         }
 
+        CanLoadMore = hasData;
         IsLoading = false;
     }
 }

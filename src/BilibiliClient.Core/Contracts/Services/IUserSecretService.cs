@@ -1,4 +1,5 @@
-﻿using BilibiliClient.Core.Configs;
+﻿using BilibiliClient.Core.Api.Configs;
+using BilibiliClient.Core.Api.Models;
 
 namespace BilibiliClient.Core.Contracts.Services;
 

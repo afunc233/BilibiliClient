@@ -28,12 +28,14 @@ public partial class HistoryPageViewModel : AbsPageViewModel
         {
             list.ForEach(HistoryDataList.Add);
         }
+
         CanLoadMore = _historyService.HasMore;
         IsLoading = false;
     }
 
     public override async Task OnNavigatedTo(object? parameter = null)
     {
+        CanLoadMore = true;
         HistoryDataList.Clear();
         await base.OnNavigatedTo(parameter);
         _historyService.ResetCursor();

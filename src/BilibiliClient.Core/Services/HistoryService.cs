@@ -1,10 +1,10 @@
 ﻿using Bilibili.App.Interfaces.V1;
-using BilibiliClient.Core.Contracts.Api;
+using BilibiliClient.Core.Api.Contracts.Api;
 using BilibiliClient.Core.Contracts.Services;
 
 namespace BilibiliClient.Core.Services;
 
-public class HistoryService : IHistoryService
+internal class HistoryService : IHistoryService
 {
     private bool _hasMore = true;
     private readonly Cursor _historyCursor;

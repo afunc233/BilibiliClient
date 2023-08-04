@@ -1,18 +1,18 @@
 <Project>
-	<PropertyGroup>
-		<Nullable>enable</Nullable>
-		<LangVersion>latest</LangVersion>
-		<AvaloniaVersion>11.0.1</AvaloniaVersion>
-		<AppTargetFrameworks>net6.0;net7.0;net8.0</AppTargetFrameworks>
-<!--		<AppTargetFrameworks>net6.0;net7.0;net8.0;net8.0-android;net8.0-ios</AppTargetFrameworks>-->
-		<AndroidTargetFramework>net8.0-android</AndroidTargetFramework>
-		<iOSFramework>net8.0-ios</iOSFramework>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(TargetFramework)' == 'net8.0-android'">
-		<FileVersion>5.0.0.0</FileVersion>
-	</PropertyGroup>
-	<PropertyGroup>
-		<DefineConstants>$(DefineConstants)TRACE;USE_CPU_COUNTING</DefineConstants>
-	</PropertyGroup>
+    <PropertyGroup>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+        <AppTargetFrameworks>net6.0;net7.0;net8.0</AppTargetFrameworks>
+        <!--		<AppTargetFrameworks>net6.0;net7.0;net8.0;net8.0-android;net8.0-ios</AppTargetFrameworks>-->
+        <AndroidTargetFramework>net8.0-android</AndroidTargetFramework>
+        <iOSFramework>net8.0-ios</iOSFramework>
+    </PropertyGroup>
+    <PropertyGroup>
+        <AvaloniaVersion>11.0.2</AvaloniaVersion>
+        <CommunityToolkitVersion>8.2.1</CommunityToolkitVersion>
+        <MicrosoftExtensionsVersion>8.0.0-preview.6.23329.7</MicrosoftExtensionsVersion>
+        <GrpcVersion>2.51.0</GrpcVersion>
+        <GoogleProtobufVersion>4.0.0-rc2</GoogleProtobufVersion>
+        <NLogVersion>5.3.2</NLogVersion>
+    </PropertyGroup>
 </Project>

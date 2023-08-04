@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using BilibiliClient.Core.Contracts.Utils;
+using BilibiliClient.Core.Api.Contracts.Utils;
 
 namespace BilibiliClient.Core.Utils;
 

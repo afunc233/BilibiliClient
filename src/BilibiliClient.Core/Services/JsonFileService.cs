@@ -1,6 +1,6 @@
 ﻿using System.Text;
+using BilibiliClient.Core.Api.Contracts.Utils;
 using BilibiliClient.Core.Contracts.Services;
-using BilibiliClient.Core.Contracts.Utils;
 
 namespace BilibiliClient.Core.Services;
 

@@ -1,10 +1,11 @@
-﻿using BilibiliClient.Core.Contracts.Api;
-using BilibiliClient.Core.Contracts.Models;
+﻿using BilibiliClient.Core.Api.Configs;
+using BilibiliClient.Core.Api.Contracts.Api;
+using BilibiliClient.Core.Api.Models;
 using BilibiliClient.Core.Contracts.Services;
 
 namespace BilibiliClient.Core.Services;
 
-public class DynamicService : IDynamicService
+internal class DynamicService : IDynamicService
 {
     private bool _hasMore = true;
     private readonly IGrpcApi _grpcApi;

@@ -1,7 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using BilibiliClient.Core.Contracts.Api;
+using BilibiliClient.Core.Api.Contracts.Api;
+using BilibiliClient.Core.Contracts.Services;
 using BilibiliClient.Core.Models.Https.App;
 using BilibiliClient.Models;
 using BilibiliClient.Views;
@@ -14,32 +15,28 @@ public partial class RecommendPageViewModel : AbsPageViewModel
     public override NavBarType NavBarType => NavBarType.Recommend;
     public ObservableCollection<RecommendCardItem> RecommendDataList { get; } = new();
 
-    private long _idx;
-    private readonly IAppApi _appApi;
+    private readonly IRecommendService _recommendService;
 
-    public RecommendPageViewModel(IAppApi appApi)
+    public RecommendPageViewModel(IRecommendService recommendService)
     {
-        _appApi = appApi;
+        _recommendService = recommendService;
     }
-    
+
     protected override async Task LoadMore()
     {
         IsLoading = true;
         await Task.CompletedTask;
-        var homeRecommend = await _appApi.GetRecommend(new RecommendModel()
+
+
+        var homeRecommends = _recommendService.GetRecommend();
+        var hasData = false;
+        await foreach (var homeRecommend in homeRecommends)
         {
-            Idx = _idx,
-        });
-        if (homeRecommend is { Items: not null })
-        {
-            homeRecommend.Items.ForEach(RecommendDataList.Add);
-            var newIdx = homeRecommend.Items.LastOrDefault()?.Idx ?? 0;
-            if (_idx < newIdx)
-            {
-                _idx = newIdx;
-            }
+            hasData = true;
+            RecommendDataList.Add(homeRecommend);
         }
 
+        CanLoadMore = hasData;
         IsLoading = false;
     }
 

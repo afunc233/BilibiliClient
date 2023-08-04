@@ -1,12 +1,13 @@
 ﻿using System.Net;
-using BilibiliClient.Core.Configs;
+using BilibiliClient.Core.Api.Configs;
+using BilibiliClient.Core.Api.Models;
 using BilibiliClient.Core.Contracts.Services;
 using BilibiliClient.Core.Utils;
 using BilibiliClient.Models.gRPC;
 
 namespace BilibiliClient.Core.Services;
 
-public class UserSecretService : IUserSecretService
+internal class UserSecretService : IUserSecretService
 {
     private readonly UserSecretConfig _userSecretConfig;
 
