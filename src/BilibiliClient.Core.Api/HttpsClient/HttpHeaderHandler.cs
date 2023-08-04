@@ -2,11 +2,6 @@
 
 internal class HttpHeaderHandler : DelegatingHandler
 {
-    public HttpHeaderHandler()
-    {
-        
-    }
-
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
         CancellationToken cancellationToken)
     {

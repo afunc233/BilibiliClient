@@ -12,7 +12,7 @@ namespace BilibiliClient.Core.Models.Https.Passport;
             "uname": "bili_45690362011",
             "face": "https://i2.hdslb.com/bfs/face/4bffa122dc57d8bbf3289acc8b48210d914e9a8f.jpg"
         },
-        "confirm_uri": "https://passport.bilibili.com/login/appSuccess?api=http%3A%2F%2Flink.acg.tv%2Fforum.php&appkey=27eb53fc9058f8c3&sign=67ec798004373253d60114caaad89a8c&mhash=263b856f206b08285300f39bdcf98b92&confirm=1"
+        "confirm_uri": ""
     }
  */
 public class UserInfo

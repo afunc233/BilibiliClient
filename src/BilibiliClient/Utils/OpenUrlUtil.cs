@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+#if NET7_0_OR_GREATER
 using System.Runtime.Versioning;
+#endif
 
 namespace BilibiliClient.Utils;
 
@@ -39,6 +41,7 @@ public static class OpenUrlUtil
             }
             catch (Exception)
             {
+                // ignored
 #if NET7_0_OR_GREATER
                 ObjectiveC.NsString nsStringPath = new(url);
                 ObjectiveC.Object nsUrl = new("NSURL");
@@ -52,6 +55,7 @@ public static class OpenUrlUtil
     }
 }
 #if NET7_0_OR_GREATER
+
 [SupportedOSPlatform("macos")]
 internal static partial class ObjectiveC
 {

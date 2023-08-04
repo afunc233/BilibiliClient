@@ -7,11 +7,11 @@ using BilibiliClient.Models;
 
 namespace BilibiliClient.ViewModels;
 
-public partial class HistoryPageViewModel : AbsPageViewModel
+public class HistoryPageViewModel : AbsPageViewModel
 {
     public override NavBarType NavBarType => NavBarType.History;
 
-    public ObservableCollection<CursorItem> HistoryDataList { get; } = new ObservableCollection<CursorItem>();
+    public ObservableCollection<CursorItem> HistoryDataList { get; } = new();
 
     private readonly IHistoryService _historyService;
 

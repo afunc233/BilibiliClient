@@ -14,19 +14,14 @@ public partial class MainView : UserControl
         InitializeComponent();
         var messenger = this.GetAppRequiredService<IMessenger>();
 
-        this.AttachedToVisualTree += (sender, args) =>
+        this.AttachedToVisualTree += (_, _) =>
         {
             if (!messenger.IsRegistered<StartLoginMessage>(this))
             {
                 messenger.Register<StartLoginMessage>(this, StartLoginMessageHandler);
             }
-
-            if (!messenger.IsRegistered<StartLoginMessage>(this))
-            {
-                messenger.Register<StartLoginMessage>(this, StartLoginMessageHandler);
-            }
         };
-        this.DetachedFromVisualTree += (sender, args) => { messenger.UnregisterAll(this); };
+        this.DetachedFromVisualTree += (_, _) => { messenger.UnregisterAll(this); };
     }
 
     private void StartLoginMessageHandler(object recipient, StartLoginMessage message)

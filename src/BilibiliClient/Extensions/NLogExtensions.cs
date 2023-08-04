@@ -57,7 +57,7 @@ public static class NLogExtensions
         {
             if (!this.IsEnabled(level, area))
                 return;
-            _logger.Log(level.GetLogLevel(), Format<object, object, object>(area, messageTemplate, source));
+            _logger.Log(level.GetLogLevel(), Format2(area, messageTemplate, source));
         }
 
         void ILogSink.Log(LogEventLevel level, string area, object? source, string messageTemplate,
@@ -68,14 +68,14 @@ public static class NLogExtensions
             _logger.Log(level.GetLogLevel(), Format(area, messageTemplate, source, propertyValues));
         }
 
-        private static string Format<T0, T1, T2>(
+        private static string Format2(
             string area,
             string template,
             object? source,
             object?[]? values = null)
         {
-            StringBuilder sb = new StringBuilder();
-            CharacterReader characterReader = new CharacterReader(template.AsSpan());
+            StringBuilder sb = new();
+            CharacterReader characterReader = new(template.AsSpan());
             int num1 = 0;
             sb.Append('[');
             sb.Append(area);
@@ -91,12 +91,12 @@ public static class NLogExtensions
                     sb.Append(values?[num1++]);
                     sb.Append('\'');
                     characterReader.TakeUntil('}');
-                    int num2 = (int)characterReader.Take();
+                    characterReader.Take();
                 }
                 else
                 {
                     sb.Append('{');
-                    int num3 = (int)characterReader.Take();
+                    characterReader.Take();
                 }
             }
 
@@ -114,8 +114,8 @@ public static class NLogExtensions
 
         private static string Format(string area, string template, object? source, object?[] v)
         {
-            StringBuilder sb = new StringBuilder();
-            CharacterReader characterReader = new CharacterReader(template.AsSpan());
+            StringBuilder sb = new();
+            CharacterReader characterReader = new(template.AsSpan());
             int num1 = 0;
             sb.Append('[');
             sb.Append(area);
@@ -128,15 +128,15 @@ public static class NLogExtensions
                 else if (characterReader.Peek != '{')
                 {
                     sb.Append('\'');
-                    sb.Append(num1 < v.Length ? v[num1++] : (object?)null);
+                    sb.Append(num1 < v.Length ? v[num1++] : null);
                     sb.Append('\'');
                     characterReader.TakeUntil('}');
-                    int num2 = (int)characterReader.Take();
+                    characterReader.Take();
                 }
                 else
                 {
                     sb.Append('{');
-                    int num3 = (int)characterReader.Take();
+                    characterReader.Take();
                 }
             }
 

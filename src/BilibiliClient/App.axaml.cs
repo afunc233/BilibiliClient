@@ -14,13 +14,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NLog.Extensions.Hosting;
+using IApplicationLifetime = Avalonia.Controls.ApplicationLifetimes.IApplicationLifetime;
 
 namespace BilibiliClient;
 
 public class App : Application
 {
     // ReSharper disable once InconsistentNaming
-    private static readonly NLog.Logger? _logger;
+    private static readonly NLog.Logger _logger;
 
     private IHost? _host;
 
@@ -29,21 +30,14 @@ public class App : Application
         _logger = NLog.LogManager.GetCurrentClassLogger();
     }
 
-    public override void Initialize()
+    private void ConfigureServices(HostBuilderContext context, IServiceCollection services)
     {
-        _logger?.Debug($"{nameof(Initialize)}");
-        if (OperatingSystem.IsWindows())
-        {
-            ThreadPool.GetMinThreads(out var workers, out var ports);
-            ThreadPool.SetMinThreads(workers + 6, ports + 6);
-
-            var process = Process.GetCurrentProcess();
-            process.PriorityClass = ProcessPriorityClass.RealTime;
-        }
-
-        AvaloniaXamlLoader.Load(this);
+        services.UseHost();
+        services.UseServices();
+        services.UseViewModel();
+        services.UseView();
     }
-
+    
     public override void RegisterServices()
     {
         base.RegisterServices();
@@ -59,7 +53,8 @@ public class App : Application
             {
                 if (ApplicationLifetime is { } desktop)
                 {
-                    services.AddSingleton(desktop);
+                    // ReSharper disable once RedundantTypeArgumentsOfMethod
+                    services.AddSingleton<IApplicationLifetime>(desktop);
                 }
             })
             .ConfigureServices(ConfigureServices)
@@ -68,13 +63,21 @@ public class App : Application
             .Build();
     }
 
-    private void ConfigureServices(HostBuilderContext context, IServiceCollection services)
+    public override void Initialize()
     {
-        services.UseHost();
-        services.UseServices();
-        services.UseViewModel();
-        services.UseView();
+        _logger.Debug($"{nameof(Initialize)}");
+        if (OperatingSystem.IsWindows())
+        {
+            ThreadPool.GetMinThreads(out var workers, out var ports);
+            ThreadPool.SetMinThreads(workers + 6, ports + 6);
+
+            var process = Process.GetCurrentProcess();
+            process.PriorityClass = ProcessPriorityClass.RealTime;
+        }
+
+        AvaloniaXamlLoader.Load(this);
     }
+
 
     public override async void OnFrameworkInitializationCompleted()
     {
@@ -83,7 +86,7 @@ public class App : Application
             return;
         }
 
-        _logger?.Debug($"{nameof(_host.StartAsync)}");
+        _logger.Debug($"{nameof(_host.StartAsync)}");
 
         await _host.StartAsync();
 
@@ -103,6 +106,7 @@ public class App : Application
                     }
                     catch (Exception exception)
                     {
+                        _logger.Error(exception, "ShutdownRequested !");
                         Console.WriteLine(exception);
                     }
 

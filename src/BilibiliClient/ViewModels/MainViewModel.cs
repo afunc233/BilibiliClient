@@ -20,7 +20,7 @@ public partial class MainViewModel : ViewModelBase
 
     private readonly ViewModelBase _header;
 
-    public ObservableCollection<NavBar> NavBarList { get; } = new ObservableCollection<NavBar>()
+    public ObservableCollection<NavBar> NavBarList { get; } = new()
     {
         new NavBar()
         {

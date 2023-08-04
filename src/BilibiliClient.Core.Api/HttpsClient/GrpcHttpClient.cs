@@ -82,7 +82,7 @@ internal class GrpcHttpClient : AbsHttpClient, IGrpcHttpClient
             var response = await _httpClient.SendAsync(requestMessage);
 
             var bytes = await response.Content.ReadAsByteArrayAsync();
-            return parser.ParseFrom(Enumerable.Skip<byte>(bytes, 5).ToArray());
+            return parser.ParseFrom(Enumerable.Skip(bytes, 5).ToArray());
         }
         catch (Exception e)
         {

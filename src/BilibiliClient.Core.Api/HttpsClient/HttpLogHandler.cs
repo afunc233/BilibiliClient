@@ -32,8 +32,8 @@ internal class HttpLogHandler : DelegatingHandler
     {
         private static class EventIds
         {
-            public static readonly EventId PipelineStart = new EventId(100, "RequestPipelineStart");
-            public static readonly EventId PipelineEnd = new EventId(101, "RequestPipelineEnd");
+            public static readonly EventId PipelineStart = new(100, "RequestPipelineStart");
+            public static readonly EventId PipelineEnd = new(101, "RequestPipelineEnd");
         }
 
         private static readonly Func<ILogger, HttpMethod, Uri?, string, IDisposable?> DoBeginRequestPipelineScope =

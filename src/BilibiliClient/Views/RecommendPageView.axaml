@@ -11,11 +11,6 @@
              xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
              xmlns:controls="clr-namespace:BilibiliClient.Controls"
              x:Class="BilibiliClient.Views.RecommendPageView" x:DataType="vm:RecommendPageViewModel">
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:RecommendPageViewModel />
-    </Design.DataContext>
     <UserControl.Styles>
         <Style Selector="Image.icon">
             <Setter Property="Width" Value="18" />

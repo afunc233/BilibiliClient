@@ -18,7 +18,7 @@ internal class WindowManagerService : IWindowManagerService
 
     private readonly IServiceProvider _serviceProvider;
 
-    private readonly Dictionary<string, Type?> _pages = new Dictionary<string, Type?>();
+    private readonly Dictionary<string, Type?> _pages = new();
 
     public WindowManagerService(IServiceProvider serviceProvider,
         IApplicationLifetime applicationLifetime)
@@ -51,7 +51,7 @@ internal class WindowManagerService : IWindowManagerService
         }
     }
 
-    public Type? GetPageType(string? key)
+    Type? GetPageType(string? key)
     {
         lock (_pages)
         {
@@ -110,7 +110,7 @@ internal class WindowManagerService : IWindowManagerService
         navigationAware.OnNavigatedTo(parameter);
     }
 
-    private Window? GetWindow(string? pageKey)
+    Window? GetWindow(string? pageKey)
     {
         var applicationLifetime = _applicationLifetime as IClassicDesktopStyleApplicationLifetime;
         return applicationLifetime?.Windows.FirstOrDefault(it =>

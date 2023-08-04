@@ -8,7 +8,7 @@ public static class BuvidUtil
     public static string Buvid()
     {
         var mac = new List<string>();
-        Random r = new Random();
+        Random r = new();
         for (int i = 0; i < 6; i++)
         {
             var min = Math.Min(0, 0xff);

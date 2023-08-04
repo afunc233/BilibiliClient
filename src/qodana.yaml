@@ -33,3 +33,5 @@ linter: jetbrains/qodana-dotnet:latest
 exclude:
   - name: VirtualMemberNeverOverridden.Global
   - name: UnusedMethodReturnValue.Global
+  - name: UnusedAutoPropertyAccessor.Global
+  - name: UnusedMember.Global

@@ -29,13 +29,13 @@ public class Scroll2EndTriggerBehavior : Trigger
     /// <summary>
     /// Identifies the <seealso cref="LoadMoreDataCmd"/> avalonia property.
     /// </summary>
-    public static readonly StyledProperty<ICommand> LoadMoreDataCmdProperty =
-        AvaloniaProperty.Register<ValueChangedTriggerBehavior, ICommand>(nameof(LoadMoreDataCmd));
+    public static readonly StyledProperty<ICommand?> LoadMoreDataCmdProperty =
+        AvaloniaProperty.Register<ValueChangedTriggerBehavior, ICommand?>(nameof(LoadMoreDataCmd));
 
     /// <summary>
     /// Gets or sets the bound object that the <see cref="ValueChangedTriggerBehavior"/> will listen to. This is a avalonia property.
     /// </summary>
-    public ICommand LoadMoreDataCmd
+    public ICommand? LoadMoreDataCmd
     {
         get => GetValue(LoadMoreDataCmdProperty);
         set => SetValue(LoadMoreDataCmdProperty, value);
@@ -64,7 +64,7 @@ public class Scroll2EndTriggerBehavior : Trigger
     {
         if (AssociatedObject is not ItemsControl control) return;
 
-        var scrollViewer = control.GetTemplateChildren()?.OfType<ScrollViewer>().FirstOrDefault();
+        var scrollViewer = control.GetTemplateChildren().OfType<ScrollViewer>().FirstOrDefault();
         if (scrollViewer is null)
         {
             return;

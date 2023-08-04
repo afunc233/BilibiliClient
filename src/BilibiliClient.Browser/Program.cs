@@ -3,17 +3,17 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Browser;
 using Avalonia.ReactiveUI;
-using BilibiliClient;
 
 [assembly: SupportedOSPlatform("browser")]
 
-internal partial class Program
+namespace BilibiliClient.Browser;
+internal class Program
 {
-    private static async Task Main(string[] args) => await BuildAvaloniaApp()
+    private static async Task Main() => await BuildAvaloniaApp()
             .WithInterFont()
             .UseReactiveUI()
             .StartBrowserAppAsync("out");
 
-    public static AppBuilder BuildAvaloniaApp()
+    private static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>();
 }

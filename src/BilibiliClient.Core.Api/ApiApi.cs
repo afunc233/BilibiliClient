@@ -26,13 +26,13 @@ internal class ApiApi : AbsApi, IApiApi
 
         var queryParameters = new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>("fnver", "0"),
-            new KeyValuePair<string, string>("cid", cId),
-            new KeyValuePair<string, string>("fourk", "1"),
-            new KeyValuePair<string, string>("fnval", "4048"),
-            new KeyValuePair<string, string>("qn", "64"),
-            new KeyValuePair<string, string>("otype", "json"),
-            new KeyValuePair<string, string>("avid", avId),
+            new("fnver", "0"),
+            new("cid", cId),
+            new("fourk", "1"),
+            new("fnval", "4048"),
+            new("qn", "64"),
+            new("otype", "json"),
+            new("avid", avId),
         };
         if (!string.IsNullOrWhiteSpace(_userSecretConfig.UserId))
         {

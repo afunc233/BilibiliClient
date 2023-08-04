@@ -6,7 +6,7 @@ using BilibiliClient.Models;
 
 namespace BilibiliClient.ViewModels;
 
-public partial class PopularPageViewModel : AbsPageViewModel
+public class PopularPageViewModel : AbsPageViewModel
 {
     public override NavBarType NavBarType => NavBarType.Popular;
 

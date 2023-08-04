@@ -34,7 +34,7 @@ public class DynamicPageViewModel : AbsPageViewModel
     }
 
     private DynamicDataType _currentDataType = DynamicDataType.Video;
-    public ObservableCollection<object> DynamicDataList { get; } = new ObservableCollection<object>();
+    public ObservableCollection<object> DynamicDataList { get; } = new();
 
     private readonly IDynamicService _dynamicService;
 

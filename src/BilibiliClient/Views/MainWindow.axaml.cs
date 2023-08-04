@@ -24,8 +24,8 @@ internal class MainAppSplashScreen : IApplicationSplashScreen
         _owner = owner;
     }
 
-    public string? AppName { get; }
-    public IImage? AppIcon { get; }
+    public string? AppName { get; } = "Bilibili";
+    public IImage? AppIcon { get; } = null;
     public object SplashScreenContent => new MainAppSplashContent();
     public int MinimumShowTime => 2000;
 
@@ -39,5 +39,6 @@ internal class MainAppSplashScreen : IApplicationSplashScreen
         return Task.Run(InitApp, cancellationToken);
     }
 
+    // ReSharper disable once NotAccessedField.Local
     private MainWindow _owner;
 }

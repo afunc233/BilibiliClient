@@ -50,17 +50,17 @@ internal class PassportApi : AbsApi, IPassportApi
 
         var paramsList = new List<KeyValuePair<string, string?>>()
         {
-            new KeyValuePair<string, string?>("cid", sendSmsModel.Cid.ToString()),
-            new KeyValuePair<string, string?>("tel", sendSmsModel.Tel.ToString()),
-            new KeyValuePair<string, string?>("login_session_id", sendSmsModel.LoginSessionId),
-            new KeyValuePair<string, string?>("recaptcha_token", sendSmsModel.RecaptchaToken),
-            new KeyValuePair<string, string?>("gee_challenge", sendSmsModel.GeeChallenge),
-            new KeyValuePair<string, string?>("gee_validate", sendSmsModel.GeeValidate),
-            new KeyValuePair<string, string?>("gee_seccode", sendSmsModel.GeeSeccode),
-            new KeyValuePair<string, string?>("channel", sendSmsModel.Channel),
-            new KeyValuePair<string, string?>("buvid", sendSmsModel.Buvid),
-            new KeyValuePair<string, string?>("local_id", sendSmsModel.LocalId),
-            new KeyValuePair<string, string?>("statistics", sendSmsModel.Statistics),
+            new("cid", sendSmsModel.Cid.ToString()),
+            new("tel", sendSmsModel.Tel.ToString()),
+            new("login_session_id", sendSmsModel.LoginSessionId),
+            new("recaptcha_token", sendSmsModel.RecaptchaToken),
+            new("gee_challenge", sendSmsModel.GeeChallenge),
+            new("gee_validate", sendSmsModel.GeeValidate),
+            new("gee_seccode", sendSmsModel.GeeSeccode),
+            new("channel", sendSmsModel.Channel),
+            new("buvid", sendSmsModel.Buvid),
+            new("local_id", sendSmsModel.LocalId),
+            new("statistics", sendSmsModel.Statistics),
         };
         using var httpContent = new FormUrlEncodedContent(paramsList);
 
@@ -74,7 +74,7 @@ internal class PassportApi : AbsApi, IPassportApi
 
         var paramsList = new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>("cid", "")
+            new("cid", "")
         };
         using var httpContent = new FormUrlEncodedContent(paramsList);
 
@@ -99,8 +99,8 @@ internal class PassportApi : AbsApi, IPassportApi
 
         var queryParameters = new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>("access_token", accessToken),
-            new KeyValuePair<string, string>("access_key", accessToken),
+            new("access_token", accessToken),
+            new("access_key", accessToken),
         };
 
         var query = await SignParamQueryString(queryParameters, ApiPlatform.Android);
@@ -118,9 +118,9 @@ internal class PassportApi : AbsApi, IPassportApi
 
         var queryParameters = new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>("access_token", accessToken),
-            new KeyValuePair<string, string>("access_key", accessToken),
-            new KeyValuePair<string, string>("refresh_token", refreshToken),
+            new("access_token", accessToken),
+            new("access_key", accessToken),
+            new("refresh_token", refreshToken),
         };
 
         const string url = "/api/oauth2/refreshToken";
@@ -139,7 +139,7 @@ internal class PassportApi : AbsApi, IPassportApi
 
         var queryParameters = new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>("local_id", localId)
+            new("local_id", localId)
         };
 
         await SignParam(queryParameters, ApiPlatform.Android);
@@ -159,8 +159,8 @@ internal class PassportApi : AbsApi, IPassportApi
 
         var queryParameters = new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>("local_id", localId),
-            new KeyValuePair<string, string>("auth_code", authCode),
+            new("local_id", localId),
+            new("auth_code", authCode),
         };
 
         await SignParam(queryParameters, ApiPlatform.Tv);
@@ -177,7 +177,7 @@ internal class PassportApi : AbsApi, IPassportApi
 
         var queryParameters = new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>("api", loginAppThirdApi),
+            new("api", loginAppThirdApi),
         };
 
         await SignBeforeAppKey(queryParameters, ApiPlatform.Ios);

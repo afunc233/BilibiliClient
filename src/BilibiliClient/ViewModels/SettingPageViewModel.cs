@@ -12,7 +12,7 @@ using FluentAvalonia.Styling;
 
 namespace BilibiliClient.ViewModels;
 
-public partial class SettingPageViewModel : AbsPageViewModel
+public class SettingPageViewModel : AbsPageViewModel
 {
     public override NavBarType NavBarType => NavBarType.Setting;
 

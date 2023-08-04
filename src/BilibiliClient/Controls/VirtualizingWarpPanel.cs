@@ -50,7 +50,7 @@ public class VirtualizingWrapPanel : VirtualizingPanel
     private Control? _scrollToElement;
     private bool _isInLayout;
     private bool _isWaitingForViewportUpdate;
-    private UVSize _lastEstimatedElementSizeUV = new UVSize(Orientation.Horizontal, 25, 25);
+    private UVSize _lastEstimatedElementSizeUV = new(Orientation.Horizontal, 25, 25);
     private RealizedWrappedElements? _measureElements;
     private RealizedWrappedElements? _realizedElements;
     private ScrollViewer? _scrollViewer;
@@ -60,7 +60,7 @@ public class VirtualizingWrapPanel : VirtualizingPanel
     private int _unrealizedFocusedIndex = -1;
     private Control? _focusedElement;
     private int _focusedIndex = -1;
-    private static readonly object s_itemIsItsOwnContainer = new object();
+    private static readonly object s_itemIsItsOwnContainer = new();
 
 
     private static readonly AttachedProperty<object?> RecycleKeyProperty =
@@ -247,7 +247,7 @@ public class VirtualizingWrapPanel : VirtualizingPanel
             return null;
 
         var horiz = Orientation == Orientation.Horizontal;
-        var fromIndex = from != null ? IndexFromContainer(fromControl) : -1;
+        var fromIndex = IndexFromContainer(fromControl);
         var toIndex = fromIndex;
 
         switch (direction)
@@ -431,7 +431,7 @@ public class VirtualizingWrapPanel : VirtualizingPanel
         return _realizedElements?.Elements ?? Array.Empty<Control>();
     }
 
-    private MeasureViewport CalculateMeasureViewport(IReadOnlyList<object?> items)
+    private MeasureViewport CalculateMeasureViewport(IReadOnlyList<object?>? items)
     {
         Debug.Assert(_realizedElements is not null);
 
@@ -530,7 +530,7 @@ public class VirtualizingWrapPanel : VirtualizingPanel
                 break;
             }
 
-            c = c?.GetVisualParent();
+            c = c.GetVisualParent();
         }
 
 
@@ -538,7 +538,7 @@ public class VirtualizingWrapPanel : VirtualizingPanel
     }
 
     private void RealizeElements(
-        IReadOnlyList<object?> items,
+        IReadOnlyList<object?>? items,
         Size availableSize,
         ref MeasureViewport viewport)
     {
@@ -674,7 +674,7 @@ public class VirtualizingWrapPanel : VirtualizingPanel
         _realizedElements.RecycleElementsBefore(index + 1, _recycleElement, Orientation);
     }
 
-    private Control GetOrCreateElement(IReadOnlyList<object?> items, int index)
+    private Control GetOrCreateElement(IReadOnlyList<object?>? items, int index)
     {
         Debug.Assert(ItemContainerGenerator is not null);
 
@@ -870,7 +870,7 @@ public class VirtualizingWrapPanel : VirtualizingPanel
 
     private void OnUnrealizedFocusedElementLostFocus(object? sender, RoutedEventArgs e)
     {
-        if (_unrealizedFocusedElement is null || sender != _unrealizedFocusedElement)
+        if (_unrealizedFocusedElement is null || (sender?.Equals(_unrealizedFocusedElement) ?? false))
             return;
 
         _unrealizedFocusedElement.LostFocus -= OnUnrealizedFocusedElementLostFocus;

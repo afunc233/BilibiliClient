@@ -21,9 +21,9 @@ internal class AppApi : AbsApi, IAppApi
 
         var paramList = new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>("device", "phone"),
-            new KeyValuePair<string, string>("from", "0"),
-            new KeyValuePair<string, string>("limit", "50"),
+            new("device", "phone"),
+            new("from", "0"),
+            new("limit", "50"),
         };
         var query = await SignParamQueryString(paramList);
         var request = await _appHttpClient.BuildRequestMessage(url + $"?{query}", HttpMethod.Get);
@@ -37,14 +37,14 @@ internal class AppApi : AbsApi, IAppApi
 
         var paramList = new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>("idx", (recommendModel.Idx.ToString())),
-            new KeyValuePair<string, string>("flush", (recommendModel.Flush ?? "0")),
-            new KeyValuePair<string, string>("device", (recommendModel.Device ?? "0")),
-            new KeyValuePair<string, string>("device_name", (recommendModel.DeviceName ?? "0")),
-            new KeyValuePair<string, string>("column", (recommendModel.Column ?? "0")),
-            new KeyValuePair<string, string>("pull", (recommendModel.Pull ?? "0")),
-            new KeyValuePair<string, string>("mobi_app", "iphone"),
-            new KeyValuePair<string, string>("platform", "ios"),
+            new("idx", (recommendModel.Idx.ToString())),
+            new("flush", (recommendModel.Flush ?? "0")),
+            new("device", (recommendModel.Device ?? "0")),
+            new("device_name", (recommendModel.DeviceName ?? "0")),
+            new("column", (recommendModel.Column ?? "0")),
+            new("pull", (recommendModel.Pull ?? "0")),
+            new("mobi_app", "iphone"),
+            new("platform", "ios"),
         };
 
         await SignParam(paramList, ApiPlatform.Ios);
@@ -71,7 +71,7 @@ internal class AppApi : AbsApi, IAppApi
 
         var paramList = new List<KeyValuePair<string, string>>()
         {
-            new KeyValuePair<string, string>("access_key", accessToken),
+            new("access_key", accessToken),
         };
 
         var query = await SignParamQueryString(paramList);

@@ -83,7 +83,7 @@ internal abstract class AbsApi : IApi
     {
         await Task.CompletedTask;
         // 序列化参数
-        StringBuilder queryBuilder = new StringBuilder();
+        StringBuilder queryBuilder = new();
         foreach (var entry in paramPairs.OrderBy(it => it.Key))
         {
             if (queryBuilder.Length > 0)
@@ -114,7 +114,7 @@ internal abstract class AbsApi : IApi
     private static string GenerateMd5(string input)
     {
         byte[] digest = MD5.HashData(Encoding.UTF8.GetBytes(input));
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new();
         foreach (byte b in digest)
         {
             sb.Append($"{b:x2}");
