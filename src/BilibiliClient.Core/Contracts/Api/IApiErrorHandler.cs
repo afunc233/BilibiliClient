@@ -1,4 +1,4 @@
-﻿namespace BilibiliClient.Core.Contracts.Services;
+﻿namespace BilibiliClient.Core.Contracts.Api;
 
 /// <summary>
 /// 错误码处理，分散开处理

@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using BilibiliClient.Core.Configs;
+using BilibiliClient.Core.Contracts.Api;
 using BilibiliClient.Core.Contracts.ApiHttpClient;
 using BilibiliClient.Core.Contracts.Services;
 using BilibiliClient.Core.Contracts.Utils;
@@ -13,11 +14,9 @@ public class GrpcHttpClient : AbsHttpClient, IGrpcHttpClient
 {
     private readonly UserSecretConfig _userSecretConfig;
 
-    public GrpcHttpClient(HttpClient httpClient, IJsonUtils jsonUtils,
-        IApiErrorCodeHandlerService apiErrorCodeHandlerService, UserSecretConfig userSecretConfig,
-        ILogger<GrpcHttpClient> logger) : base(httpClient,
-        jsonUtils,
-        apiErrorCodeHandlerService, logger)
+    public GrpcHttpClient(HttpClient httpClient, IJsonUtils jsonUtils, UserSecretConfig userSecretConfig,
+        IEnumerable<IApiErrorHandler> apiErrorHandlers, ILogger<GrpcHttpClient> logger) : base(httpClient, jsonUtils,
+        apiErrorHandlers, logger)
     {
         _userSecretConfig = userSecretConfig;
         httpClient.BaseAddress = new Uri(ApiConstants.GrpcUrl);

@@ -1,4 +1,5 @@
-﻿using BilibiliClient.Core.Contracts.ApiHttpClient;
+﻿using BilibiliClient.Core.Contracts.Api;
+using BilibiliClient.Core.Contracts.ApiHttpClient;
 using BilibiliClient.Core.Contracts.Services;
 using BilibiliClient.Core.Contracts.Utils;
 using BilibiliClient.Core.Models.Https;
@@ -12,8 +13,8 @@ namespace BilibiliClient.Core.ApiHttpClient;
 public abstract class AbsHttpClient : AbsHttpClient<ApiResponse>
 {
     protected AbsHttpClient(HttpClient httpClient, IJsonUtils jsonUtils,
-        IApiErrorCodeHandlerService apiErrorCodeHandlerService, ILogger logger) : base(httpClient, jsonUtils,
-        apiErrorCodeHandlerService, logger)
+        IEnumerable<IApiErrorHandler> apiErrorHandlers, ILogger logger) : base(httpClient, jsonUtils,
+        apiErrorHandlers, logger)
     {
     }
 

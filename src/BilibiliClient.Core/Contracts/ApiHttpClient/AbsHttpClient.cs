@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Headers;
+using BilibiliClient.Core.Contracts.Api;
 using BilibiliClient.Core.Contracts.Services;
 using BilibiliClient.Core.Contracts.Utils;
 using Microsoft.Extensions.Logging;
@@ -23,14 +24,14 @@ public abstract class AbsHttpClient<TBaseResponse> : IHttpClient<TBaseResponse>
     protected readonly ILogger _logger;
 
     // ReSharper disable once InconsistentNaming
-    protected readonly IApiErrorCodeHandlerService _apiErrorCodeHandlerService;
+    private readonly IEnumerable<IApiErrorHandler> _apiErrorHandlers;
 
     protected AbsHttpClient(HttpClient httpClient, IJsonUtils jsonUtils,
-        IApiErrorCodeHandlerService apiErrorCodeHandlerService, ILogger logger)
+        IEnumerable<IApiErrorHandler> apiErrorHandlers, ILogger logger)
     {
         _httpClient = httpClient;
         _jsonUtils = jsonUtils;
-        _apiErrorCodeHandlerService = apiErrorCodeHandlerService;
+        _apiErrorHandlers = apiErrorHandlers;
         _logger = logger;
 
         _httpClient.DefaultRequestHeaders.CacheControl =
@@ -102,7 +103,7 @@ public abstract class AbsHttpClient<TBaseResponse> : IHttpClient<TBaseResponse>
 
         if (IsErrorCode(baseResponse))
         {
-            await _apiErrorCodeHandlerService.HandlerApiError(GetErrorCode(baseResponse),
+            await HandlerApiError(GetErrorCode(baseResponse),
                 GetErrorMessage(baseResponse));
 
             return default;
@@ -110,6 +111,19 @@ public abstract class AbsHttpClient<TBaseResponse> : IHttpClient<TBaseResponse>
         else
         {
             return customTransform != null ? customTransform(baseResponse) : Transform2T<T>(baseResponse);
+        }
+    }
+    
+    protected async ValueTask HandlerApiError(long errorCode, string? errorMessage)
+    {
+        foreach (var apiErrorHandler in _apiErrorHandlers)
+        {
+            if (!apiErrorHandler.CanHanded(errorCode)) continue;
+            var hasHandError = await apiErrorHandler.HandError(errorCode, errorMessage);
+            if (hasHandError)
+            {
+                break;
+            }
         }
     }
 
