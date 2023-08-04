@@ -2,6 +2,7 @@
     <PropertyGroup>
         <TargetFrameworks>$(AppTargetFrameworks);</TargetFrameworks>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
     <ItemGroup>
