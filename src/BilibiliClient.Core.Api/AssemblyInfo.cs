@@ -16,5 +16,5 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM.
 
 [assembly: Guid("d03e851e-2372-4435-a8df-99e4eb1cfec5")]
-
+// 超级重要 
 [assembly: InternalsVisibleTo("BilibiliClient.Core")]

@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using BilibiliClient.Core.Api.Configs;
 using BilibiliClient.Core.Api.Models;
 using BilibiliClient.Core.Contracts.Services;
 using BilibiliClient.Models;

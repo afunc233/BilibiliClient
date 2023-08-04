@@ -26,7 +26,6 @@ internal class WindowManagerService : IWindowManagerService
         _serviceProvider = serviceProvider;
         _applicationLifetime = applicationLifetime;
         Configure<MainViewModel, MainWindow>();
-        Configure<PlayerViewModel, VlcPlayerWindow>();
     }
 
     private void Configure<TVm, TV>()

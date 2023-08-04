@@ -1,11 +1,8 @@
 ﻿using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
-using BilibiliClient.Core.Api.Contracts.Api;
 using BilibiliClient.Core.Contracts.Services;
 using BilibiliClient.Core.Models.Https.App;
 using BilibiliClient.Models;
-using BilibiliClient.Views;
 using CommunityToolkit.Mvvm.Input;
 
 namespace BilibiliClient.ViewModels;
@@ -45,11 +42,5 @@ public partial class RecommendPageViewModel : AbsPageViewModel
     private async Task PlayVideo(RecommendCardItem? recommendCardItem)
     {
         await Task.CompletedTask;
-
-        var vlcPlayerView = new VlcPlayerWindow();
-        var playerViewModel = this.GetAppRequiredService<PlayerViewModel>();
-        vlcPlayerView.DataContext = playerViewModel;
-        vlcPlayerView.Show();
-        await playerViewModel.OnNavigatedTo(recommendCardItem);
     }
 }

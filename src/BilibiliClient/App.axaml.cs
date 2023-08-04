@@ -47,7 +47,6 @@ public class App : Application
     public override void RegisterServices()
     {
         base.RegisterServices();
-        LibVLCSharp.Shared.Core.Initialize();
         var appLocation = Directory.GetCurrentDirectory();
         _host = Host.CreateDefaultBuilder()
             .ConfigureHostConfiguration(configHost =>

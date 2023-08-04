@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using BilibiliClient.Core.Api.Configs;
 using BilibiliClient.Core.Api.Models;
 using BilibiliClient.Core.Contracts.Services;
 using BilibiliClient.Core.Utils;

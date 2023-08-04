@@ -2,7 +2,6 @@
 using Bilibili.App.Interfaces.V1;
 using Bilibili.App.Show.V1;
 using Bilibili.App.View.V1;
-using BilibiliClient.Core.Api.Configs;
 using BilibiliClient.Core.Api.Contracts.Api;
 using BilibiliClient.Core.Api.Contracts.ApiHttpClient;
 using BilibiliClient.Core.Api.Models;

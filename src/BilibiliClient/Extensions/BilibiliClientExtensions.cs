@@ -63,7 +63,6 @@ public static class BilibiliClientExtensions
         serviceCollection.AddTransient<HeaderView>();
         serviceCollection.AddTransient<LoginView>();
         
-        serviceCollection.AddTransient<VlcPlayerWindow>();
 
         return serviceCollection;
     }
