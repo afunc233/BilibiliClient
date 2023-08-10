@@ -44,6 +44,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\AvaFFmpegPlayer\AvaFFmpegPlayer.csproj" />
         <ProjectReference Include="..\BilibiliClient.Core\BilibiliClient.Core.csproj"/>
     </ItemGroup>
 

@@ -22,7 +22,6 @@ internal static class QRCoderUtil
         _qrCodeGenerator = new QRCodeGenerator();
     }
 
-
     public static IImage GetQRCode(string content, int pixelsPerModule = 8, Bitmap? centerBitmap = null,
         bool drawQuietZones = false)
     {

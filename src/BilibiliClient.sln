@@ -31,6 +31,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BilibiliClient.Core.Models"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BilibiliClient.Core.Api", "BilibiliClient.Core.Api\BilibiliClient.Core.Api.csproj", "{0A436580-089D-4EA7-80D7-7053D5B13D37}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Player", "Player", "{1B883E5D-0361-4F21-BEFC-76A953C00066}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaFFmpegPlayer", "AvaFFmpegPlayer\AvaFFmpegPlayer.csproj", "{44CCD942-BD65-4A2C-A784-5780F5EDC1E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +81,10 @@ Global
 		{0A436580-089D-4EA7-80D7-7053D5B13D37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A436580-089D-4EA7-80D7-7053D5B13D37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A436580-089D-4EA7-80D7-7053D5B13D37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44CCD942-BD65-4A2C-A784-5780F5EDC1E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44CCD942-BD65-4A2C-A784-5780F5EDC1E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44CCD942-BD65-4A2C-A784-5780F5EDC1E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44CCD942-BD65-4A2C-A784-5780F5EDC1E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,6 +95,7 @@ Global
 		{6A1AC25E-2A75-4926-A5A8-6C475BFBFCF1} = {BE195A11-C6D7-4FF3-8D52-74D493017003}
 		{3F49F18C-5C48-42A0-B995-BA6BBF8A37C6} = {BE195A11-C6D7-4FF3-8D52-74D493017003}
 		{0A436580-089D-4EA7-80D7-7053D5B13D37} = {BE195A11-C6D7-4FF3-8D52-74D493017003}
+		{44CCD942-BD65-4A2C-A784-5780F5EDC1E1} = {1B883E5D-0361-4F21-BEFC-76A953C00066}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {83CB65B8-011F-4ED7-BCD3-A6CFA935EF7E}

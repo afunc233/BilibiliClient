@@ -24,10 +24,10 @@ internal class MainAppSplashScreen : IApplicationSplashScreen
         _owner = owner;
     }
 
-    public string? AppName { get; } = "Bilibili";
-    public IImage? AppIcon { get; } = null;
+    public string? AppName => "Bilibili";
+    public IImage? AppIcon => null;
     public object SplashScreenContent => new MainAppSplashContent();
-    public int MinimumShowTime => 2000;
+    public int MinimumShowTime => 1000;
 
     public Action? InitApp { get; set; }
 
