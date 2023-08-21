@@ -47,7 +47,21 @@ public static class AvaFFmpegPlayerExtensions
 #elif ARM64
                 ffmpegPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ffmpeg", "Arm64");
 #elif AnyCpu
-                ffmpegPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ffmpeg", "x64");
+                switch (RuntimeInformation.ProcessArchitecture)
+                {
+                    case Architecture.X86:
+                        ffmpegPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ffmpeg", "x86");
+                        break;
+                    case Architecture.X64:
+                        ffmpegPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ffmpeg", "x64");
+                        break;
+                    case Architecture.Arm64:
+                        ffmpegPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ffmpeg", "Arm64");
+                        break;
+                    default:
+                        throw new ApplicationException("un support Architecture");
+                        break;
+                }
 #endif
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
