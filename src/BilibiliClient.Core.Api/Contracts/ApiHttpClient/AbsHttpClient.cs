@@ -95,7 +95,8 @@ internal abstract class AbsHttpClient<TBaseResponse> : IHttpClient<TBaseResponse
     }
 
     public virtual async ValueTask<T?> SendAsync<T>(HttpRequestMessage requestMessage,
-        Func<TBaseResponse, T?>? customTransform = null) where T : notnull
+        Func<TBaseResponse, T?>? customTransform = null, Func<long, string?, bool>? errorCodeHandler = null)
+        where T : notnull
     {
         var response = await _httpClient.SendAsync(requestMessage);
         response.EnsureSuccessStatusCode();
@@ -105,8 +106,15 @@ internal abstract class AbsHttpClient<TBaseResponse> : IHttpClient<TBaseResponse
 
         if (IsErrorCode(baseResponse))
         {
-            await HandlerApiError(GetErrorCode(baseResponse),
-                GetErrorMessage(baseResponse));
+            var code = GetErrorCode(baseResponse);
+            var message = GetErrorMessage(baseResponse);
+            var isHandled = errorCodeHandler?.Invoke(code, message) ??
+                            false;
+
+            if (!isHandled)
+            {
+                await HandlerApiError(code, message);
+            }
 
             return default;
         }

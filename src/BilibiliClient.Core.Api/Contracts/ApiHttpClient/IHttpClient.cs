@@ -31,8 +31,10 @@ internal interface IHttpClient<out TBaseResponse>
     /// </summary>
     /// <param name="requestMessage">Request</param>
     /// <param name="customTransform"></param>
+    /// <param name="errorCodeHandler"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
     ValueTask<T?> SendAsync<T>(HttpRequestMessage requestMessage,
-        Func<TBaseResponse, T?>? customTransform = null) where T : notnull;
+        Func<TBaseResponse, T?>? customTransform = null, Func<long, string?, bool>? errorCodeHandler = null)
+        where T : notnull;
 }

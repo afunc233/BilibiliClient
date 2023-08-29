@@ -60,7 +60,6 @@ public static class AvaFFmpegPlayerExtensions
                         break;
                     default:
                         throw new ApplicationException("un support Architecture");
-                        break;
                 }
 #endif
             }

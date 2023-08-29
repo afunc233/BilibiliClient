@@ -13,9 +13,7 @@ public partial class MainWindow : AppWindow
         InitializeComponent();
         SplashScreen = new MainAppSplashScreen(this)
         {
-            InitApp =  () =>
-            {
-            }
+            InitApp = async () => await Task.CompletedTask,
         };
         TitleBar.ExtendsContentIntoTitleBar = true;
         TitleBar.TitleBarHitTestType = TitleBarHitTestType.Complex;
@@ -34,11 +32,15 @@ internal class MainAppSplashScreen : IApplicationSplashScreen
     public object SplashScreenContent => new MainAppSplashContent();
     public int MinimumShowTime => 1000;
 
-    public Action? InitApp { get; init; }
+    public Func<Task>? InitApp { get; init; }
 
-    public Task RunTasks(CancellationToken cancellationToken)
+    public async Task RunTasks(CancellationToken cancellationToken)
     {
-        return InitApp == null ? Task.CompletedTask : Task.Run(InitApp, cancellationToken);
+        await Task.CompletedTask;
+        if (InitApp != null)
+        {
+            await InitApp.Invoke();
+        }
     }
 
     // ReSharper disable once NotAccessedField.Local
