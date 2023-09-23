@@ -5,18 +5,18 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace BilibiliClient.ViewModels;
 
-public  abstract partial class AbsPageViewModel : ViewModelBase, IPageViewModel
+public abstract partial class AbsPageViewModel : ViewModelBase, IPageViewModel
 {
     public abstract NavBarType NavBarType { get; }
 
-    public ViewModelBase? Header { get; protected init; }
-    
-    [ObservableProperty]
-    private bool _isLoading;
+    public virtual string Title => "BiliBili 干杯！";
 
-    [ObservableProperty]
-    private bool _canLoadMore = true;
-    
+    public ViewModelBase? Header { get; protected init; }
+
+    [ObservableProperty] private bool _isLoading;
+
+    [ObservableProperty] private bool _canLoadMore = true;
+
     public virtual async Task OnNavigatedTo(object? parameter = null)
     {
         IsLoading = false;

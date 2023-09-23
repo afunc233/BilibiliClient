@@ -11,13 +11,26 @@
                Margin="3"
                LastChildFill="True" Height="38">
         <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-            <Image Source="{Binding $parent[Window].Icon}" Margin="10,0,0,0" Width="28" Height="28"
+            <Image Source="../Assets/Images/icon.ico" Margin="10,0,0,0" Width="28" Height="28"
                    VerticalAlignment="Center" />
-            <TextBlock Text="{Binding $parent[Window].Title}" Margin="10,0,0,0" VerticalAlignment="Center" FontSize="16"
+            <TextBlock Text="{Binding $parent[Window].Title,FallbackValue={}BilibiliClient}" Margin="10,0,0,0"
+                       VerticalAlignment="Center" FontSize="16"
                        TextAlignment="Center" />
             <StackPanel.IsVisible>
                 <OnPlatform Default="False">
                     <On Options="Windows" Content="True" />
+                </OnPlatform>
+            </StackPanel.IsVisible>
+        </StackPanel>
+        <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+            <TextBlock
+                Text="{Binding $parent[TransitioningContentControl].((viewModels:MainViewModel)DataContext).CurrentPage.Title,FallbackValue={}bilibili}"
+                Margin="10,0,0,0"
+                VerticalAlignment="Center" FontSize="16"
+                TextAlignment="Center" />
+            <StackPanel.IsVisible>
+                <OnPlatform Default="True">
+                    <On Options="Windows" Content="False" />
                 </OnPlatform>
             </StackPanel.IsVisible>
         </StackPanel>
