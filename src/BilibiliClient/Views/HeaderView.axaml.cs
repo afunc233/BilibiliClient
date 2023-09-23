@@ -18,7 +18,7 @@ public partial class HeaderView : UserControl
         {
             void HandleGlobalIconMessage(object recipient, GlobalIconMessage message)
             {
-                Dispatcher.UIThread.Invoke(() => { Icon.Source = new Bitmap(message.Value); });
+                Dispatcher.UIThread.Invoke(() => Icon.Source = message.Value);
             }
 
             var messenger = this.GetAppRequiredService<IMessenger>();

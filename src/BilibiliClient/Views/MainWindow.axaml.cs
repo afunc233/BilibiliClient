@@ -35,7 +35,7 @@ public partial class MainWindow : AppWindow
 
     private void HandleGlobalIconMessage(object recipient, GlobalIconMessage message)
     {
-        Dispatcher.UIThread.Invoke(() => { Icon = new Bitmap(message.Value); });
+        Dispatcher.UIThread.Invoke(() => Icon = message.Value);
     }
 }
 

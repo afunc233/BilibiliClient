@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using BilibiliClient.Core.Contracts.Services;
 using BilibiliClient.Messages;
@@ -49,7 +50,7 @@ public class AppTrayIconHostService : IHostedService
 
         _ = Task.Run(async () =>
         {
-            var cacheDic = new Dictionary<string, WindowIcon>();
+            var cacheDic = new Dictionary<string, (WindowIcon, Bitmap)>();
             var currentFile = files.FirstOrDefault();
             while (!_isStop)
             {
@@ -74,16 +75,24 @@ public class AppTrayIconHostService : IHostedService
                     var file = currentFile;
                     Dispatcher.UIThread.Invoke(() =>
                     {
-                        if (!cacheDic.TryGetValue(file, out var windowIcon))
+                        try
                         {
-                            windowIcon = new WindowIcon(file);
-                            cacheDic.TryAdd(file, windowIcon);
-                        }
+                            if (!cacheDic.TryGetValue(file, out var iconBitmap))
+                            {
+                                iconBitmap.Item2 = new Bitmap(file);
+                                iconBitmap.Item1 = new WindowIcon(iconBitmap.Item2);
+                                cacheDic.TryAdd(file, iconBitmap);
+                            }
 
-                        _notifyIcon.Icon = windowIcon;
+                            _notifyIcon.Icon = iconBitmap.Item1;
+                            _messenger.Send(new GlobalIconMessage(iconBitmap.Item2));
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                        }
                     }, DispatcherPriority.Background, cancellationToken);
 
-                    _messenger.Send(new GlobalIconMessage(file));
                     currentFile = string.Equals(currentFile, files.LastOrDefault())
                         ? files.FirstOrDefault()
                         : files.Skip(files.IndexOf(currentFile) + 1).FirstOrDefault();
@@ -95,7 +104,7 @@ public class AppTrayIconHostService : IHostedService
                 finally
                 {
                     // 修改动态渲染速度
-                    await Task.Delay(TimeSpan.FromMilliseconds(80), cancellationToken);
+                    await Task.Delay(40, cancellationToken);
                 }
             }
         }, cancellationToken);

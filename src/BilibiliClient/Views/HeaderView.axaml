@@ -11,8 +11,10 @@
                Margin="3"
                LastChildFill="True" Height="38">
         <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-            <Image x:Name="Icon" Source="../Assets/Images/icon.ico" Margin="10,0,0,0" Width="28" Height="28"
-                   VerticalAlignment="Center" />
+            <Image x:Name="Icon" Source="../Assets/Images/icon.ico" Margin="10,0,0,0" Width="24" Height="24"
+                   VerticalAlignment="Center">
+
+            </Image>
             <TextBlock Text="{Binding $parent[Window].Title,FallbackValue={}BilibiliClient}" Margin="10,0,0,0"
                        VerticalAlignment="Center" FontSize="16"
                        TextAlignment="Center" />
