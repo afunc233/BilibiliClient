@@ -5,7 +5,7 @@
         xmlns:views="clr-namespace:BilibiliClient.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="BilibiliClient.Views.MainWindow"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="../Assets/Images/icon.ico"
         Title="BilibiliClient">
         <views:MainView />
 </Window>

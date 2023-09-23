@@ -10,10 +10,18 @@
     <DockPanel Background="Transparent"
                Margin="3"
                LastChildFill="True" Height="38">
-        <Image Source="../Assets/Images/icon.ico" Margin="10,0,0,0"  Width="28" Height="28" VerticalAlignment="Center" 
-                   DockPanel.Dock="Left" />
-        <TextBlock Text="bilibili" Margin="10,0,0,0" VerticalAlignment="Center" FontSize="16" TextAlignment="Center"
-                   DockPanel.Dock="Left" />
+        <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+            <Image Source="{Binding $parent[Window].Icon}" Margin="10,0,0,0" Width="28" Height="28"
+                   VerticalAlignment="Center" />
+            <TextBlock Text="{Binding $parent[Window].Title}" Margin="10,0,0,0" VerticalAlignment="Center" FontSize="16"
+                       TextAlignment="Center" />
+            <StackPanel.IsVisible>
+                <OnPlatform Default="False">
+                    <On Options="Windows" Content="True" />
+                </OnPlatform>
+            </StackPanel.IsVisible>
+        </StackPanel>
+
         <Button Content="登录" Command="{Binding LoginCommand}" DockPanel.Dock="Right" Margin="0,0,150,0" />
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
             <AutoCompleteBox MinWidth="300" HorizontalAlignment="Stretch" />

@@ -52,8 +52,8 @@ public class DynamicPageViewModel : AbsPageViewModel
 
     protected override async Task LoadMore()
     {
-        
         var dataList = await _dynamicService.LoadNextPage(CurrentDataType);
         dataList.ForEach(DynamicDataList.Add);
+        CanLoadMore = _dynamicService.HasMore;
     }
 }
