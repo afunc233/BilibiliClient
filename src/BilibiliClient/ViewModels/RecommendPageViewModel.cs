@@ -10,6 +10,9 @@ namespace BilibiliClient.ViewModels;
 public partial class RecommendPageViewModel : AbsPageViewModel
 {
     public override NavBarType NavBarType => NavBarType.Recommend;
+
+    public override string Title => "推荐";
+
     public ObservableCollection<RecommendCardItem> RecommendDataList { get; } = new();
 
     private readonly IRecommendService _recommendService;

@@ -10,6 +10,8 @@ public class PopularPageViewModel : AbsPageViewModel
 {
     public override NavBarType NavBarType => NavBarType.Popular;
 
+    public override string Title => "热门";
+
     public ObservableCollection<Card> PopularCardList { get; } = new();
 
 

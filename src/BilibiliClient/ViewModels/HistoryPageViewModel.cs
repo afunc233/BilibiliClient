@@ -11,6 +11,8 @@ public class HistoryPageViewModel : AbsPageViewModel
 {
     public override NavBarType NavBarType => NavBarType.History;
 
+    public override string Title => "历史";
+
     public ObservableCollection<CursorItem> HistoryDataList { get; } = new();
 
     private readonly IHistoryService _historyService;

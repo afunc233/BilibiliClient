@@ -10,6 +10,8 @@ public class DynamicPageViewModel : AbsPageViewModel
 {
     public override NavBarType NavBarType => NavBarType.Dynamic;
 
+    public override string Title => "动态";
+
     public bool IsVideo
     {
         get => _currentDataType == DynamicDataType.Video;

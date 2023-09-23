@@ -16,6 +16,8 @@ public class SettingPageViewModel : AbsPageViewModel
 {
     public override NavBarType NavBarType => NavBarType.Setting;
 
+    public override string Title => "设置";
+
     public ThemeVariant[] AppThemes { get; } =
         new[] { ThemeVariant.Light, ThemeVariant.Dark /*, FluentAvaloniaTheme.HighContrastTheme*/ };
 
