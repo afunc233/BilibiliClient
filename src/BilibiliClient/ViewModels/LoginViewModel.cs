@@ -9,17 +9,26 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace BilibiliClient.ViewModels;
 
-public class LoginViewModel : ViewModelBase
+public class LoginViewModel : ViewModelBase, IDialog<bool>
 {
-    public Action<bool>? OnClose { get; set; }
+    public bool Result { get; private set; }
+    public Action? OnClose { get; set; }
+
+    public string Title => "登录";
+
+    public string CloseButtonText => "取消";
+
+    public string? PrimaryButtonText { get; }
+
+    public string? SecondaryButtonText { get; }
 
     public ICommand OnLoadCmd => _onLoadCmd ??= new RelayCommand(RefreshCode);
     private ICommand? _onLoadCmd;
 
     public ICommand OnUnloadCmd => _onUnloadCmd ??= new RelayCommand(() =>
     {
-        _messenger.RegisterAll(this);
         CancelQRCodeLogin();
+        _messenger.RegisterAll(this);
     });
 
     private ICommand? _onUnloadCmd;
@@ -61,8 +70,11 @@ public class LoginViewModel : ViewModelBase
 
                 break;
             case LoginStateEnum.LoginSuccess:
-                OnClose?.Invoke(true);
+                Result = true;
+                OnClose?.Invoke();
                 break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(LoginStateEnum));
         }
     }
 
@@ -70,6 +82,11 @@ public class LoginViewModel : ViewModelBase
     {
         _qrCodeLoginTaskCompletionSource?.Cancel();
         _qrCodeLoginTaskCompletionSource = null;
+    }
+
+    public async Task Init(object? parameter = null)
+    {
+        await Task.CompletedTask;
     }
 
     public void RefreshCode()
@@ -85,13 +102,13 @@ public class LoginViewModel : ViewModelBase
                 QRCodeSource = loginQRCode;
                 while (true)
                 {
+                    await Task.Delay(3000);
                     if (_qrCodeLoginTaskCompletionSource.IsCancellationRequested)
                     {
                         break;
                     }
 
                     await _accountService.CheckLoginState();
-                    await Task.Delay(3000);
                 }
             }
             else

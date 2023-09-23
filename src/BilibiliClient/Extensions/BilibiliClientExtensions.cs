@@ -19,6 +19,7 @@ public static class BilibiliClientExtensions
         {
             serviceCollection.AddHostedService<AppTrayIconHostService>();
         }
+
         serviceCollection.AddHostedService<BilibiliHostedService>();
         return serviceCollection;
     }
@@ -26,6 +27,7 @@ public static class BilibiliClientExtensions
     public static IServiceCollection UseServices(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddSingleton<IWindowManagerService, WindowManagerService>();
+        serviceCollection.AddSingleton<IDialogService, DialogService>();
 
         serviceCollection.AddSingleton<IStartStopHandler, UserSecretStartStopHandler>();
 
@@ -62,7 +64,7 @@ public static class BilibiliClientExtensions
         serviceCollection.AddTransient<SettingPageView>();
         serviceCollection.AddTransient<HeaderView>();
         serviceCollection.AddTransient<LoginView>();
-        
+
 
         return serviceCollection;
     }

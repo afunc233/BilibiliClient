@@ -57,8 +57,8 @@ public class App : Application
                     services.AddSingleton<IApplicationLifetime>(desktop);
                 }
             })
-            .ConfigureServices(ConfigureServices)
             .ConfigureServices(BilibiliClientCoreExtensions.ConfigureServices)
+            .ConfigureServices(ConfigureServices)
             .UseNLog()
             .Build();
     }

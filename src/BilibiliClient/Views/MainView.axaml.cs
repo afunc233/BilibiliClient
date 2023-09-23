@@ -1,17 +1,20 @@
 using Avalonia.Controls;
 using Avalonia.Threading;
+using BilibiliClient.Core.Contracts.Services;
 using BilibiliClient.Core.Messages;
 using BilibiliClient.ViewModels;
 using CommunityToolkit.Mvvm.Messaging;
-using FluentAvalonia.UI.Controls;
 
 namespace BilibiliClient.Views;
 
 public partial class MainView : UserControl
 {
+    private readonly IDialogService _dialogService;
+
     public MainView()
     {
         InitializeComponent();
+        _dialogService = this.GetAppRequiredService<IDialogService>();
         var messenger = this.GetAppRequiredService<IMessenger>();
 
         this.AttachedToVisualTree += (_, _) =>
@@ -26,26 +29,6 @@ public partial class MainView : UserControl
 
     private void StartLoginMessageHandler(object recipient, StartLoginMessage message)
     {
-        message.Reply(Dispatcher.UIThread.InvokeAsync(async () =>
-        {
-            var loginViewModel = this.GetAppRequiredService<LoginViewModel>();
-            var cd = new ContentDialog
-            {
-                CloseButtonText = "取消",
-                Title = "登录",
-                Content = loginViewModel,
-                IsPrimaryButtonEnabled = false,
-                IsSecondaryButtonEnabled = false,
-                DefaultButton = ContentDialogButton.None,
-                FullSizeDesired = false
-            };
-            loginViewModel.OnClose = b =>
-            {
-                var aa = b ? ContentDialogResult.Primary : ContentDialogResult.None;
-                Dispatcher.UIThread.Invoke(() => cd.Hide(aa));
-            };
-            var result = await cd.ShowAsync();
-            return result != ContentDialogResult.None;
-        }));
+        message.Reply(Dispatcher.UIThread.InvokeAsync(async () => await _dialogService.ShowDialog<LoginViewModel, bool>()));
     }
 }

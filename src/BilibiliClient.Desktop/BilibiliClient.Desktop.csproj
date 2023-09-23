@@ -8,7 +8,7 @@
 
         <!--去除编译后多语言-->
         <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
-        <ApplicationIcon>icon.ico</ApplicationIcon>
+        <ApplicationIcon>..\BilibiliClient\Assets\Images\icon.ico</ApplicationIcon>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -23,5 +23,11 @@
 
     <ItemGroup>
         <ProjectReference Include="..\BilibiliClient\BilibiliClient.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\BilibiliClient\Assets\Images\icon.ico">
+        <Link>icon.ico</Link>
+      </None>
     </ItemGroup>
 </Project>
