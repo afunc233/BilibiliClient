@@ -8,7 +8,9 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 using BilibiliClient.Core.Contracts.Services;
+using BilibiliClient.Messages;
 using BilibiliClient.ViewModels;
+using CommunityToolkit.Mvvm.Messaging;
 using DynamicData;
 using Microsoft.Extensions.Hosting;
 using IApplicationLifetime = Avalonia.Controls.ApplicationLifetimes.IApplicationLifetime;
@@ -26,11 +28,14 @@ public class AppTrayIconHostService : IHostedService
     private bool _isStop;
     private readonly IWindowManagerService _windowManagerService;
     private readonly IApplicationLifetime _applicationLifetime;
+    private readonly IMessenger _messenger;
 
     public AppTrayIconHostService(IWindowManagerService windowManagerService,
+        IMessenger messenger,
         IApplicationLifetime applicationLifetime)
     {
         _windowManagerService = windowManagerService;
+        _messenger = messenger;
         _applicationLifetime = applicationLifetime;
 
         InitTrayIcon();
@@ -78,6 +83,7 @@ public class AppTrayIconHostService : IHostedService
                         _notifyIcon.Icon = windowIcon;
                     }, DispatcherPriority.Background, cancellationToken);
 
+                    _messenger.Send(new GlobalIconMessage(file));
                     currentFile = string.Equals(currentFile, files.LastOrDefault())
                         ? files.FirstOrDefault()
                         : files.Skip(files.IndexOf(currentFile) + 1).FirstOrDefault();
@@ -89,7 +95,7 @@ public class AppTrayIconHostService : IHostedService
                 finally
                 {
                     // 修改动态渲染速度
-                    await Task.Delay(TimeSpan.FromMilliseconds(40), cancellationToken);
+                    await Task.Delay(TimeSpan.FromMilliseconds(80), cancellationToken);
                 }
             }
         }, cancellationToken);

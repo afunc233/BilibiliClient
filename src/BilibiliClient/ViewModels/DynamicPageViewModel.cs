@@ -47,6 +47,7 @@ public class DynamicPageViewModel : AbsPageViewModel
 
     public override async Task OnNavigatedTo(object? parameter = null)
     {
+        CanLoadMore = true;
         await base.OnNavigatedTo(parameter);
         _dynamicService.ResetParam();
         DynamicDataList.Clear();
