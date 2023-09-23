@@ -8,6 +8,7 @@
 
         <!--去除编译后多语言-->
         <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+        <ApplicationIcon>icon.ico</ApplicationIcon>
     </PropertyGroup>
 
     <PropertyGroup>
