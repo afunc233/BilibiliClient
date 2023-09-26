@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using Avalonia.Logging;
+﻿using Avalonia.Logging;
 
 namespace AvaFFmpegPlayer.Extensions;
 

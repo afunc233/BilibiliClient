@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AvaFFmpegPlayer.Extensions;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.ReactiveUI;
@@ -60,6 +61,7 @@ class Program
             .UsePlatformDetect()
             .WithInterFont()
             .LogToTrace()
+            .UseFFmpegView()
 #if !ARM64
             .With(new Win32PlatformOptions()
             {

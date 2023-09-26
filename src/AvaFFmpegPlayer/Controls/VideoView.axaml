@@ -1,0 +1,16 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:AvaFFmpegPlayer.Controls">
+    <Design.PreviewWith>
+        <controls:VideoView />
+    </Design.PreviewWith>
+
+    <Style Selector="controls|VideoView">
+        <!-- Set Defaults -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Image Stretch="Uniform" x:Name="PART_Image" />
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

@@ -49,7 +49,7 @@ public static class BilibiliClientExtensions
         serviceCollection.AddSingleton<HeaderViewModel>();
         serviceCollection.AddSingleton<LoginViewModel>();
 
-        serviceCollection.AddSingleton<PlayerViewModel>();
+        serviceCollection.AddTransient<PlayerPageViewModel>();
 
         return serviceCollection;
     }
@@ -64,6 +64,8 @@ public static class BilibiliClientExtensions
         serviceCollection.AddTransient<SettingPageView>();
         serviceCollection.AddTransient<HeaderView>();
         serviceCollection.AddTransient<LoginView>();
+
+        serviceCollection.AddTransient<PlayerPageView>();
 
 
         return serviceCollection;

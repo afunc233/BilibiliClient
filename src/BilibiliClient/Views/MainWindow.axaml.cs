@@ -1,19 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
-using Avalonia.Controls;
-using Avalonia.Interactivity;
 using Avalonia.Media;
-using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using BilibiliClient.Messages;
 using CommunityToolkit.Mvvm.Messaging;
 using FluentAvalonia.UI.Windowing;
-using DynamicData;
 
 namespace BilibiliClient.Views;
 
@@ -49,7 +41,7 @@ internal class MainAppSplashScreen : IApplicationSplashScreen
     public string AppName => "Bilibili";
     public IImage? AppIcon => null;
     public object SplashScreenContent => new MainAppSplashContent();
-    public int MinimumShowTime => 1000;
+    public int MinimumShowTime => 1500;
 
     public Func<Task>? InitApp { get; init; }
 

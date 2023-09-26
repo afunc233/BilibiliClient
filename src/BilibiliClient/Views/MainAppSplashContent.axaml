@@ -6,5 +6,5 @@
              x:Class="BilibiliClient.Views.MainAppSplashContent">
 
     <Image Source="avares://BilibiliClient/Assets/Images/Bili_rgba_500.png" Width="200" Height="200"
-           HorizontalAlignment="Center" VerticalAlignment="Center" />
+           HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="LoadingImage" />
 </UserControl>

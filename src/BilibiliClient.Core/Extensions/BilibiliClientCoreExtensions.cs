@@ -46,6 +46,7 @@ public static class BilibiliClientCoreExtensions
         serviceCollection.AddSingleton<IDynamicService, DynamicService>();
         serviceCollection.AddSingleton<IPopularService, PopularService>();
         serviceCollection.AddSingleton<IRecommendService, RecommendService>();
+        serviceCollection.AddSingleton<IPlayerService, PlayerService>();
 
         return serviceCollection;
     }

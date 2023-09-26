@@ -48,9 +48,9 @@ public class AppTrayIconHostService : IHostedService
     {
         var files = FileSort(Directory.GetFiles(_iconFolderPath));
 
-        _ = Task.Run(async () =>
+        _ = Task.Factory.StartNew(async () =>
         {
-            var cacheDic = new Dictionary<string, (WindowIcon, Bitmap)>();
+            var cacheDic = new Dictionary<string, (Bitmap, WindowIcon)>();
             var currentFile = files.FirstOrDefault();
             while (!_isStop)
             {
@@ -73,25 +73,26 @@ public class AppTrayIconHostService : IHostedService
 
                     // 添加托盘图标,
                     var file = currentFile;
-                    Dispatcher.UIThread.Invoke(() =>
+                    await Dispatcher.UIThread.InvokeAsync(() =>
                     {
                         try
                         {
                             if (!cacheDic.TryGetValue(file, out var iconBitmap))
                             {
-                                iconBitmap.Item2 = new Bitmap(file);
-                                iconBitmap.Item1 = new WindowIcon(iconBitmap.Item2);
+                                iconBitmap.Item1 = new Bitmap(file);
+
+                                iconBitmap.Item2 = new WindowIcon(iconBitmap.Item1);
                                 cacheDic.TryAdd(file, iconBitmap);
                             }
 
-                            _notifyIcon.Icon = iconBitmap.Item1;
-                            _messenger.Send(new GlobalIconMessage(iconBitmap.Item2));
+                            _notifyIcon.Icon = iconBitmap.Item2;
+                            _messenger.Send(new GlobalIconMessage(iconBitmap.Item1));
                         }
                         catch (Exception e)
                         {
                             Console.WriteLine(e);
                         }
-                    }, DispatcherPriority.Background, cancellationToken);
+                    }, DispatcherPriority.SystemIdle, cancellationToken);
 
                     currentFile = string.Equals(currentFile, files.LastOrDefault())
                         ? files.FirstOrDefault()
@@ -107,7 +108,7 @@ public class AppTrayIconHostService : IHostedService
                     await Task.Delay(40, cancellationToken);
                 }
             }
-        }, cancellationToken);
+        }, cancellationToken, TaskCreationOptions.LongRunning, TaskScheduler.Current);
         await Task.CompletedTask;
     }
 

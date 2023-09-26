@@ -3,6 +3,11 @@
 public enum NavBarType
 {
     /// <summary>
+    /// 无
+    /// </summary>
+    None,
+
+    /// <summary>
     /// 推荐
     /// </summary>
     Recommend,

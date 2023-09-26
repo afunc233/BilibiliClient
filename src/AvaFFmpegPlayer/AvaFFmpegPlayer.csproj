@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFrameworks>$(AppTargetFrameworks);</TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
+        <Nullable>disable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
@@ -17,10 +17,10 @@
     </ItemGroup>
     
     <ItemGroup>
-        <Compile Remove="ffmpeg\**"/>
-        <EmbeddedResource Remove="ffmpeg\**"/>
-        <None Remove="ffmpeg\**"/>
-        <Page Remove="ffmpeg\**"/>
+        <Compile Remove="libFFmpeg\**"/>
+        <EmbeddedResource Remove="libFFmpeg\**"/>
+        <None Remove="libFFmpeg\**"/>
+        <Page Remove="libFFmpeg\**"/>
 
         <Compile Remove="libBass\**"/>
         <EmbeddedResource Remove="libBass\**"/>
@@ -29,7 +29,7 @@
     </ItemGroup>
 
     <ItemGroup Condition="'$(Platform)'=='x86'">
-        <None Include="ffmpeg\x86\**">
+        <None Include="libFFmpeg\x86\**">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Include="libBass\win-x86\**">
@@ -37,7 +37,7 @@
         </None>
     </ItemGroup>
     <ItemGroup Condition="'$(Platform)'=='x64'">
-        <None Include="ffmpeg\x64\**">
+        <None Include="libFFmpeg\x64\**">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Include="libBass\win-x64\**">
@@ -45,7 +45,7 @@
         </None>
     </ItemGroup>
     <ItemGroup Condition="'$(Platform)'=='ARM64'">
-        <None Include="ffmpeg\Arm64\**">
+        <None Include="libFFmpeg\Arm64\**">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Include="libBass\win-arm64\**">
@@ -53,19 +53,19 @@
         </None>
     </ItemGroup>
     <ItemGroup Condition="'$(Platform)'=='AnyCpu'">
-        <None Include="ffmpeg\x86\**">
+        <None Include="libFFmpeg\x86\**">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Include="libBass\win-x86\**">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Include="ffmpeg\x64\**">
+        <None Include="libFFmpeg\x64\**">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Include="libBass\win-x64\**">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Include="ffmpeg\Arm64\**">
+        <None Include="libFFmpeg\Arm64\**">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Include="libBass\win-arm64\**">

@@ -2,8 +2,10 @@
 using System.Threading.Tasks;
 using BilibiliClient.Core.Contracts.Services;
 using BilibiliClient.Core.Models.Https.App;
+using BilibiliClient.Messages;
 using BilibiliClient.Models;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace BilibiliClient.ViewModels;
 
@@ -16,10 +18,12 @@ public partial class RecommendPageViewModel : AbsPageViewModel
     public ObservableCollection<RecommendCardItem> RecommendDataList { get; } = new();
 
     private readonly IRecommendService _recommendService;
+    private readonly IMessenger _messenger;
 
-    public RecommendPageViewModel(IRecommendService recommendService)
+    public RecommendPageViewModel(IRecommendService recommendService, IMessenger messenger)
     {
         _recommendService = recommendService;
+        _messenger = messenger;
     }
 
     protected override async Task LoadMore()
@@ -44,6 +48,7 @@ public partial class RecommendPageViewModel : AbsPageViewModel
     [RelayCommand]
     private async Task PlayVideo(RecommendCardItem? recommendCardItem)
     {
+        _messenger.Send(new PlayVideoMessage<RecommendCardItem?>(recommendCardItem));
         await Task.CompletedTask;
     }
 }

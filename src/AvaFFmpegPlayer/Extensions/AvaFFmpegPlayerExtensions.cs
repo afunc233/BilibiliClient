@@ -1,8 +1,6 @@
-﻿using System.Runtime.InteropServices;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Logging;
 using Avalonia.Markup.Xaml.Styling;
-using FFmpeg.AutoGen;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AvaFFmpegPlayer.Extensions;
@@ -50,13 +48,13 @@ public static class AvaFFmpegPlayerExtensions
                 switch (RuntimeInformation.ProcessArchitecture)
                 {
                     case Architecture.X86:
-                        ffmpegPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ffmpeg", "x86");
+                        ffmpegPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "libFFmpeg", "x86");
                         break;
                     case Architecture.X64:
-                        ffmpegPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ffmpeg", "x64");
+                        ffmpegPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "libFFmpeg", "x64");
                         break;
                     case Architecture.Arm64:
-                        ffmpegPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ffmpeg", "Arm64");
+                        ffmpegPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "libFFmpeg", "Arm64");
                         break;
                     default:
                         throw new ApplicationException("un support Architecture");
@@ -75,8 +73,9 @@ public static class AvaFFmpegPlayerExtensions
             ffmpeg.RootPath = ffmpegPath;
             ffmpeg.avformat_network_init();
             ffmpeg.av_log_set_level(logLevel);
-
-            void LogCallback(void* p0, int level, string format, byte* vl)
+            
+            // ReSharper disable once ConvertToLocalFunction
+            av_log_set_callback_callback logCallback = (p0, level, format, vl) =>
             {
                 var logLevelNow = ffmpeg.av_log_get_level();
                 if (level > logLevelNow) return;
@@ -89,9 +88,9 @@ public static class AvaFFmpegPlayerExtensions
                 {
                     _parametrizedLogger?.Log(null, line);
                 }
-            }
+            };
 
-            ffmpeg.av_log_set_callback((av_log_set_callback_callback)LogCallback);
+            ffmpeg.av_log_set_callback(logCallback);
 
             try
             {
@@ -111,7 +110,7 @@ public static class AvaFFmpegPlayerExtensions
         }
     }
 
-    public static unsafe AppBuilder UseFFmpegView(this AppBuilder builder)
+    public static AppBuilder UseFFmpegView(this AppBuilder builder)
     {
         builder.AfterSetup((_) =>
         {
@@ -144,7 +143,8 @@ public static class AvaFFmpegPlayerExtensions
         {
             StyleInclude styleInclude = new StyleInclude(new Uri($"avares://{nameof(AvaFFmpegPlayer)}"))
             {
-                Source = new Uri($"avares://{nameof(AvaFFmpegPlayer)}/FFmpegView.axaml")
+                Source = new Uri(
+                    $"avares://{nameof(AvaFFmpegPlayer)}/{nameof(AvaFFmpegPlayer.Controls)}/VideoView.axaml")
             };
             Application.Current?.Styles.Add(styleInclude);
         }

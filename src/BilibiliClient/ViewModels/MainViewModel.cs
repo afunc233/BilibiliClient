@@ -1,10 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using BilibiliClient.Core.Models.Https.App;
+using BilibiliClient.Messages;
 using BilibiliClient.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BilibiliClient.ViewModels;
 
@@ -81,13 +86,28 @@ public partial class MainViewModel : ViewModelBase
 
     [ObservableProperty] private NavBar _currentNavBar;
 
+    private IServiceProvider _serviceProvider;
     private readonly IEnumerable<IPageViewModel> _pageViewModels;
+    private readonly IMessenger _messenger;
 
-    public MainViewModel(IEnumerable<IPageViewModel> pageViewModels, HeaderViewModel headerViewModel)
+    public MainViewModel(IServiceProvider serviceProvider, IEnumerable<IPageViewModel> pageViewModels,
+        HeaderViewModel headerViewModel,
+        IMessenger messenger)
     {
+        _serviceProvider = serviceProvider;
         _pageViewModels = pageViewModels;
         _header = headerViewModel;
+        _messenger = messenger;
         _currentNavBar = NavBarList.First();
+
+        _messenger.Register<PlayVideoMessage<RecommendCardItem?>>(this, HandlePlayVideoMessage);
+    }
+
+    private void HandlePlayVideoMessage(object recipient, PlayVideoMessage<RecommendCardItem?> message)
+    {
+        // TODO CurrentPage = 
+        CurrentPage = _serviceProvider.GetRequiredService<PlayerPageViewModel>();
+        CurrentPage.OnNavigatedTo(message.Value);
     }
 
     [RelayCommand]

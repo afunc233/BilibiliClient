@@ -30,7 +30,19 @@ public class App : Application
         _logger = NLog.LogManager.GetCurrentClassLogger();
     }
 
-    private void ConfigureServices(HostBuilderContext context, IServiceCollection services)
+    public App()
+    {
+        if (OperatingSystem.IsWindows())
+        {
+            ThreadPool.GetMinThreads(out var workers, out var ports);
+            ThreadPool.SetMinThreads(workers + 6, ports + 6);
+
+            var process = Process.GetCurrentProcess();
+            process.PriorityClass = ProcessPriorityClass.RealTime;
+        }
+    }
+
+    private static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
     {
         services.UseHost();
         services.UseServices();
@@ -66,15 +78,7 @@ public class App : Application
     public override void Initialize()
     {
         _logger.Debug($"{nameof(Initialize)}");
-        if (OperatingSystem.IsWindows())
-        {
-            ThreadPool.GetMinThreads(out var workers, out var ports);
-            ThreadPool.SetMinThreads(workers + 6, ports + 6);
-
-            var process = Process.GetCurrentProcess();
-            process.PriorityClass = ProcessPriorityClass.RealTime;
-        }
-
+        
         AvaloniaXamlLoader.Load(this);
     }
 
