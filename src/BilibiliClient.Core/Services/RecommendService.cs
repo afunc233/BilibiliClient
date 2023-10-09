@@ -4,15 +4,10 @@ using BilibiliClient.Core.Models.Https.App;
 
 namespace BilibiliClient.Core.Services;
 
-internal class RecommendService : IRecommendService
+internal class RecommendService(IAppApi appApi) : IRecommendService
 {
     private long _idx = 0;
-    private readonly IAppApi _appApi;
-
-    public RecommendService(IAppApi appApi)
-    {
-        _appApi = appApi;
-    }
+    private readonly IAppApi _appApi = appApi;
 
     public async IAsyncEnumerable<RecommendCardItem> GetRecommend()
     {

@@ -6,7 +6,7 @@ internal class ThreadedTimer
     private readonly CancellationTokenSource Cts = new();
 
     private bool IsDisposed;
-    public event EventHandler? Elapsed;
+    public event EventHandler Elapsed;
 
     public ThreadedTimer(int intervalMillis = 1, int resolution = 1)
     {
@@ -41,7 +41,11 @@ internal class ThreadedTimer
         try
         {
             cycleClock.Restart();
-            // _ = NativeMethods.BeginTimerResolution(resolutionMillis);
+            if (OperatingSystem.IsWindows())
+            {
+                _ = NativeMethods.BeginTimerResolution(resolutionMillis);
+            }
+
             while (!token.IsCancellationRequested)
             {
                 Elapsed?.Invoke(this, EventArgs.Empty);
@@ -57,7 +61,10 @@ internal class ThreadedTimer
         }
         finally
         {
-            // _ = NativeMethods.EndTimerResolution(resolutionMillis);
+            if (OperatingSystem.IsWindows())
+            {
+                _ = NativeMethods.EndTimerResolution(resolutionMillis);
+            }
             IsRunning = false;
         }
     }
@@ -99,6 +106,7 @@ internal class ThreadedTimer
         }
 
         [DllImport(MultimediaDll, SetLastError = true, EntryPoint = "timeGetDevCaps")]
+#pragma warning disable SYSLIB1054 // 使用 “LibraryImportAttribute” 而不是 “DllImportAttribute” 在编译时生成 P/Invoke 封送代码
         private static extern int TimeGetDevCaps(ref TimerCaps caps, int sizeOfTimerCaps);
 
         [DllImport(MultimediaDll, SetLastError = true, EntryPoint = "timeBeginPeriod")]
@@ -106,6 +114,7 @@ internal class ThreadedTimer
 
         [DllImport(MultimediaDll, SetLastError = true, EntryPoint = "timeEndPeriod")]
         public static extern uint EndTimerResolution(uint value);
+#pragma warning restore SYSLIB1054 // 使用 “LibraryImportAttribute” 而不是 “DllImportAttribute” 在编译时生成 P/Invoke 封送代码
 
         public static int Clamp(int number, int min, int max) => number < min ? min : number > max ? max : number;
 

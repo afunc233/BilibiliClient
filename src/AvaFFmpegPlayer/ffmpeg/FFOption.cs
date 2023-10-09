@@ -2,13 +2,7 @@
 
 namespace AvaFFmpegPlayer.FFmpeg;
 
-public sealed unsafe class FFOption : NativeReference<AVOption>
+public sealed unsafe class FFOption(AVOption* target) : NativeReference<AVOption>(target)
 {
-    public FFOption(AVOption* target)
-        : base(target)
-    {
-
-    }
-
     public AVOptionType Type => Target->type;
 }

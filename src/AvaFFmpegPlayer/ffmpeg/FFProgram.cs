@@ -2,14 +2,8 @@
 
 namespace AvaFFmpegPlayer.FFmpeg;
 
-public sealed unsafe class FFProgram : NativeReference<AVProgram>
+public sealed unsafe class FFProgram(AVProgram* target) : NativeReference<AVProgram>(target)
 {
-    public FFProgram(AVProgram* target)
-        : base(target)
-    {
-        // placeholder
-    }
-
     public int StreamIndexCount => Convert.ToInt32(Target->nb_stream_indexes);
 
     public IReadOnlyList<int> StreamIndices

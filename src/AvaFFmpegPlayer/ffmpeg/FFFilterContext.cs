@@ -2,15 +2,9 @@
 
 namespace AvaFFmpegPlayer.FFmpeg;
 
-public sealed unsafe class FFFilterContext : NativeReference<AVFilterContext>
+public sealed unsafe class FFFilterContext(AVFilterContext* target) : NativeReference<AVFilterContext>(target)
 {
     private const int SearhChildrenFlags = ffmpeg.AV_OPT_SEARCH_CHILDREN;
-
-    public FFFilterContext(AVFilterContext* target)
-        : base(target)
-    {
-        // placeholder
-    }
 
     public AVRational FrameRate => ffmpeg.av_buffersink_get_frame_rate(Target);
 

@@ -46,10 +46,13 @@ public class WavePlayer : IWaveProvider
 
     public void Close()
     {
-        Cts.Cancel();
+        if (!Cts.IsCancellationRequested)
+        {
+            Cts.Cancel();
+        }
     }
 
-    private void PerformContinuousPlayback(object? state)
+    private void PerformContinuousPlayback(object state)
     {
         var deviceNumber = -1;
         var openResult = WaveInterop.waveOutOpen(
@@ -94,8 +97,7 @@ public class WavePlayer : IWaveProvider
 
             foreach (var buffer in Buffers)
             {
-                if (buffer is not null)
-                    buffer.Dispose();
+                buffer?.Dispose();
             }
 
             Cts.Dispose();
@@ -110,10 +112,15 @@ public class WavePlayer : IWaveProvider
 
     public void Pause()
     {
-        // TODO: Implement pause
+        lock (SyncLock)
+        {
+            // TODO: Implement pause
+
+        }
     }
 
-    private void OnDeviceMessage(IntPtr deviceHandle, WaveInterop.WaveMessage message, IntPtr instance, WaveHeader header, IntPtr reserved)
+    private void OnDeviceMessage(IntPtr deviceHandle, WaveInterop.WaveMessage message, IntPtr instance,
+        WaveHeader header, IntPtr reserved)
     {
         if (message is WaveInterop.WaveMessage.WaveOutDone)
             OnSamplesPlayed.Set();
@@ -217,8 +224,10 @@ public class WavePlayer : IWaveProvider
         if (!Container.Audio.FrameTime.IsNaN())
         {
             var readBufferAvailable = ReadBufferSize - ReadBufferIndex;
-            var bufferDuration = (2d * Container.Audio.HardwareSpec.BufferSize + readBufferAvailable) / Container.Audio.HardwareSpec.BytesPerSecond;
-            Container.AudioClock.Set(Container.Audio.FrameTime - bufferDuration, Container.Audio.GroupIndex, Presenter.LastAudioCallbackTime);
+            var bufferDuration = (2d * Container.Audio.HardwareSpec.BufferSize + readBufferAvailable) /
+                                 Container.Audio.HardwareSpec.BytesPerSecond;
+            Container.AudioClock.Set(Container.Audio.FrameTime - bufferDuration, Container.Audio.GroupIndex,
+                Presenter.LastAudioCallbackTime);
             Container.ExternalClock.SyncToSlave(Container.AudioClock);
         }
 

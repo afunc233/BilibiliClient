@@ -4,7 +4,8 @@ namespace AvaFFmpegPlayer.FFmpeg;
 
 public sealed unsafe class ByteBuffer : CountedReference<byte>
 {
-    public ByteBuffer(ulong length, [CallerFilePath] string filePath = default, [CallerLineNumber] int? lineNumber = default)
+    public ByteBuffer(ulong length, [CallerFilePath] string filePath = default,
+        [CallerLineNumber] int? lineNumber = default)
         : base(filePath, lineNumber)
     {
         var pointer = (byte*)ffmpeg.av_mallocz(length);
@@ -14,6 +15,12 @@ public sealed unsafe class ByteBuffer : CountedReference<byte>
 
     public ulong Length { get; private set; }
 
+    /// <summary>
+    /// 重新分配
+    /// </summary>
+    /// <param name="original"></param>
+    /// <param name="length"></param>
+    /// <returns></returns>
     public static ByteBuffer Reallocate(ByteBuffer original, ulong length)
     {
         if (original.IsNull() || original.Length < length)

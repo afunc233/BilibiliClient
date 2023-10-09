@@ -5,14 +5,9 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace BilibiliClient.ViewModels;
 
-public partial class HeaderViewModel : ViewModelBase
+public partial class HeaderViewModel(IMessenger messenger) : ViewModelBase
 {
-    private readonly IMessenger _messenger;
-
-    public HeaderViewModel(IMessenger messenger)
-    {
-        _messenger = messenger;
-    }
+    private readonly IMessenger _messenger = messenger;
 
     [RelayCommand]
     public async Task Login()

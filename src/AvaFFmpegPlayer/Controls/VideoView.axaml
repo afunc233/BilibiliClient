@@ -9,7 +9,15 @@
         <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
-                <Image Stretch="Uniform" x:Name="PART_Image" />
+                <Border Margin="{TemplateBinding Padding}" Background="{TemplateBinding Background}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        BorderBrush="{TemplateBinding BorderBrush}">
+
+                    <Image HorizontalAlignment="Stretch" RenderOptions.BitmapInterpolationMode="HighQuality"
+                           VerticalAlignment="Stretch" Stretch="Uniform"
+                           x:Name="PART_Image" />
+                </Border>
             </ControlTemplate>
         </Setter>
     </Style>

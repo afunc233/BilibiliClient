@@ -9,6 +9,7 @@
              x:DataType="vm:PopularPageViewModel"
              xmlns:controls="clr-namespace:BilibiliClient.Controls"
              xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              xmlns:iac="using:BilibiliClient.Interactions"
              x:Class="BilibiliClient.Views.PopularPageView">
     <UserControl.DataTemplates>
@@ -17,6 +18,14 @@
                 <Image asyncImageLoader:ImageLoader.Source="{Binding  SmallCoverV5.Base.Cover}"
                        RenderOptions.BitmapInterpolationMode="HighQuality" HorizontalAlignment="Stretch"
                        VerticalAlignment="Stretch" />
+                <i:Interaction.Behaviors>
+                    <ia:EventTriggerBehavior EventName="PointerPressed">
+                        <ia:InvokeCommandAction
+                            Command="{Binding $parent[UserControl].((vm:PopularPageViewModel)DataContext).PlayVideoCommand,FallbackValue={x:Null}}"
+                            CommandParameter="{Binding}">
+                        </ia:InvokeCommandAction>
+                    </ia:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
             </Grid>
         </DataTemplate>
     </UserControl.DataTemplates>

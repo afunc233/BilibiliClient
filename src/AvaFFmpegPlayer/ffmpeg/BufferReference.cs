@@ -2,13 +2,7 @@
 
 namespace AvaFFmpegPlayer.FFmpeg;
 
-public unsafe class BufferReference : NativeReference<byte>
+public unsafe class BufferReference(byte* target, long length) : NativeReference<byte>(target)
 {
-    public BufferReference(byte* target, long length)
-        : base(target)
-    {
-        Length = length;
-    }
-
-    public long Length { get; set; }
+    public long Length { get; set; } = length;
 }

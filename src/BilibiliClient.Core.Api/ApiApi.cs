@@ -7,18 +7,12 @@ using BilibiliClient.Core.Models.Https.Api;
 
 namespace BilibiliClient.Core.Api;
 
-internal class ApiApi : AbsApi, IApiApi
+internal class ApiApi(IApiHttpClient apiHttpClient, IEnumerable<IPlatformConfig> platformConfigs,
+    UserSecretConfig userSecretConfig) : AbsApi(
+    platformConfigs), IApiApi
 {
-    private readonly IApiHttpClient _apiHttpClient;
-    private readonly UserSecretConfig _userSecretConfig;
-
-    public ApiApi(IApiHttpClient apiHttpClient, IEnumerable<IPlatformConfig> platformConfigs,
-        UserSecretConfig userSecretConfig) : base(
-        platformConfigs)
-    {
-        _apiHttpClient = apiHttpClient;
-        _userSecretConfig = userSecretConfig;
-    }
+    private readonly IApiHttpClient _apiHttpClient = apiHttpClient;
+    private readonly UserSecretConfig _userSecretConfig = userSecretConfig;
 
     public async ValueTask<VideoPlayUrlResult?> GetVideoPlayUrl(string avId, string cId)
     {

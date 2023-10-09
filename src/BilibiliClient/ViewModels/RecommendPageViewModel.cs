@@ -9,7 +9,7 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace BilibiliClient.ViewModels;
 
-public partial class RecommendPageViewModel : AbsPageViewModel
+public partial class RecommendPageViewModel(IRecommendService recommendService, IMessenger messenger) : AbsPageViewModel
 {
     public override NavBarType NavBarType => NavBarType.Recommend;
 
@@ -17,14 +17,8 @@ public partial class RecommendPageViewModel : AbsPageViewModel
 
     public ObservableCollection<RecommendCardItem> RecommendDataList { get; } = new();
 
-    private readonly IRecommendService _recommendService;
-    private readonly IMessenger _messenger;
-
-    public RecommendPageViewModel(IRecommendService recommendService, IMessenger messenger)
-    {
-        _recommendService = recommendService;
-        _messenger = messenger;
-    }
+    private readonly IRecommendService _recommendService = recommendService;
+    private readonly IMessenger _messenger = messenger;
 
     protected override async Task LoadMore()
     {

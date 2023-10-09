@@ -2,14 +2,8 @@
 
 namespace AvaFFmpegPlayer.FFmpeg;
 
-public sealed unsafe class ChapterSet : NativeChildSet<FFFormatContext, FFChapter>
+public sealed unsafe class ChapterSet(FFFormatContext parent) : NativeChildSet<FFFormatContext, FFChapter>(parent)
 {
-    public ChapterSet(FFFormatContext parent)
-        : base(parent)
-    {
-        // placeholder
-    }
-
     public override FFChapter this[int index]
     {
         get => new(Parent.Target->chapters[index]);

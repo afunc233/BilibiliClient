@@ -8,16 +8,10 @@ using BilibiliClient.Core.Api.Models;
 
 namespace BilibiliClient.Core.Api;
 
-internal class GrpcApi : IGrpcApi
+internal class GrpcApi(IGrpcHttpClient grpcHttpClient, UserSecretConfig userSecretConfig) : IGrpcApi
 {
-    private readonly IGrpcHttpClient _grpcHttpClient;
-    private readonly UserSecretConfig _userSecretConfig;
-
-    public GrpcApi(IGrpcHttpClient grpcHttpClient, UserSecretConfig userSecretConfig)
-    {
-        _grpcHttpClient = grpcHttpClient;
-        _userSecretConfig = userSecretConfig;
-    }
+    private readonly IGrpcHttpClient _grpcHttpClient = grpcHttpClient;
+    private readonly UserSecretConfig _userSecretConfig = userSecretConfig;
 
     public async ValueTask<PopularReply?> Popular(PopularResultReq popularReq)
     {

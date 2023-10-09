@@ -2,11 +2,14 @@
 using System.Threading.Tasks;
 using Bilibili.App.Card.V1;
 using BilibiliClient.Core.Contracts.Services;
+using BilibiliClient.Messages;
 using BilibiliClient.Models;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace BilibiliClient.ViewModels;
 
-public class PopularPageViewModel : AbsPageViewModel
+public partial class PopularPageViewModel : AbsPageViewModel
 {
     public override NavBarType NavBarType => NavBarType.Popular;
 
@@ -17,10 +20,13 @@ public class PopularPageViewModel : AbsPageViewModel
 
     private readonly IPopularService _popularService;
 
-    public PopularPageViewModel(IPopularService popularService, HeaderViewModel headerViewModel)
+    private readonly IMessenger _messenger;
+
+    public PopularPageViewModel(IPopularService popularService, HeaderViewModel headerViewModel, IMessenger messenger)
     {
         _popularService = popularService;
         Header = headerViewModel;
+        _messenger = messenger;
     }
 
     protected override async Task LoadMore()
@@ -37,5 +43,12 @@ public class PopularPageViewModel : AbsPageViewModel
 
         CanLoadMore = hasData;
         IsLoading = false;
+    }
+
+    [RelayCommand]
+    private async Task PlayVideo(Card? card)
+    {
+        _messenger.Send(new PlayVideoMessage<Card?>(card));
+        await Task.CompletedTask;
     }
 }

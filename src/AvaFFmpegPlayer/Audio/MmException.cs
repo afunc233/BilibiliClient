@@ -3,23 +3,15 @@
 /// <summary>
 /// Summary description for MmException.
 /// </summary>
-public class MmException : Exception
+/// <remarks>
+/// Creates a new MmException
+/// </remarks>
+/// <param name="result">The result returned by the Windows API call</param>
+/// <param name="function">The name of the Windows API that failed</param>
+public class MmException(MmResult result, string function) : Exception(ErrorMessage(result, function))
 {
-    private readonly MmResult result;
-    private readonly string function;
-
-    /// <summary>
-    /// Creates a new MmException
-    /// </summary>
-    /// <param name="result">The result returned by the Windows API call</param>
-    /// <param name="function">The name of the Windows API that failed</param>
-    public MmException(MmResult result, string function)
-        : base(ErrorMessage(result, function))
-    {
-        this.result = result;
-        this.function = function;
-    }
-
+    private readonly MmResult result = result;
+    private readonly string function = function;
 
     private static string ErrorMessage(MmResult result, string function) =>
         string.Format("{0} calling {1}", result, function);

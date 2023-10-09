@@ -3,15 +3,13 @@ using System.Text;
 
 namespace BilibiliClient.Models.gRPC;
 
-public class Buvid
+/// <summary>
+/// Initializes a new instance of the <see cref="Buvid"/> class.
+/// </summary>
+/// <param name="macAddress">MAC 地址.</param>
+public class Buvid(string macAddress)
 {
-    private readonly string _mac;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Buvid"/> class.
-    /// </summary>
-    /// <param name="macAddress">MAC 地址.</param>
-    public Buvid(string macAddress) => _mac = macAddress;
+    private readonly string _mac = macAddress;
 
     /// <summary>
     /// 生成 buvid.

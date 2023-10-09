@@ -3,7 +3,7 @@ using AvaFFmpegPlayer.Primitives;
 
 namespace AvaFFmpegPlayer.Components;
 
-public sealed unsafe class AudioComponent : FilteringMediaComponent, ISerialGroupable
+public sealed unsafe class AudioComponent(MediaContainer container) : FilteringMediaComponent(container), ISerialGroupable
 {
     private readonly double SyncDiffAverageCoffiecient = Math.Exp(Math.Log(0.01) / Constants.AudioDiffAveragesCount);
 
@@ -19,12 +19,6 @@ public sealed unsafe class AudioComponent : FilteringMediaComponent, ISerialGrou
     private int SyncDiffAverageCount;
     private AudioParams StreamSpec = new();
     private AudioParams FilterSpec = new();
-
-    public AudioComponent(MediaContainer container)
-        : base(container)
-    {
-        // placeholder
-    }
 
     /// <summary>
     /// Gets or sets the Frame Time (ported from audio_clock)

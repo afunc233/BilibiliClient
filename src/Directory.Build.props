@@ -11,7 +11,7 @@
     <PropertyGroup>
         <AvaloniaVersion>11.0.4</AvaloniaVersion>
         <CommunityToolkitVersion>8.2.1</CommunityToolkitVersion>
-        <MicrosoftExtensionsVersion>8.0.0-preview.6.23329.7</MicrosoftExtensionsVersion>
+        <MicrosoftExtensionsVersion>8.0.0-preview.6.23329.*</MicrosoftExtensionsVersion>
         <GrpcVersion>2.51.0</GrpcVersion>
         <GoogleProtobufVersion>4.0.0-rc2</GoogleProtobufVersion>
         <NLogVersion>5.3.4</NLogVersion>

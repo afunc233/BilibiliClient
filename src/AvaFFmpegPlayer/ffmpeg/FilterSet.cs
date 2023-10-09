@@ -2,14 +2,8 @@
 
 namespace AvaFFmpegPlayer.FFmpeg;
 
-public sealed unsafe class FilterSet : NativeChildSet<FFFilterGraph, FFFilterContext>
+public sealed unsafe class FilterSet(FFFilterGraph parent) : NativeChildSet<FFFilterGraph, FFFilterContext>(parent)
 {
-    public FilterSet(FFFilterGraph parent)
-        : base(parent)
-    {
-        // placeholder
-    }
-
     public override FFFilterContext this[int index]
     {
         get => new(Parent.Target->filters[index]);

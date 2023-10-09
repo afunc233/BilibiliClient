@@ -2,14 +2,8 @@
 
 namespace AvaFFmpegPlayer.FFmpeg;
 
-public sealed unsafe class FFCodec : NativeReference<AVCodec>
+public sealed unsafe class FFCodec(AVCodec* target) : NativeReference<AVCodec>(target)
 {
-    public FFCodec(AVCodec* target)
-        : base(target)
-    {
-        // placeholder
-    }
-
     public AVCodecID Id => Target->id;
 
     public FFMediaClass PrivateClass =>

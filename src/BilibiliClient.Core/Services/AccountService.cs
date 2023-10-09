@@ -8,27 +8,18 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace BilibiliClient.Core.Services;
 
-internal class AccountService : IAccountService
+internal class AccountService(IMessenger messenger, IPassportApi passportApi, IAppApi appApi, ICookieService cookieService,
+    UserSecretConfig userSecretConfig) : IAccountService
 {
     private string? _loginId;
     private string? _authCode;
-    private readonly IPassportApi _passportApi;
-    private readonly IAppApi _appApi;
+    private readonly IPassportApi _passportApi = passportApi;
+    private readonly IAppApi _appApi = appApi;
 
-    private readonly ICookieService _cookieService;
-    private readonly UserSecretConfig _userSecretConfig;
+    private readonly ICookieService _cookieService = cookieService;
+    private readonly UserSecretConfig _userSecretConfig = userSecretConfig;
 
-    private readonly IMessenger _messenger;
-
-    public AccountService(IMessenger messenger, IPassportApi passportApi, IAppApi appApi, ICookieService cookieService,
-        UserSecretConfig userSecretConfig)
-    {
-        _messenger = messenger;
-        _passportApi = passportApi;
-        _appApi = appApi;
-        _cookieService = cookieService;
-        _userSecretConfig = userSecretConfig;
-    }
+    private readonly IMessenger _messenger = messenger;
 
     public async Task<string?> GetLoginQRCode()
     {

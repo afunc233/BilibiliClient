@@ -7,15 +7,9 @@ using BilibiliClient.Core.Models.Https.Passport;
 
 namespace BilibiliClient.Core.Api;
 
-internal class PassportApi : AbsApi, IPassportApi
+internal class PassportApi(IPassportHttpClient passportHttpClient, IEnumerable<IPlatformConfig> platformConfigs) : AbsApi(platformConfigs), IPassportApi
 {
-    private readonly IPassportHttpClient _passportHttpClient;
-
-    public PassportApi(IPassportHttpClient passportHttpClient, IEnumerable<IPlatformConfig> platformConfigs)
-        : base(platformConfigs)
-    {
-        _passportHttpClient = passportHttpClient;
-    }
+    private readonly IPassportHttpClient _passportHttpClient = passportHttpClient;
 
     #region 好像目前用处不大
 

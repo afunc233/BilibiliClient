@@ -2,14 +2,9 @@
 
 namespace BilibiliClient.Core.Messages;
 
-public class LoginStateMessage : ValueChangedMessage<LoginStateEnum>
+public class LoginStateMessage(LoginStateEnum value, string? errorMessage = null) : ValueChangedMessage<LoginStateEnum>(value)
 {
-    public string? ErrorMessage { get; }
-
-    public LoginStateMessage(LoginStateEnum value, string? errorMessage = null) : base(value)
-    {
-        this.ErrorMessage = errorMessage;
-    }
+    public string? ErrorMessage { get; } = errorMessage;
 }
 
 public enum LoginStateEnum

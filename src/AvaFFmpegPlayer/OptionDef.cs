@@ -1,31 +1,22 @@
 ﻿namespace AvaFFmpegPlayer;
 
-public class OptionDef<T>
+public class OptionDef<T>(string name, OptionUsage flags, Action<T, string> apply, string help, string argumentName)
 {
-    public OptionDef(string name, OptionUsage flags, Action<T, string> apply, string help, string argumentName)
-    {
-        Name = name;
-        Flags = flags;
-        Apply = apply;
-        Help = help;
-        ArgumentName = argumentName;
-    }
-
     public OptionDef(string name, OptionUsage flags, Action<T, string> apply, string help)
         : this(name, flags, apply, help, name)
     {
         // placeholder
     }
 
-    public string Name { get; set; }
+    public string Name { get; set; } = name;
 
-    public OptionUsage Flags { get; set; }
+    public OptionUsage Flags { get; set; } = flags;
 
-    public Action<T, string> Apply { get; set; }
+    public Action<T, string> Apply { get; set; } = apply;
 
-    public string Help { get; set; }
+    public string Help { get; set; } = help;
 
-    public string ArgumentName { get; set; }
+    public string ArgumentName { get; set; } = argumentName;
 }
 
 /// <summary>

@@ -11,21 +11,14 @@ using Microsoft.Extensions.Hosting;
 
 namespace BilibiliClient.Services;
 
-public class BilibiliHostedService : IHostedService
+public class BilibiliHostedService(IWindowManagerService windowManagerService,
+    IMessenger messenger,
+    Avalonia.Controls.ApplicationLifetimes.IApplicationLifetime applicationLifetime) : IHostedService
 {
-    private readonly IWindowManagerService _windowManagerService;
+    private readonly IWindowManagerService _windowManagerService = windowManagerService;
 
-    private readonly IMessenger _messenger;
-    private readonly Avalonia.Controls.ApplicationLifetimes.IApplicationLifetime _applicationLifetime;
-
-    public BilibiliHostedService(IWindowManagerService windowManagerService,
-        IMessenger messenger,
-        Avalonia.Controls.ApplicationLifetimes.IApplicationLifetime applicationLifetime)
-    {
-        _windowManagerService = windowManagerService;
-        _messenger = messenger;
-        _applicationLifetime = applicationLifetime;
-    }
+    private readonly IMessenger _messenger = messenger;
+    private readonly Avalonia.Controls.ApplicationLifetimes.IApplicationLifetime _applicationLifetime = applicationLifetime;
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {

@@ -185,28 +185,16 @@ internal static partial class ObjectiveC
         public static implicit operator IntPtr(NsString nsString) => nsString.strPtr;
     }
 
-    public readonly struct NsPoint
+    public readonly struct NsPoint(double x, double y)
     {
-        public readonly double x;
-        public readonly double y;
-
-        public NsPoint(double x, double y)
-        {
-            this.x = x;
-            this.y = y;
-        }
+        public readonly double x = x;
+        public readonly double y = y;
     }
 
-    public readonly struct NsRect
+    public readonly struct NsRect(double x, double y, double width, double height)
     {
-        public readonly NsPoint pos;
-        public readonly NsPoint size;
-
-        public NsRect(double x, double y, double width, double height)
-        {
-            pos = new NsPoint(x, y);
-            size = new NsPoint(width, height);
-        }
+        public readonly NsPoint pos = new NsPoint(x, y);
+        public readonly NsPoint size = new NsPoint(width, height);
     }
 }
 

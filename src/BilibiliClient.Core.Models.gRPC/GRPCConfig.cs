@@ -15,7 +15,11 @@ namespace BilibiliClient.Models.gRPC;
 /// <summary>
 /// gRPC的请求配置.
 /// </summary>
-public class GRPCConfig
+/// <remarks>
+/// Initializes a new instance of the <see cref="GRPCConfig"/> class.
+/// </remarks>
+/// <param name="accessToken">访问令牌.</param>
+public class GRPCConfig(string accessToken)
 {
     /// <summary>
     /// 系统版本.
@@ -103,18 +107,9 @@ public class GRPCConfig
     public const string Language = "zh";
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="GRPCConfig"/> class.
-    /// </summary>
-    /// <param name="accessToken">访问令牌.</param>
-    public GRPCConfig(string accessToken)
-    {
-        this.AccessToken = accessToken;
-    }
-
-    /// <summary>
     /// 访问令牌.
     /// </summary>
-    public string AccessToken { get; set; }
+    public string AccessToken { get; set; } = accessToken;
 
     /// <summary>
     /// 获取客户端在Fawkes系统中的信息标头.

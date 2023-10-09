@@ -2,14 +2,8 @@
 
 namespace AvaFFmpegPlayer.FFmpeg;
 
-public sealed unsafe class FFIOContext : NativeReference<AVIOContext>
+public sealed unsafe class FFIOContext(AVIOContext* target) : NativeReference<AVIOContext>(target)
 {
-    public FFIOContext(AVIOContext* target)
-        : base(target)
-    {
-        // placeholder
-    }
-
     public int Error => Target->error;
 
     public long BytePosition => ffmpeg.avio_tell(Target);

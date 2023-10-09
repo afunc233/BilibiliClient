@@ -70,7 +70,8 @@ public sealed unsafe class FFPacket : CountedReference<AVPacket>, ISerialGroupab
         DurationUnits = 0
     };
 
-    public static FFPacket Clone(AVPacket* packet, [CallerFilePath] string filePath = default, [CallerLineNumber] int? lineNumber = default)
+    public static FFPacket Clone(AVPacket* packet, [CallerFilePath] string filePath = default,
+        [CallerLineNumber] int? lineNumber = default)
     {
         if (packet is null)
             throw new ArgumentNullException(nameof(packet));
@@ -79,14 +80,22 @@ public sealed unsafe class FFPacket : CountedReference<AVPacket>, ISerialGroupab
         return new FFPacket(copy, filePath, lineNumber);
     }
 
-    public FFPacket Clone([CallerFilePath] string filePath = default, [CallerLineNumber] int? lineNumber = default) => Address.IsNull()
-        ? throw new InvalidOperationException("Cannot clone a null packet pointer")
-        : new(ffmpeg.av_packet_clone(Target), filePath, lineNumber);
+    public FFPacket Clone([CallerFilePath] string filePath = default, [CallerLineNumber] int? lineNumber = default) =>
+        Address.IsNull()
+            ? throw new InvalidOperationException("Cannot clone a null packet pointer")
+            : new(ffmpeg.av_packet_clone(Target), filePath, lineNumber);
 
     public long Pts => Target->pts.IsValidPts()
         ? Target->pts
         : Target->dts;
 
-    protected override void ReleaseInternal(AVPacket* target) =>
+    public void PacketUnref()
+    {
+        ffmpeg.av_packet_unref(Target);
+    }
+
+    protected override void ReleaseInternal(AVPacket* target)
+    {
         ffmpeg.av_packet_free(&target);
+    }
 }

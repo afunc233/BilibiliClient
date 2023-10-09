@@ -2,14 +2,8 @@
 
 namespace AvaFFmpegPlayer.FFmpeg;
 
-public sealed unsafe class FFSubtitleRect : NativeReference<AVSubtitleRect>
+public sealed unsafe class FFSubtitleRect(AVSubtitleRect* target) : NativeReference<AVSubtitleRect>(target)
 {
-    public FFSubtitleRect(AVSubtitleRect* target)
-        : base(target)
-    {
-        // placeholder
-    }
-
     public int X => Target->x;
 
     public int Y => Target->y;

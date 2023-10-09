@@ -2,21 +2,15 @@
 
 namespace AvaFFmpegPlayer.FFmpeg;
 
-public sealed unsafe class FFStream : NativeReference<AVStream>
+public sealed unsafe class FFStream(AVStream* target, FFFormatContext formatContext) : NativeReference<AVStream>(target)
 {
-    public FFStream(AVStream* target, FFFormatContext formatContext)
-        : base(target)
-    {
-        FormatContext = formatContext;
-    }
-
     public AVDiscard DiscardFlags
     {
         get => Target->discard;
         set => Target->discard = value;
     }
 
-    public FFFormatContext FormatContext { get; }
+    public FFFormatContext FormatContext { get; } = formatContext;
 
     public FFCodecParameters CodecParameters => new(Target->codecpar);
 

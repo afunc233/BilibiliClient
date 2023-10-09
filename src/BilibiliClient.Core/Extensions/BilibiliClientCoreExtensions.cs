@@ -23,11 +23,8 @@ public static class BilibiliClientCoreExtensions
         return serviceCollection;
     }
 
-    private class LazilyResolved<T> : Lazy<T> where T : notnull
+    private class LazilyResolved<T>(IServiceProvider serviceProvider) : Lazy<T>(serviceProvider.GetRequiredService<T>) where T : notnull
     {
-        public LazilyResolved(IServiceProvider serviceProvider) : base(serviceProvider.GetRequiredService<T>)
-        {
-        }
     }
 
     private static IServiceCollection UseLazyResolution(this IServiceCollection serviceCollection)

@@ -37,13 +37,27 @@ public unsafe class MediaContainer
 
     public FFFormatContext Input { get; private set; }
 
+
+    /// <summary>
+    /// 音频
+    /// </summary>
+    public FFFormatContext AudioInput
+    {
+        get => _audioInput ?? Input;
+        private set => _audioInput = value;
+    }
+
+    private FFFormatContext _audioInput;
+
     public IPresenter Presenter { get; }
 
     public ProgramOptions Options { get; }
 
     internal EventAwaiter NeedsMorePacketsEvent { get; } = new();
 
-    public string FileName { get; private set; }
+    public string InputVideoPath { get; private set; }
+
+    public string InputAudioPath { get; private set; }
 
     public bool IsAbortRequested { get; private set; }
 
@@ -175,8 +189,7 @@ public unsafe class MediaContainer
 
     public static MediaContainer Open(ProgramOptions options, IPresenter presenter)
     {
-        if (presenter is null)
-            throw new ArgumentNullException(nameof(presenter));
+        ArgumentNullException.ThrowIfNull(presenter);
 
         var container = new MediaContainer(options, presenter);
 
@@ -187,10 +200,15 @@ public unsafe class MediaContainer
             container.Video.LastStreamIndex = container.Video.StreamIndex = -1;
             container.Audio.LastStreamIndex = container.Audio.StreamIndex = -1;
             container.Subtitle.LastStreamIndex = container.Subtitle.StreamIndex = -1;
-            if (string.IsNullOrWhiteSpace(o.InputFileName))
-                throw new ArgumentException($"{nameof(options)}.{nameof(options.InputFileName)} cannot be null.");
 
-            container.FileName = o.InputFileName;
+            if (string.IsNullOrWhiteSpace(o.InputVideoPath))
+#pragma warning disable CA2208 // 正确实例化参数异常
+                throw new ArgumentException($"{nameof(options)}.{nameof(options.InputVideoPath)} cannot be null.", "");
+#pragma warning restore CA2208 // 正确实例化参数异常
+
+            container.InputVideoPath = o.InputVideoPath;
+            container.InputAudioPath = o.InputAudioPath;
+
             container.InputFormat = o.InputFormat ?? new();
             container.ytop = 0;
             container.xleft = 0;
@@ -232,18 +250,23 @@ public unsafe class MediaContainer
         if (HasVideo && Video.Packets.Count <= Constants.ExternalClockMinFrames ||
             HasAudio && Audio.Packets.Count <= Constants.ExternalClockMinFrames)
         {
-            ExternalClock.SetSpeed(Math.Max(Constants.ExternalClockSpeedMin, ExternalClock.SpeedRatio - Constants.ExternalClockSpeedStep));
+            ExternalClock.SetSpeed(Math.Max(Constants.ExternalClockSpeedMin,
+                ExternalClock.SpeedRatio - Constants.ExternalClockSpeedStep));
         }
         else if ((Video.StreamIndex < 0 || Video.Packets.Count > Constants.ExternalClockMaxFrames) &&
                  (Audio.StreamIndex < 0 || Audio.Packets.Count > Constants.ExternalClockMaxFrames))
         {
-            ExternalClock.SetSpeed(Math.Min(Constants.ExternalClockSpeedMax, ExternalClock.SpeedRatio + Constants.ExternalClockSpeedStep));
+            ExternalClock.SetSpeed(Math.Min(Constants.ExternalClockSpeedMax,
+                ExternalClock.SpeedRatio + Constants.ExternalClockSpeedStep));
         }
         else
         {
             var speed = ExternalClock.SpeedRatio;
             if (speed != 1.0)
-                ExternalClock.SetSpeed(speed + Constants.ExternalClockSpeedStep * (1.0 - speed) / Math.Abs(1.0 - speed));
+            {
+                ExternalClock.SetSpeed(speed + Constants.ExternalClockSpeedStep * (1.0 - speed) /
+                    Math.Abs(1.0 - speed));
+            }
         }
     }
 
@@ -315,6 +338,7 @@ public unsafe class MediaContainer
                     Subtitle.LastStreamIndex = -1;
                     break;
                 }
+
                 if (startStreamIndex == -1)
                     return;
 
@@ -336,11 +360,15 @@ public unsafe class MediaContainer
                 if (component.MediaType is AVMediaType.AVMEDIA_TYPE_AUDIO &&
                     st.CodecParameters.SampleRate != 0 &&
                     st.CodecParameters.Channels != 0)
+                {
                     break;
+                }
 
                 if (component.MediaType is AVMediaType.AVMEDIA_TYPE_VIDEO or
                     AVMediaType.AVMEDIA_TYPE_SUBTITLE)
+                {
                     break;
+                }
             }
         }
 
@@ -406,7 +434,8 @@ public unsafe class MediaContainer
             return;
 
         ($"Seeking to chapter {i}.").LogVerbose();
-        SeekByTimestamp(ffmpeg.av_rescale_q(Input.Chapters[i].StartTime, Input.Chapters[i].TimeBase, Constants.AV_TIME_BASE_Q));
+        SeekByTimestamp(ffmpeg.av_rescale_q(Input.Chapters[i].StartTime, Input.Chapters[i].TimeBase,
+            Constants.AV_TIME_BASE_Q));
     }
 
     /// <summary>
@@ -451,7 +480,8 @@ public unsafe class MediaContainer
                     : codecContext.CodecName;
 
                 ($"No decoder could be found for codec {codecName}.").LogWarning();
-                throw new FFmpegException(ffmpeg.AVERROR(ffmpeg.EINVAL), $"Could not find codec with name '{codecName}'");
+                throw new FFmpegException(ffmpeg.AVERROR(ffmpeg.EINVAL),
+                    $"Could not find codec with name '{codecName}'");
             }
 
             codecContext.CodecId = codec.Id;
@@ -562,7 +592,40 @@ public unsafe class MediaContainer
         ReadingThread.Start();
     }
 
-    private int InputInterrupt(void* opaque) => IsAbortRequested ? 1 : 0;
+    private Stopwatch _interruptStopwatch = null;
+
+    private void ResetInterruptSw()
+    {
+        if (_interruptStopwatch == null)
+        {
+            _interruptStopwatch ??= Stopwatch.StartNew();
+        }
+        else
+        {
+            _interruptStopwatch.Restart();
+        }
+    }
+
+    private void StopSw()
+    {
+        _interruptStopwatch?.Stop();
+        _interruptStopwatch = null;
+    }
+
+    private int InputInterrupt(void* opaque)
+    {
+        if (_interruptStopwatch != null)
+        {
+            if (_interruptStopwatch.ElapsedTicks > 1000 * 1000 * 2)
+            {
+                _interruptStopwatch.Stop();
+                _interruptStopwatch = null;
+                return 1;
+            }
+        }
+
+        return IsAbortRequested ? 1 : 0;
+    }
 
     /// <summary>
     /// Port of stream_seek. Not exposed to improve on code readability.
@@ -613,16 +676,26 @@ public unsafe class MediaContainer
             InterruptCallback = InputInterruptCallback
         };
 
+        if (!string.IsNullOrWhiteSpace(InputAudioPath))
+        {
+            AudioInput = new FFFormatContext()
+            {
+                InterruptCallback = InputInterruptCallback
+            };
+        }
+
         var formatOptions = Options.FormatOptions.ToUnmanaged();
         try
         {
-            Input.OpenInput(FileName, InputFormat, formatOptions);
+            Input.OpenInput(InputVideoPath, InputFormat, formatOptions);
             var invalidOptionKey = formatOptions.First?.Key;
             if (invalidOptionKey is not null)
             {
                 ($"Option {invalidOptionKey} not found.").LogError();
                 throw new FFmpegException(ffmpeg.AVERROR_OPTION_NOT_FOUND, $"Option {invalidOptionKey} not found.");
             }
+
+            _audioInput?.OpenInput(InputAudioPath, InputFormat, formatOptions);
 
 
             if (Options.GeneratePts)
@@ -634,19 +707,24 @@ public unsafe class MediaContainer
                 Input.FindStreamInfo(Options.CodecOptions);
 
             if (Input.IO.IsNotNull())
-                Input.IO!.EndOfStream = false; // FIXME hack, ffplay maybe should not use avio_feof() to test for the end
+            {
+                Input.IO!.EndOfStream =
+                    false; // FIXME hack, ffplay maybe should not use avio_feof() to test for the end
+            }
 
             if (Options.IsByteSeekingEnabled.IsAuto())
             {
                 Options.IsByteSeekingEnabled = Input.InputFormat.Flags.HasFlag(ffmpeg.AVFMT_TS_DISCONT) &&
-                    !Input.InputFormat.ShortNames.Any(c => c == "ogg") ? ThreeState.On : ThreeState.Off;
+                                               !Input.InputFormat.ShortNames.Any(c => c == "ogg")
+                    ? ThreeState.On
+                    : ThreeState.Off;
             }
 
             MaxPictureDuration = Input.InputFormat.Flags.HasFlag(ffmpeg.AVFMT_TS_DISCONT) ? 10.0 : 3600.0;
 
             var metadata = Input.Metadata;
             if (metadata.ContainsKey("title"))
-                Title = $"{metadata["title"]} - {Options.InputFileName}";
+                Title = $"{metadata["title"]} - {Options.InputVideoPath}";
 
             // if seeking requested, we execute it
             if (Options.StartOffset.IsValidPts())
@@ -658,17 +736,20 @@ public unsafe class MediaContainer
 
                 var seekStoStartResult = Input.SeekFile(long.MinValue, startTimestamp, long.MaxValue);
                 if (seekStoStartResult < 0)
-                    ($"{FileName}: could not seek to position {(startTimestamp / Clock.TimeBaseMicros)}.").LogWarning();
+                {
+                    ($"{InputVideoPath}: could not seek to position {(startTimestamp / Clock.TimeBaseMicros)}.")
+                        .LogWarning();
+                }
             }
 
             IsRealTime = Input.IsRealTime;
 
             if (Options.ShowStatus != 0)
-                Input.DumpFormat(FileName);
+                Input.DumpFormat(InputVideoPath);
         }
         catch
         {
-            ($"{FileName}: Preparing input context failed.").LogError();
+            ($"{InputVideoPath}: Preparing input context failed.").LogError();
             throw;
         }
         finally
@@ -687,12 +768,12 @@ public unsafe class MediaContainer
             stream.DiscardFlags = AVDiscard.AVDISCARD_ALL;
 
             var hasStreamSpec = mediaType >= 0 &&
-                Options.WantedStreams.ContainsKey(mediaType) &&
-                Options.WantedStreams[mediaType] is not null &&
-                !streamIndexes.HasValue(mediaType);
+                                Options.WantedStreams.ContainsKey(mediaType) &&
+                                Options.WantedStreams[mediaType] is not null &&
+                                !streamIndexes.HasValue(mediaType);
 
             var isStreamSpecMatch = hasStreamSpec &&
-                Input.MatchStreamSpecifier(stream, Options.WantedStreams[mediaType]) > 0;
+                                    Input.MatchStreamSpecifier(stream, Options.WantedStreams[mediaType]) > 0;
 
             if (hasStreamSpec && isStreamSpecMatch)
                 streamIndexes[mediaType] = i;
@@ -700,13 +781,14 @@ public unsafe class MediaContainer
 
         foreach (var mediaType in MediaTypeDictionary<int>.MediaTypes)
         {
-            if (!Options.WantedStreams.ContainsKey(mediaType) || Options.WantedStreams[mediaType] is null)
+            if (!Options.WantedStreams.TryGetValue(mediaType, out string value) || value is null)
                 continue;
 
             if (streamIndexes[mediaType] != streamIndexes.DefaultValue)
                 continue;
 
-            ($"Stream specifier {Options.WantedStreams[mediaType]} does not match any {mediaType.ToName()} stream").LogError();
+            ($"Stream specifier {Options.WantedStreams[mediaType]} does not match any {mediaType.ToName()} stream")
+                .LogError();
             streamIndexes[mediaType] = int.MaxValue;
         }
 
@@ -717,8 +799,10 @@ public unsafe class MediaContainer
             streamIndexes.Audio = Input.FindBestAudioStream(streamIndexes.Audio, streamIndexes.Video);
 
         if (!Options.IsVideoDisabled && !Options.IsSubtitleDisabled)
+        {
             streamIndexes.Subtitle = Input.FindBestSubtitleStream(streamIndexes.Subtitle,
                 streamIndexes.HasAudio ? streamIndexes.Audio : streamIndexes.Video);
+        }
 
         ShowMode = Options.ShowMode;
         if (streamIndexes.Video >= 0)
@@ -750,8 +834,8 @@ public unsafe class MediaContainer
 
         if (Video.StreamIndex < 0 && Audio.StreamIndex < 0)
         {
-            ($"Failed to open file '{FileName}' or configure filtergraph.").LogFatal();
-            throw new InvalidOperationException($"Failed to open file '{FileName}' or configure filtergraph");
+            ($"Failed to open file '{InputVideoPath}' or configure filtergraph.").LogFatal();
+            throw new InvalidOperationException($"Failed to open file '{InputVideoPath}' or configure filtergraph");
         }
 
         if (Options.IsInfiniteBufferEnabled.IsAuto() && IsRealTime)
@@ -768,8 +852,11 @@ public unsafe class MediaContainer
             PrepareInput();
             OpenComponents();
 
-            var isRstpStream = Input.InputFormat?.ShortNames.Any(c => c.ToUpperInvariant().Equals("RTSP", StringComparison.Ordinal)) ?? false;
-            var isMmshProtocol = Options.InputFileName?.StartsWith("mmsh:", StringComparison.OrdinalIgnoreCase) ?? false;
+            var isRstpStream =
+                Input.InputFormat?.ShortNames.Any(c => c.ToUpperInvariant().Equals("RTSP", StringComparison.Ordinal)) ??
+                false;
+            var isMmshProtocol =
+                Options.InputVideoPath?.StartsWith("mmsh:", StringComparison.OrdinalIgnoreCase) ?? false;
 
             while (true)
             {
@@ -810,7 +897,8 @@ public unsafe class MediaContainer
                 }
 
                 // if the queue are full, no need to read more
-                if (Options.IsInfiniteBufferEnabled is not ThreeState.On && (HasEnoughPacketBuffer || HasEnoughPacketCount))
+                if (Options.IsInfiniteBufferEnabled is not ThreeState.On &&
+                    (HasEnoughPacketBuffer || HasEnoughPacketCount))
                 {
                     // wait 10 ms
                     NeedsMorePacketsEvent.Wait(Constants.WaitTimeout);
@@ -829,8 +917,13 @@ public unsafe class MediaContainer
                     }
                 }
 
+                ResetInterruptSw();
                 if (!ReadPacket())
+                {
                     break;
+                }
+
+                StopSw();
             }
         }
         catch (Exception ex)
@@ -881,24 +974,25 @@ public unsafe class MediaContainer
     private bool ReadPacket()
     {
         var resultCode = Input.ReadFrame(out var readPacket);
-
         if (resultCode < 0)
         {
             readPacket.Release();
 
+            ResetInterruptSw();
             if (!IsAtEndOfStream && (resultCode == ffmpeg.AVERROR_EOF || Input.IO.TestEndOfStream()))
             {
-                foreach (var c in Components)
-                {
-                    if (c.StreamIndex >= 0)
-                        c.Packets.EnqueueNull();
-                }
-
-                IsAtEndOfStream = true;
+                // foreach (var c in Components)
+                // {
+                //     if (c.StreamIndex >= 0)
+                //         c.Packets.EnqueueNull();
+                // }
+                //
+                // IsAtEndOfStream = true;
+                ffmpeg.av_usleep(1 * 1000 * 1000);
             }
 
             if (Input.IO.IsNotNull() && Input.IO!.Error != 0)
-                return false;
+                return true;
 
             NeedsMorePacketsEvent.Wait(Constants.WaitTimeout);
             return true;
@@ -916,8 +1010,8 @@ public unsafe class MediaContainer
         var packetPtsOffset = readPacket.Pts - streamStartPts;
 
         var isPacketInPlayRange = !Options.Duration.IsValidPts() ||
-                (packetPtsOffset * streamTimeBase) - (startOffset / Clock.TimeBaseMicros)
-                <= (Options.Duration / Clock.TimeBaseMicros);
+                                  (packetPtsOffset * streamTimeBase) - (startOffset / Clock.TimeBaseMicros)
+                                  <= (Options.Duration / Clock.TimeBaseMicros);
 
         if (isPacketInPlayRange && FindComponentByStreamIndex(readPacket.StreamIndex) is MediaComponent component)
             component.Packets.Enqueue(readPacket);

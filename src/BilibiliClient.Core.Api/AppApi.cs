@@ -6,14 +6,9 @@ using BilibiliClient.Core.Models.Https.App;
 
 namespace BilibiliClient.Core.Api;
 
-internal class AppApi : AbsApi, IAppApi
+internal class AppApi(IAppHttpClient appHttpClient, IEnumerable<IPlatformConfig> platformConfigs) : AbsApi(platformConfigs), IAppApi
 {
-    private readonly IAppHttpClient _appHttpClient;
-
-    public AppApi(IAppHttpClient appHttpClient, IEnumerable<IPlatformConfig> platformConfigs) : base(platformConfigs)
-    {
-        _appHttpClient = appHttpClient;
-    }
+    private readonly IAppHttpClient _appHttpClient = appHttpClient;
 
     public async ValueTask<object?> SearchSquare(int from, int limit)
     {

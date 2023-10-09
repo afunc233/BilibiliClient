@@ -2,9 +2,6 @@
 
 namespace BilibiliClient.Messages;
 
-public class PlayVideoMessage<T> : ValueChangedMessage<T>
+public class PlayVideoMessage<T>(T value) : ValueChangedMessage<T>(value)
 {
-    public PlayVideoMessage(T value) : base(value)
-    {
-    }
 }

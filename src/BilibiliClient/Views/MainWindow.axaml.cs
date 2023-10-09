@@ -31,13 +31,8 @@ public partial class MainWindow : AppWindow
     }
 }
 
-internal class MainAppSplashScreen : IApplicationSplashScreen
+internal class MainAppSplashScreen(MainWindow owner) : IApplicationSplashScreen
 {
-    public MainAppSplashScreen(MainWindow owner)
-    {
-        _owner = owner;
-    }
-
     public string AppName => "Bilibili";
     public IImage? AppIcon => null;
     public object SplashScreenContent => new MainAppSplashContent();
@@ -55,5 +50,5 @@ internal class MainAppSplashScreen : IApplicationSplashScreen
     }
 
     // ReSharper disable once NotAccessedField.Local
-    private MainWindow _owner;
+    private MainWindow _owner = owner;
 }

@@ -102,6 +102,15 @@ public class VirtualizingWrapPanel : VirtualizingPanel
     }
 
     /// <summary>
+    /// 
+    /// </summary>
+    public bool ItemIsOwnContainer
+    {
+        get { return GetValue(ItemIsOwnContainerProperty); }
+        set { SetValue(ItemIsOwnContainerProperty, value); }
+    }
+
+    /// <summary>
     /// Gets or sets the height of all items in the WrapPanel.
     /// </summary>
     public double ItemHeight
@@ -332,7 +341,7 @@ public class VirtualizingWrapPanel : VirtualizingPanel
             element.BringIntoView();
             return element;
         }
-        else if (this.GetVisualRoot() is ILayoutRoot root)
+        else if (this.GetVisualRoot() is ILayoutRoot)
         {
             // Create and measure the element to be brought into view. Store it in a field so that
             // it can be re-used in the layout pass.
@@ -538,7 +547,7 @@ public class VirtualizingWrapPanel : VirtualizingPanel
     }
 
     private void RealizeElements(
-        IReadOnlyList<object?>? items,
+        IReadOnlyList<object?> items,
         Size availableSize,
         ref MeasureViewport viewport)
     {
@@ -674,14 +683,16 @@ public class VirtualizingWrapPanel : VirtualizingPanel
         _realizedElements.RecycleElementsBefore(index + 1, _recycleElement, Orientation);
     }
 
-    private Control GetOrCreateElement(IReadOnlyList<object?>? items, int index)
+    private Control GetOrCreateElement(IReadOnlyList<object?> items, int index)
     {
         Debug.Assert(ItemContainerGenerator is not null);
 
         if ((GetRealizedElement(index) ??
              GetRealizedElement(index, ref _focusedIndex, ref _focusedElement) ??
              GetRealizedElement(index, ref _scrollToIndex, ref _scrollToElement)) is { } realized)
+        {
             return realized;
+        }
 
         var item = items[index];
         var generator = ItemContainerGenerator!;

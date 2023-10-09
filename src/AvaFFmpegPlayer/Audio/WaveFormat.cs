@@ -69,14 +69,16 @@ public class WaveFormat
     /// <returns></returns>
     public static WaveFormat CreateCustomFormat(WaveFormatEncoding tag, int sampleRate, int channels, int averageBytesPerSecond, int blockAlign, int bitsPerSample)
     {
-        WaveFormat waveFormat = new WaveFormat();
-        waveFormat.waveFormatTag = tag;
-        waveFormat.channels = (short)channels;
-        waveFormat.sampleRate = sampleRate;
-        waveFormat.averageBytesPerSecond = averageBytesPerSecond;
-        waveFormat.blockAlign = (short)blockAlign;
-        waveFormat.bitsPerSample = (short)bitsPerSample;
-        waveFormat.extraSize = 0;
+        WaveFormat waveFormat = new()
+        {
+            waveFormatTag = tag,
+            channels = (short)channels,
+            sampleRate = sampleRate,
+            averageBytesPerSecond = averageBytesPerSecond,
+            blockAlign = (short)blockAlign,
+            bitsPerSample = (short)bitsPerSample,
+            extraSize = 0
+        };
         return waveFormat;
     }
 
@@ -209,15 +211,11 @@ public class WaveFormat
     /// <returns>String describing the wave format</returns>
     public override string ToString()
     {
-        switch (waveFormatTag)
+        return waveFormatTag switch
         {
-            case WaveFormatEncoding.Pcm:
-            case WaveFormatEncoding.Extensible:
-                // extensible just has some extra bits after the PCM header
-                return $"{bitsPerSample} bit PCM: {sampleRate / 1000}kHz {channels} channels";
-            default:
-                return waveFormatTag.ToString();
-        }
+            WaveFormatEncoding.Pcm or WaveFormatEncoding.Extensible => $"{bitsPerSample} bit PCM: {sampleRate / 1000}kHz {channels} channels",// extensible just has some extra bits after the PCM header
+            _ => waveFormatTag.ToString(),
+        };
     }
 
     /// <summary>
@@ -225,7 +223,7 @@ public class WaveFormat
     /// </summary>
     /// <param name="obj">Object to compare to</param>
     /// <returns>True if the objects are the same</returns>
-    public override bool Equals(object? obj) => obj is WaveFormat other &&
+    public override bool Equals(object obj) => obj is WaveFormat other &&
             waveFormatTag == other.waveFormatTag &&
             channels == other.channels &&
             sampleRate == other.sampleRate &&

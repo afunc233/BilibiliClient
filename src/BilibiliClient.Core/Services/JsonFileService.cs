@@ -4,14 +4,9 @@ using BilibiliClient.Core.Contracts.Services;
 
 namespace BilibiliClient.Core.Services;
 
-public class JsonFileService : IJsonFileService
+public class JsonFileService(IJsonUtils jsonUtils) : IJsonFileService
 {
-    private readonly IJsonUtils _jsonUtils;
-
-    public JsonFileService(IJsonUtils jsonUtils)
-    {
-        _jsonUtils = jsonUtils;
-    }
+    private readonly IJsonUtils _jsonUtils = jsonUtils;
 
     public T? Read<T>(string folderPath, string fileName)
     {

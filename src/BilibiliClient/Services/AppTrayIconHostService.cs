@@ -86,7 +86,7 @@ public class AppTrayIconHostService : IHostedService
                             }
 
                             _notifyIcon.Icon = iconBitmap.Item2;
-                            _messenger.Send(new GlobalIconMessage(iconBitmap.Item1));
+                            // _messenger.Send(new GlobalIconMessage(iconBitmap.Item1));
                         }
                         catch (Exception e)
                         {

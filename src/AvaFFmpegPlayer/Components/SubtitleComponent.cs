@@ -3,14 +3,8 @@ using AvaFFmpegPlayer.Primitives;
 
 namespace AvaFFmpegPlayer.Components;
 
-public sealed class SubtitleComponent : MediaComponent
+public sealed class SubtitleComponent(MediaContainer container) : MediaComponent(container)
 {
-    public SubtitleComponent(MediaContainer container)
-        : base(container)
-    {
-        // placeholder
-    }
-
     public RescalerContext ConvertContext { get; } = new();
 
     public override AVMediaType MediaType => AVMediaType.AVMEDIA_TYPE_SUBTITLE;

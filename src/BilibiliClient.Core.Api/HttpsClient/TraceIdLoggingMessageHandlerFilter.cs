@@ -4,14 +4,9 @@ using Microsoft.Extensions.Logging;
 
 namespace BilibiliClient.Core.Api.HttpsClient;
 
-internal class TraceIdLoggingMessageHandlerFilter : IHttpMessageHandlerBuilderFilter
+internal class TraceIdLoggingMessageHandlerFilter(ILoggerFactory loggerFactory) : IHttpMessageHandlerBuilderFilter
 {
-    private readonly ILoggerFactory _loggerFactory;
-
-    public TraceIdLoggingMessageHandlerFilter(ILoggerFactory loggerFactory)
-    {
-        _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
-    }
+    private readonly ILoggerFactory _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
 
     public Action<HttpMessageHandlerBuilder> Configure(Action<HttpMessageHandlerBuilder> next)
     {

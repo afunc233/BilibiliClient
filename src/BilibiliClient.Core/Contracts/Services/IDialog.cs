@@ -18,7 +18,4 @@ public interface IDialog<out T> : IDialog
     string? SecondaryButtonText { get; }
 
     T? Result { get; }
-
-    Task Init(object? parameter = null);
-    Action? OnClose { protected get; set; }
 }

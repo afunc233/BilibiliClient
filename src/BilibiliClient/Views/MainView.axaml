@@ -91,7 +91,6 @@
         <!-- ReSharper disable once Xaml.MissingGridIndex -->
         <TransitioningContentControl Grid.Row="0"
                                      Content="{Binding Header}">
-
             <Grid.Column>
                 <OnPlatform Default="1">
                     <On Options="Windows" Content="0" />

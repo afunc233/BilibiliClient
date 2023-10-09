@@ -10,12 +10,12 @@ public class AvaPresenter : IPresenter
     private const bool DropFrames = true;
 
     private readonly ThreadedTimer RenderTimer = new(2);
-    private PictureParams? CurrentPicture = new();
-    private WriteableBitmap? TargetBitmap;
-    private WavePlayer? WavePlayer;
+    private PictureParams CurrentPicture = new();
+    private WriteableBitmap TargetBitmap;
+    private WavePlayer WavePlayer;
 
     public IVideoView Window { get; set; }
-    public MediaContainer? Container { get; private set; }
+    public MediaContainer Container { get; private set; }
 
     public IReadOnlyList<AVPixelFormat> PixelFormats { get; } = new[] { AVPixelFormat.AV_PIX_FMT_BGRA };
 
@@ -218,7 +218,9 @@ public class AvaPresenter : IPresenter
         }
     }
 
+#pragma warning disable IDE0051 // 删除未使用的私有成员
     private void UiInvokeAsync(Action action)
+#pragma warning restore IDE0051 // 删除未使用的私有成员
     {
         UiInvokeAsync(action, DispatcherPriority.Normal);
     }
@@ -257,10 +259,10 @@ public class AvaPresenter : IPresenter
 
     public void HandleFatalException(Exception ex)
     {
-        throw new NotImplementedException();
+        // throw new NotImplementedException();
     }
 
-    public AudioParams? OpenAudioDevice(AudioParams audioParams)
+    public AudioParams OpenAudioDevice(AudioParams audioParams)
     {
         WavePlayer = new WavePlayer(this);
         return WavePlayer.AudioParams;

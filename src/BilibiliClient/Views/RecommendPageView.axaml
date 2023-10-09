@@ -57,7 +57,7 @@
                     <i:Interaction.Behaviors>
                         <ia:EventTriggerBehavior EventName="PointerPressed">
                             <ia:InvokeCommandAction
-                                Command="{Binding $parent[UserControl].((vm:RecommendPageViewModel)DataContext).PlayVideoCommand}"
+                                Command="{Binding $parent[UserControl].((vm:RecommendPageViewModel)DataContext).PlayVideoCommand,FallbackValue={x:Null}}"
                                 CommandParameter="{Binding}">
                             </ia:InvokeCommandAction>
                         </ia:EventTriggerBehavior>
@@ -72,7 +72,7 @@
 
         </DataTemplate>
     </UserControl.DataTemplates>
-    <ItemsControl ItemsSource="{Binding RecommendDataList}">
+    <ItemsControl ScrollViewer.IsScrollInertiaEnabled="True" ItemsSource="{Binding RecommendDataList}">
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
                 <controls:VirtualizingWrapPanel />

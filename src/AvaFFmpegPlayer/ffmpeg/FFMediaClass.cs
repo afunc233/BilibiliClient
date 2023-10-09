@@ -2,18 +2,12 @@
 
 namespace AvaFFmpegPlayer.FFmpeg;
 
-public sealed unsafe class FFMediaClass : NativeReference<AVClass>
+public sealed unsafe class FFMediaClass(AVClass* target) : NativeReference<AVClass>(target)
 {
     public static readonly FFMediaClass Codec = new(ffmpeg.avcodec_get_class());
     public static readonly FFMediaClass Format = new(ffmpeg.avformat_get_class());
     public static readonly FFMediaClass Scaler = new(ffmpeg.sws_get_class());
     public static readonly FFMediaClass Resampler = new(ffmpeg.swr_get_class());
-
-    public FFMediaClass(AVClass* target)
-        : base(target)
-    {
-        // placeholder
-    }
 
     /// <summary>
     /// Port of opt_find. Finds an option in a given ffmpeg class.

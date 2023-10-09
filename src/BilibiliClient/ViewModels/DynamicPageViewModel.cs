@@ -6,7 +6,7 @@ using BilibiliClient.Models;
 
 namespace BilibiliClient.ViewModels;
 
-public class DynamicPageViewModel : AbsPageViewModel
+public class DynamicPageViewModel(IDynamicService dynamicService) : AbsPageViewModel
 {
     public override NavBarType NavBarType => NavBarType.Dynamic;
 
@@ -38,12 +38,7 @@ public class DynamicPageViewModel : AbsPageViewModel
     private DynamicDataType _currentDataType = DynamicDataType.Video;
     public ObservableCollection<object> DynamicDataList { get; } = new();
 
-    private readonly IDynamicService _dynamicService;
-
-    public DynamicPageViewModel(IDynamicService dynamicService)
-    {
-        _dynamicService = dynamicService;
-    }
+    private readonly IDynamicService _dynamicService = dynamicService;
 
     public override async Task OnNavigatedTo(object? parameter = null)
     {

@@ -2,14 +2,8 @@
 
 namespace AvaFFmpegPlayer.FFmpeg;
 
-public sealed unsafe class SubtitleRectSet : NativeChildSet<FFSubtitle, FFSubtitleRect>
+public sealed unsafe class SubtitleRectSet(FFSubtitle parent) : NativeChildSet<FFSubtitle, FFSubtitleRect>(parent)
 {
-    public SubtitleRectSet(FFSubtitle parent)
-        : base(parent)
-    {
-        // placeholder
-    }
-
     public override FFSubtitleRect this[int index]
     {
         get => new(Parent.Target->rects[index]);

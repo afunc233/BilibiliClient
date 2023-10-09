@@ -6,21 +6,14 @@ using BilibiliClient.Models.gRPC;
 
 namespace BilibiliClient.Core.Services;
 
-internal class UserSecretService : IUserSecretService
+internal class UserSecretService(IJsonFileService jsonFileService,
+    UserSecretConfig userSecretConfig, ICookieService cookieService) : IUserSecretService
 {
-    private readonly UserSecretConfig _userSecretConfig;
+    private readonly UserSecretConfig _userSecretConfig = userSecretConfig;
 
-    private readonly IJsonFileService _jsonFileService;
+    private readonly IJsonFileService _jsonFileService = jsonFileService;
 
-    private readonly ICookieService _cookieService;
-
-    public UserSecretService(IJsonFileService jsonFileService,
-        UserSecretConfig userSecretConfig, ICookieService cookieService)
-    {
-        _jsonFileService = jsonFileService;
-        _userSecretConfig = userSecretConfig;
-        _cookieService = cookieService;
-    }
+    private readonly ICookieService _cookieService = cookieService;
 
     public async Task LoadUserSecret()
     {

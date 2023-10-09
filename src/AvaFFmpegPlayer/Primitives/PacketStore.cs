@@ -7,7 +7,11 @@ namespace AvaFFmpegPlayer.Primitives;
 /// Represents a queue-style data structure that stores
 /// stream packets that belong to a specific component.
 /// </summary>
-public sealed class PacketStore : ISerialGroupable, IDisposable
+/// <remarks>
+/// Creates a new instance of the <see cref="PacketStore"/> class.
+/// </remarks>
+/// <param name="component">The associated component.</param>
+public sealed class PacketStore(MediaComponent component) : ISerialGroupable, IDisposable
 {
     private readonly object SyncLock = new();
     private readonly Queue<FFPacket> Packets = new();
@@ -20,18 +24,9 @@ public sealed class PacketStore : ISerialGroupable, IDisposable
     private int m_GroupIndex;
 
     /// <summary>
-    /// Creates a new instance of the <see cref="PacketStore"/> class.
-    /// </summary>
-    /// <param name="component">The associated component.</param>
-    public PacketStore(MediaComponent component)
-    {
-        Component = component;
-    }
-
-    /// <summary>
     /// Gets the associated component.
     /// </summary>
-    public MediaComponent Component { get; }
+    public MediaComponent Component { get; } = component;
 
     /// <summary>
     /// Gets whether the packet queue is closed.

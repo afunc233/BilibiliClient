@@ -3,15 +3,9 @@ using AvaFFmpegPlayer.Primitives;
 
 namespace AvaFFmpegPlayer.Components;
 
-public sealed class VideoComponent : FilteringMediaComponent
+public sealed class VideoComponent(MediaContainer container) : FilteringMediaComponent(container)
 {
     private double FilterDelay;
-
-    public VideoComponent(MediaContainer container)
-        : base(container)
-    {
-        // placeholder
-    }
 
     public int CurrentFilterIndex { get; set; }
 

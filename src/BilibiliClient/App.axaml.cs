@@ -33,7 +33,7 @@ public class App : Application
     public App()
     {
         if (OperatingSystem.IsWindows())
-        {
+        { 
             ThreadPool.GetMinThreads(out var workers, out var ports);
             ThreadPool.SetMinThreads(workers + 6, ports + 6);
 

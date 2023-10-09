@@ -108,7 +108,9 @@ public unsafe class ProgramOptions
         Option("filter_threads", false, "number of filter threads per graph", (t, a) =>
             t.FilteringThreadCount = int.TryParse(a, out var v) ? v : t.FilteringThreadCount),
         Option("i", true, "read specified file", "input_file", (t, a) =>
-            t.InputFileName = a)
+            t.InputVideoPath = a),
+        Option("a", true, "read specified file", "input_file", (t, a) =>
+            t.InputAudioPath = a)
     };
 
     public ProgramOptions()
@@ -117,7 +119,9 @@ public unsafe class ProgramOptions
     }
     public FFInputFormat InputFormat { get; set; }
 
-    public string InputFileName { get; set; }
+    public string InputVideoPath { get; set; }
+
+    public string InputAudioPath { get; set; }
 
     public string WindowTitle { get; set; }
 
@@ -223,12 +227,12 @@ public unsafe class ProgramOptions
             {
                 if (argumentName == "-")
                 {
-                    options.InputFileName = "-";
+                    options.InputVideoPath = "-";
                     continue;
                 }
                 else if (!argumentName.StartsWith('-'))
                 {
-                    options.InputFileName = argumentName;
+                    options.InputVideoPath = argumentName;
                     continue;
                 }
             }
@@ -264,8 +268,8 @@ public unsafe class ProgramOptions
             definition.Apply(options, argumentValue);
         }
 
-        if (options.InputFileName == "-")
-            options.InputFileName = "pipe:";
+        if (options.InputVideoPath == "-")
+            options.InputVideoPath = "pipe:";
 
         return options;
     }

@@ -2,16 +2,10 @@
 
 namespace BilibiliClient.Core.Messages;
 
-public class OpenViewMessage : AsyncRequestMessage<bool>
+public class OpenViewMessage(ViewType viewType, object? parameter = null) : AsyncRequestMessage<bool>
 {
-    public ViewType ViewType { get; }
-    public object? Parameter { get; }
-
-    public OpenViewMessage(ViewType viewType, object? parameter = null)
-    {
-        ViewType = viewType;
-        Parameter = parameter;
-    }
+    public ViewType ViewType { get; } = viewType;
+    public object? Parameter { get; } = parameter;
 }
 
 public enum ViewType

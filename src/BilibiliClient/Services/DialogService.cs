@@ -8,16 +8,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace BilibiliClient.Services;
 
-public class DialogService : IDialogService
+public class DialogService(IServiceProvider serviceProvider) : IDialogService
 {
-    private readonly IServiceProvider _serviceProvider;
+    private readonly IServiceProvider _serviceProvider = serviceProvider;
 
     private readonly ConcurrentDictionary<Type, ContentDialog> _typeDialogDic = new();
-
-    public DialogService(IServiceProvider serviceProvider)
-    {
-        _serviceProvider = serviceProvider;
-    }
 
     async Task<TT?> IDialogService.ShowDialog<T, TT>(object? parameter) where TT : default
     {

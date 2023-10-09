@@ -16,5 +16,5 @@ public unsafe class FFDictionaryEntry : NativeReference<AVDictionaryEntry>
 
     public string Key { get; }
 
-    public string Value { get; }
+    public new string Value { get; }
 }

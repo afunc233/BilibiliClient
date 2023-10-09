@@ -3,14 +3,9 @@ using Microsoft.Extensions.Hosting;
 
 namespace BilibiliClient.Core.Services;
 
-public class BilibiliClientCoreHostedService : IHostedService
+public class BilibiliClientCoreHostedService(IEnumerable<IStartStopHandler> activationHandlers) : IHostedService
 {
-    private readonly IEnumerable<IStartStopHandler> _startStopHandlers;
-
-    public BilibiliClientCoreHostedService(IEnumerable<IStartStopHandler> activationHandlers)
-    {
-        _startStopHandlers = activationHandlers.OrderBy(it => it.Order);
-    }
+    private readonly IEnumerable<IStartStopHandler> _startStopHandlers = activationHandlers.OrderBy(it => it.Order);
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {

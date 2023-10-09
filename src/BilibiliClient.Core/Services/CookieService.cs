@@ -3,14 +3,9 @@ using BilibiliClient.Core.Contracts.Services;
 
 namespace BilibiliClient.Core.Services;
 
-public class CookieService : ICookieService
+public class CookieService(CookieContainer cookieContainer) : ICookieService
 {
-    private readonly CookieContainer _cookieContainer;
-
-    public CookieService(CookieContainer cookieContainer)
-    {
-        _cookieContainer = cookieContainer;
-    }
+    private readonly CookieContainer _cookieContainer = cookieContainer;
 
     public async ValueTask LoadCookie(List<string> domainList, Func<string, CookieCollection> getCookieCollectionFunc)
     {

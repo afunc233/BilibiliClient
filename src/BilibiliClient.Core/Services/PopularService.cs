@@ -5,15 +5,10 @@ using BilibiliClient.Core.Contracts.Services;
 
 namespace BilibiliClient.Core.Services;
 
-internal class PopularService : IPopularService
+internal class PopularService(IGrpcApi grpcApi) : IPopularService
 {
     private long _idx = 0;
-    private readonly IGrpcApi _grpcApi;
-
-    public PopularService(IGrpcApi grpcApi)
-    {
-        _grpcApi = grpcApi;
-    }
+    private readonly IGrpcApi _grpcApi = grpcApi;
 
     public async IAsyncEnumerable<Card> Popular()
     {

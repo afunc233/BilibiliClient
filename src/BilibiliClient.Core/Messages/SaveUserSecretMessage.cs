@@ -2,9 +2,6 @@
 
 namespace BilibiliClient.Core.Messages;
 
-public class SaveUserSecretMessage : CommunityToolkit.Mvvm.Messaging.Messages.ValueChangedMessage<UserSecretConfig?>
+public class SaveUserSecretMessage(UserSecretConfig? value = null) : CommunityToolkit.Mvvm.Messaging.Messages.ValueChangedMessage<UserSecretConfig?>(value)
 {
-    public SaveUserSecretMessage(UserSecretConfig? value = null) : base(value)
-    {
-    }
 }

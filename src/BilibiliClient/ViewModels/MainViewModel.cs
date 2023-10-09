@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Bilibili.App.Card.V1;
 using BilibiliClient.Core.Models.Https.App;
 using BilibiliClient.Messages;
 using BilibiliClient.Models;
@@ -101,13 +102,31 @@ public partial class MainViewModel : ViewModelBase
         _currentNavBar = NavBarList.First();
 
         _messenger.Register<PlayVideoMessage<RecommendCardItem?>>(this, HandlePlayVideoMessage);
+        _messenger.Register<PlayVideoMessage<Card?>>(this, HandlePlayVideoMessage);
     }
 
-    private void HandlePlayVideoMessage(object recipient, PlayVideoMessage<RecommendCardItem?> message)
+    private async void HandlePlayVideoMessage(object recipient, PlayVideoMessage<Card?> message)
     {
+        if (CurrentPage != null)
+        {
+            await CurrentPage.OnNavigatedFrom();
+        }
+
+        CurrentPage = _serviceProvider.GetRequiredService<PlayerPageViewModel>();
+        await CurrentPage.OnNavigatedTo(message.Value);
+    }
+
+    private async void HandlePlayVideoMessage(object recipient, PlayVideoMessage<RecommendCardItem?> message)
+    {
+        if (CurrentPage != null)
+        {
+            await CurrentPage.OnNavigatedFrom();
+        }
+
+
         // TODO CurrentPage = 
         CurrentPage = _serviceProvider.GetRequiredService<PlayerPageViewModel>();
-        CurrentPage.OnNavigatedTo(message.Value);
+        await CurrentPage.OnNavigatedTo(message.Value);
     }
 
     [RelayCommand]

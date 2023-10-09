@@ -3,14 +3,9 @@ using Microsoft.Extensions.Logging;
 
 namespace BilibiliClient.Core.Api.HttpsClient;
 
-internal class HttpLogHandler : DelegatingHandler
+internal class HttpLogHandler(ILogger logger) : DelegatingHandler
 {
-    private readonly ILogger _logger;
-
-    public HttpLogHandler(ILogger logger)
-    {
-        _logger = logger;
-    }
+    private readonly ILogger _logger = logger;
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
         CancellationToken cancellationToken)

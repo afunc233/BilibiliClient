@@ -5,7 +5,5 @@
              xmlns:playerControl="clr-namespace:AvaFFmpegPlayer.Controls;assembly=AvaFFmpegPlayer"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="BilibiliClient.Views.PlayerPageView">
-    <playerControl:VideoView x:Name="VideoView">
-
-    </playerControl:VideoView>
+    <playerControl:VideoView x:Name="VideoView" Background="Black" />
 </UserControl>

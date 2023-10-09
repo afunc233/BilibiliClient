@@ -18,7 +18,7 @@
 
     <Application.Resources>
         <!--  需要一个加载中的图  -->
-        <ImageBrush x:Key="LoadingImage"
+        <ImageBrush x:Key="LoadingImageSource"
                     Source="resm:Avalonia.Skia.Assets.NoiseAsset_256X256_PNG.png?assembly=Avalonia.Skia" />
         <converters:ValueChangedInputConverter x:Key="ValueChangedInputConverter" />
         <converters:Source2QRCodeConverter x:Key="Source2QRCodeConverter" />
