@@ -4,6 +4,7 @@ using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
+using Avalonia.Interactivity;
 using Avalonia.Xaml.Interactivity;
 using CommunityToolkit.Mvvm.Input;
 
@@ -26,16 +27,37 @@ public class Scroll2EndTriggerBehavior : Trigger
         set => SetValue(BindingProperty, value);
     }
 
+    public static readonly StyledProperty<Vector> OffsetProperty =
+        AvaloniaProperty.Register<Scroll2EndTriggerBehavior, Vector>(
+            "Offset");
+
+    public Vector Offset
+    {
+        get => GetValue(OffsetProperty);
+        set => SetValue(OffsetProperty, value);
+    }
+
+    public static readonly StyledProperty<bool> IsRememberOffsetProperty = AvaloniaProperty.Register<Scroll2EndTriggerBehavior, bool>(
+        "IsRememberOffset");
+
+    public bool IsRememberOffset
+    {
+        get => GetValue(IsRememberOffsetProperty);
+        set => SetValue(IsRememberOffsetProperty, value);
+    }
+    
+    private static Vector _tempOffset = default;
+
     /// <summary>
     /// Identifies the <seealso cref="LoadMoreDataCmd"/> avalonia property.
     /// </summary>
-    public static readonly StyledProperty<ICommand> LoadMoreDataCmdProperty =
-        AvaloniaProperty.Register<ValueChangedTriggerBehavior, ICommand>(nameof(LoadMoreDataCmd));
+    public static readonly StyledProperty<ICommand?> LoadMoreDataCmdProperty =
+        AvaloniaProperty.Register<ValueChangedTriggerBehavior, ICommand?>(nameof(LoadMoreDataCmd));
 
     /// <summary>
     /// Gets or sets the bound object that the <see cref="ValueChangedTriggerBehavior"/> will listen to. This is a avalonia property.
     /// </summary>
-    public ICommand LoadMoreDataCmd
+    public ICommand? LoadMoreDataCmd
     {
         get => GetValue(LoadMoreDataCmdProperty);
         set => SetValue(LoadMoreDataCmdProperty, value);
@@ -45,21 +67,38 @@ public class Scroll2EndTriggerBehavior : Trigger
 
     protected override void OnAttachedToVisualTree()
     {
-        base.OnAttachedToVisualTree();
         if (AssociatedObject is not ItemsControl control) return;
         _attached = true;
         control.AddHandler(ScrollViewer.ScrollChangedEvent, ScrollViewerOnScrollChanged);
+        if (!_tempOffset.Equals(default) && IsRememberOffset)
+        {
+            Offset = _tempOffset;
+        }
+        control.Loaded += UpdateScrollOffset;
+        base.OnAttachedToVisualTree();
     }
-
+    
     protected override void OnDetachedFromVisualTree()
     {
-        base.OnDetachedFromVisualTree();
         if (AssociatedObject is not ItemsControl control) return;
         _attached = false;
-
         control.RemoveHandler(ScrollViewer.ScrollChangedEvent, ScrollViewerOnScrollChanged);
+        control.Loaded -= UpdateScrollOffset;
+        base.OnDetachedFromVisualTree();
     }
 
+
+    private void UpdateScrollOffset(object? sender, RoutedEventArgs e)
+    {
+        if (AssociatedObject is not ItemsControl control) return;
+        var scrollViewer = control.GetTemplateChildren()?.OfType<ScrollViewer>().FirstOrDefault();
+        if (scrollViewer is null)
+        {
+            return;
+        }
+        scrollViewer.Offset = Offset;
+    }
+    
     private async void ScrollViewerOnScrollChanged(object? sender, ScrollChangedEventArgs e)
     {
         if (AssociatedObject is not ItemsControl control) return;
@@ -71,7 +110,7 @@ public class Scroll2EndTriggerBehavior : Trigger
         }
 
         var extent = scrollViewer.Extent;
-        var offset = scrollViewer.Offset;
+        var offset = _tempOffset = scrollViewer.Offset;
         if (extent.Height - scrollViewer.Viewport.Height < 0.5d)
         {
             // Layout 那一次，调用 Command
