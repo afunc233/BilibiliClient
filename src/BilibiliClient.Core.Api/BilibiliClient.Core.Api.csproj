@@ -4,14 +4,15 @@
         <TargetFrameworks>$(AppTargetFrameworks);</TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <LangVersion>preview</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\BilibiliClient.Core.Models.gRPC\BilibiliClient.Core.Models.gRPC.csproj" />
-      <ProjectReference Include="..\BilibiliClient.Core.Models\BilibiliClient.Core.Models.csproj" />
+        <ProjectReference Include="..\BilibiliClient.Core.Models.gRPC\BilibiliClient.Core.Models.gRPC.csproj"/>
+        <ProjectReference Include="..\BilibiliClient.Core.Models\BilibiliClient.Core.Models.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.Extensions.Http" Version="$(MicrosoftExtensionsVersion)" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="$(MicrosoftExtensionsVersion)"/>
     </ItemGroup>
 </Project>

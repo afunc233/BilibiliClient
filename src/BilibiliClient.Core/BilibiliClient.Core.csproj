@@ -4,21 +4,20 @@
         <TargetFrameworks>$(AppTargetFrameworks);</TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-
+        <LangVersion>preview</LangVersion>
 
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="CommunityToolkit.HighPerformance" Version="$(CommunityToolkitVersion)" />
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="$(CommunityToolkitVersion)" />
+        <PackageReference Include="CommunityToolkit.HighPerformance" Version="$(CommunityToolkitVersion)"/>
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="$(CommunityToolkitVersion)"/>
 
-        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="$(MicrosoftExtensionsVersion)" />
-        <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="$(MicrosoftExtensionsVersion)" />
-        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(MicrosoftExtensionsVersion)" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="$(MicrosoftExtensionsVersion)"/>
+        <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="$(MicrosoftExtensionsVersion)"/>
+        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(MicrosoftExtensionsVersion)"/>
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\BilibiliClient.Core.Api\BilibiliClient.Core.Api.csproj" />
+        <ProjectReference Include="..\BilibiliClient.Core.Api\BilibiliClient.Core.Api.csproj"/>
     </ItemGroup>
-
 
 
 </Project>
