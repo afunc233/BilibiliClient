@@ -4,6 +4,7 @@
         <TargetFramework>$(AndroidTargetFramework)</TargetFramework>
         <SupportedOSPlatformVersion>21</SupportedOSPlatformVersion>
         <ApplicationId>org.afunc.BilibiliClient</ApplicationId>
+        
         <ApplicationVersion>1</ApplicationVersion>
         <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
         <AndroidPackageFormat>apk</AndroidPackageFormat>
