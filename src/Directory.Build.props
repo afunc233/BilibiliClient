@@ -9,12 +9,13 @@
         <PackageOutputPath>$(MSBuildThisFileDirectory)bin\$(Configuration)</PackageOutputPath>
     </PropertyGroup>
     <PropertyGroup>
-        <AvaloniaVersion>11.0.5-rc1</AvaloniaVersion>
+        <AvaloniaVersion>11.0.5</AvaloniaVersion>
         <CommunityToolkitVersion>8.2.1</CommunityToolkitVersion>
-        <MicrosoftExtensionsVersion>8.0.0-preview.6.23329.*</MicrosoftExtensionsVersion>
-        <GrpcVersion>2.51.0</GrpcVersion>
+        <MicrosoftExtensionsVersion>8.0.0-rc.*</MicrosoftExtensionsVersion>
+        <GrpcVersion>2.58.*</GrpcVersion>
+        <GrpcToolVersion>2.51.*</GrpcToolVersion>
         <GoogleProtobufVersion>4.0.0-rc2</GoogleProtobufVersion>
-        <NLogVersion>5.3.4</NLogVersion>
+        <NLogVersion>5.3.5</NLogVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Platform)'=='x86'">

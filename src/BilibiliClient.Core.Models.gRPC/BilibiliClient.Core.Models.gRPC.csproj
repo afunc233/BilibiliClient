@@ -15,7 +15,7 @@
     <ItemGroup>
         <PackageReference Include="Google.Protobuf" Version="$(GoogleProtobufVersion)"/>
         <PackageReference Include="Grpc.Net.Client" Version="$(GrpcVersion)"/>
-        <PackageReference Include="Grpc.Tools" Version="$(GrpcVersion)">
+        <PackageReference Include="Grpc.Tools" Version="$(GrpcToolVersion)">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
