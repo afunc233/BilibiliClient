@@ -12,7 +12,7 @@ public class WavePlayer : IWaveProvider
     private readonly object SyncLock = new();
     private readonly AutoResetEvent OnSamplesPlayed = new(true);
     private readonly Thread PlaybackThread;
-    private readonly WaveInterop.WaveCallback WaveMessageCallback;
+    // private readonly WaveInterop.WaveCallback WaveMessageCallback;
     private IntPtr DeviceHandle = IntPtr.Zero;
     private readonly CancellationTokenSource Cts = new();
 
@@ -20,18 +20,21 @@ public class WavePlayer : IWaveProvider
 
     internal WavePlayer(AvaPresenter presenter)
     {
-        BufferSize = WaveFormat.ConvertLatencyToByteSize(DesiredLatency);
-        PlaybackThread = new(PerformContinuousPlayback) { IsBackground = true };
-        WaveMessageCallback = OnDeviceMessage;
-        Presenter = presenter;
-        AudioParams = new()
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            BufferSize = this.BufferSize,
-            Channels = WaveFormat.Channels,
-            SampleFormat = AVSampleFormat.AV_SAMPLE_FMT_S16,
-            SampleRate = WaveFormat.SampleRate,
-            ChannelLayout = AudioParams.DefaultChannelLayoutFor(WaveFormat.Channels),
-        };
+            BufferSize = WaveFormat.ConvertLatencyToByteSize(DesiredLatency);
+            PlaybackThread = new(PerformContinuousPlayback) { IsBackground = true };
+            // WaveMessageCallback = OnDeviceMessage;
+            Presenter = presenter;
+            AudioParams = new()
+            {
+                BufferSize = this.BufferSize,
+                Channels = WaveFormat.Channels,
+                SampleFormat = AVSampleFormat.AV_SAMPLE_FMT_S16,
+                SampleRate = WaveFormat.SampleRate,
+                ChannelLayout = AudioParams.DefaultChannelLayoutFor(WaveFormat.Channels),
+            };
+        }
     }
 
     private MediaContainer Container => Presenter.Container;
@@ -54,54 +57,54 @@ public class WavePlayer : IWaveProvider
 
     private void PerformContinuousPlayback(object state)
     {
-        var deviceNumber = -1;
-        var openResult = WaveInterop.waveOutOpen(
-            out DeviceHandle,
-            (IntPtr)deviceNumber,
-            WaveFormat,
-            WaveMessageCallback,
-            IntPtr.Zero,
-            WaveInterop.WaveInOutOpenFlags.CallbackFunction);
-
-        if (openResult != MmResult.NoError)
-            throw new MmException(openResult, nameof(PerformContinuousPlayback));
-
-        // Create the buffers
-        for (var n = 0; n < Buffers.Length; n++)
-            Buffers[n] = new WaveOutBuffer(DeviceHandle, BufferSize, this, SyncLock);
-
-        var queued = 0;
-
-        try
-        {
-            while (!Cts.IsCancellationRequested)
-            {
-                if (!OnSamplesPlayed.WaitOne(DesiredLatency))
-                    continue;
-
-                foreach (var buffer in Buffers)
-                {
-                    if (buffer.InQueue || buffer.OnDone())
-                        queued++;
-                }
-
-                // Detect an end of playback
-                if (queued <= 0)
-                    break;
-            }
-        }
-        finally
-        {
-            if (DeviceHandle != IntPtr.Zero)
-                WaveInterop.waveOutClose(DeviceHandle);
-
-            foreach (var buffer in Buffers)
-            {
-                buffer?.Dispose();
-            }
-
-            Cts.Dispose();
-        }
+        // var deviceNumber = -1;
+        // var openResult = WaveInterop.waveOutOpen(
+        //     out DeviceHandle,
+        //     (IntPtr)deviceNumber,
+        //     WaveFormat,
+        //     WaveMessageCallback,
+        //     IntPtr.Zero,
+        //     WaveInterop.WaveInOutOpenFlags.CallbackFunction);
+        //
+        // if (openResult != MmResult.NoError)
+        //     throw new MmException(openResult, nameof(PerformContinuousPlayback));
+        //
+        // // Create the buffers
+        // for (var n = 0; n < Buffers.Length; n++)
+        //     Buffers[n] = new WaveOutBuffer(DeviceHandle, BufferSize, this, SyncLock);
+        //
+        // var queued = 0;
+        //
+        // try
+        // {
+        //     while (!Cts.IsCancellationRequested)
+        //     {
+        //         if (!OnSamplesPlayed.WaitOne(DesiredLatency))
+        //             continue;
+        //
+        //         foreach (var buffer in Buffers)
+        //         {
+        //             if (buffer.InQueue || buffer.OnDone())
+        //                 queued++;
+        //         }
+        //
+        //         // Detect an end of playback
+        //         if (queued <= 0)
+        //             break;
+        //     }
+        // }
+        // finally
+        // {
+        //     if (DeviceHandle != IntPtr.Zero)
+        //         WaveInterop.waveOutClose(DeviceHandle);
+        //
+        //     foreach (var buffer in Buffers)
+        //     {
+        //         buffer?.Dispose();
+        //     }
+        //
+        //     Cts.Dispose();
+        // }
     }
 
     public void Start()

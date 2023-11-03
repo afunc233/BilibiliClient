@@ -12,8 +12,8 @@ internal class ThreadedTimer
     {
         Worker = new Thread(WorkerLoop) { IsBackground = true };
         Interval = TimeSpan.FromMilliseconds(intervalMillis);
-        var (Minimum, Maximum) = NativeMethods.GetTimerPeriod();
-        Resolution = resolution.Clamp(Minimum.Clamp(1, Minimum), Maximum.Clamp(1, Maximum));
+        // var (Minimum, Maximum) = NativeMethods.GetTimerPeriod();
+        // Resolution = resolution.Clamp(Minimum.Clamp(1, Minimum), Maximum.Clamp(1, Maximum));
     }
 
     public bool IsRunning { get; private set; }
@@ -43,7 +43,7 @@ internal class ThreadedTimer
             cycleClock.Restart();
             if (OperatingSystem.IsWindows())
             {
-                _ = NativeMethods.BeginTimerResolution(resolutionMillis);
+                
             }
 
             while (!token.IsCancellationRequested)
@@ -63,7 +63,7 @@ internal class ThreadedTimer
         {
             if (OperatingSystem.IsWindows())
             {
-                _ = NativeMethods.EndTimerResolution(resolutionMillis);
+                
             }
             IsRunning = false;
         }
@@ -81,48 +81,5 @@ internal class ThreadedTimer
             Worker.Join();
 
         Cts.Dispose();
-    }
-
-    private static class NativeMethods
-    {
-        private const string MultimediaDll = "Winmm.dll";
-        private static readonly int TimerCapsSize = Marshal.SizeOf(typeof(TimerCaps));
-
-        /// <summary>
-        /// Represents information about the multimedia Timer's capabilities.
-        /// </summary>
-        [StructLayout(LayoutKind.Sequential)]
-        private struct TimerCaps
-        {
-            /// <summary>
-            /// Minimum supported period in milliseconds.
-            /// </summary>
-            public int periodMin;
-
-            /// <summary>
-            /// Maximum supported period in milliseconds.
-            /// </summary>
-            public int periodMax;
-        }
-
-        [DllImport(MultimediaDll, SetLastError = true, EntryPoint = "timeGetDevCaps")]
-#pragma warning disable SYSLIB1054 // 使用 “LibraryImportAttribute” 而不是 “DllImportAttribute” 在编译时生成 P/Invoke 封送代码
-        private static extern int TimeGetDevCaps(ref TimerCaps caps, int sizeOfTimerCaps);
-
-        [DllImport(MultimediaDll, SetLastError = true, EntryPoint = "timeBeginPeriod")]
-        public static extern uint BeginTimerResolution(uint value);
-
-        [DllImport(MultimediaDll, SetLastError = true, EntryPoint = "timeEndPeriod")]
-        public static extern uint EndTimerResolution(uint value);
-#pragma warning restore SYSLIB1054 // 使用 “LibraryImportAttribute” 而不是 “DllImportAttribute” 在编译时生成 P/Invoke 封送代码
-
-        public static int Clamp(int number, int min, int max) => number < min ? min : number > max ? max : number;
-
-        public static (int Minimum, int Maximum) GetTimerPeriod()
-        {
-            TimerCaps caps = default;
-            _ = TimeGetDevCaps(ref caps, TimerCapsSize);
-            return (caps.periodMin, caps.periodMax);
-        }
     }
 }

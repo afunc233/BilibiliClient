@@ -249,12 +249,18 @@ public class AvaPresenter : IPresenter
 
     public void Stop()
     {
-        WavePlayer?.Close();
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            WavePlayer?.Close();
+        }
     }
 
     public void CloseAudioDevice()
     {
-        WavePlayer?.Close();
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            WavePlayer?.Close();
+        }
     }
 
     public void HandleFatalException(Exception ex)
@@ -264,13 +270,21 @@ public class AvaPresenter : IPresenter
 
     public AudioParams OpenAudioDevice(AudioParams audioParams)
     {
-        WavePlayer = new WavePlayer(this);
-        return WavePlayer.AudioParams;
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            WavePlayer = new WavePlayer(this);
+            return WavePlayer.AudioParams;
+        }
+
+        return default;
     }
 
     public void PauseAudioDevice()
     {
-        WavePlayer?.Pause();
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            WavePlayer?.Pause();
+        }
     }
 
     #endregion

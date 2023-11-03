@@ -10,9 +10,7 @@
 
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)"/>
-        <PackageReference Include="Dove.Bass.Linux" Version="1.0.0"/>
         <PackageReference Include="FFmpeg.AutoGen" Version="6.0.0.2"/>
-        <PackageReference Include="ManagedBass" Version="3.1.1"/>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(MicrosoftExtensionsVersion)"/>
 <!--        <PackageReference Include="Silk.NET.OpenGL" Version="2.17.1"/>-->
     </ItemGroup>

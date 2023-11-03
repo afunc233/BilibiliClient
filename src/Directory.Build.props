@@ -10,7 +10,7 @@
     </PropertyGroup>
     <PropertyGroup>
         <AvaloniaVersion>11.0.5</AvaloniaVersion>
-        <CommunityToolkitVersion>8.2.1</CommunityToolkitVersion>
+        <CommunityToolkitVersion>8.2.*</CommunityToolkitVersion>
         <MicrosoftExtensionsVersion>8.0.0-rc.*</MicrosoftExtensionsVersion>
         <GrpcVersion>2.58.*</GrpcVersion>
         <GrpcToolVersion>2.51.*</GrpcToolVersion>

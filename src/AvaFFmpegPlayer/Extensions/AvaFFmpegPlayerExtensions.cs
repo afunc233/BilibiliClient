@@ -67,7 +67,7 @@ public static class AvaFFmpegPlayerExtensions
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
-                ffmpegPath = "/usr/lib/";
+                ffmpegPath = "/opt/homebrew/Cellar/ffmpeg/6.0_1/lib/";
             }
 
             ffmpeg.RootPath = ffmpegPath;
@@ -115,20 +115,9 @@ public static class AvaFFmpegPlayerExtensions
         builder.AfterSetup((_) =>
         {
             InitXamlStyle(builder);
-            InitBass(builder);
             InitializeFFmpeg();
         });
         return builder;
-    }
-
-    /// <summary>
-    /// 初始化Bass 
-    /// </summary>
-    /// <param name="builder"></param>
-    /// <typeparam name="TAppBuilder"></typeparam>
-    private static void InitBass<TAppBuilder>(TAppBuilder builder)
-    {
-        BassCore.Initialize();
     }
 
     #region 加载样式

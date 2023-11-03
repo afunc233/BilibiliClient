@@ -40,7 +40,7 @@ public class WaveOutBuffer : IDisposable
         header.userData = (IntPtr)hThis;
         lock (waveOutLock)
         {
-            MmException.Try(WaveInterop.waveOutPrepareHeader(hWaveOut, header, Marshal.SizeOf(header)), "waveOutPrepareHeader");
+            // MmException.Try(WaveInterop.waveOutPrepareHeader(hWaveOut, header, Marshal.SizeOf(header)), "waveOutPrepareHeader");
         }
     }
 
@@ -84,7 +84,7 @@ public class WaveOutBuffer : IDisposable
         {
             lock (waveOutLock)
             {
-                WaveInterop.waveOutUnprepareHeader(hWaveOut, header, Marshal.SizeOf(header));
+                // WaveInterop.waveOutUnprepareHeader(hWaveOut, header, Marshal.SizeOf(header));
             }
             hWaveOut = IntPtr.Zero;
         }
@@ -134,12 +134,12 @@ public class WaveOutBuffer : IDisposable
 
         lock (waveOutLock)
         {
-            result = WaveInterop.waveOutWrite(hWaveOut, header, Marshal.SizeOf(header));
+            // result = WaveInterop.waveOutWrite(hWaveOut, header, Marshal.SizeOf(header));
         }
-        if (result != MmResult.NoError)
-        {
+        // if (result != MmResult.NoError)
+        // {
             // TODO throw new MmException(result, "waveOutWrite");
-        }
+        // }
 
         GC.KeepAlive(this);
     }
